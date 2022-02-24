@@ -21,6 +21,8 @@ class Extensions extends Component {
 		$this->featuredMediaUrl->init();
 
 		// TODO: gutenberg blocks
+
+		// TODO: single post full taxonomy term objects
 	}
 
 

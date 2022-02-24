@@ -21,6 +21,7 @@ class FeaturedMediaUrl extends Component {
 
 		$data = $response->get_data();
 		// $data["title"]["rendered"] = html_entity_decode($data["title"]["rendered"]);
+
 		$data["featured_media_url"] = get_the_post_thumbnail_url($post, "full");
 
 		$response->set_data( $data );
