@@ -1,0 +1,9 @@
+{
+  "name": "palasthotel/headless",
+  "description": "Adds headless features to wordpress",
+  "autoload": {
+    "psr-4": {
+      "Palasthotel\\WordPress\\Headless\\": "classes"
+    }
+  }
+}
