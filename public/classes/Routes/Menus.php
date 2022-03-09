@@ -14,12 +14,16 @@ class Menus extends Component {
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus', array(
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'get_all_menus' ],
-			'permission_callback' => '__return_true', // TODO: check if api key is set
+			'permission_callback' => function(){
+				return $this->plugin->apiKey->hasApiKeyAccess();
+			},
 		) );
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus/(?P<menu>[\S]+)', array(
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'get_menu' ],
-			'permission_callback' => '__return_true', // TODO: check if api key is set
+			'permission_callback' => function(){
+				return $this->plugin->apiKey->hasApiKeyAccess();
+			},
 			'args'                => [
 				'menu' => [
 					'validate_callback' => function ( $value, $request, $param ) {

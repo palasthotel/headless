@@ -24,6 +24,7 @@ require_once __DIR__."/vendor/autoload.php";
 /**
  * @property Routes $routes
  * @property Extensions $extensions
+ * @property ApiKey $apiKey
  */
 class Plugin extends Components\Plugin {
 
@@ -34,6 +35,7 @@ class Plugin extends Components\Plugin {
 
 		// TODO: add security to rest api (api key)
 
+		$this->apiKey = new ApiKey($this);
 		$this->routes = new Routes($this);
 		$this->extensions = new Extensions($this);
 

@@ -6,7 +6,7 @@ namespace Palasthotel\WordPress\Headless\Components;
 /**
  * Class Component
  *
- * @property Plugin plugin
+ * @property \Palasthotel\WordPress\Headless\Plugin plugin
  *
  * @package Palasthotel\WordPress
  * @version 0.1.2
@@ -15,7 +15,7 @@ abstract class Component {
 	/**
 	 * _Component constructor.
 	 *
-	 * @param Plugin $plugin
+	 * @param \Palasthotel\WordPress\Headless\Plugin $plugin
 	 */
 	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;

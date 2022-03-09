@@ -4,9 +4,11 @@ namespace Palasthotel\WordPress\Headless;
 
 
 use Palasthotel\WordPress\Headless\Routes\Menus;
+use Palasthotel\WordPress\Headless\Routes\Settings;
 
 /**
  * @property Menus $menus
+ * @property Settings $settings
  */
 class Routes extends Components\Component {
 
@@ -17,11 +19,14 @@ class Routes extends Components\Component {
 
 	public function rest_api_init() {
 
+		$this->settings = new Settings($this->plugin);
+		$this->settings->init();
+
 		$this->menus = new Menus($this->plugin);
 		$this->menus->init();
 
-
 	}
+
 
 
 }
