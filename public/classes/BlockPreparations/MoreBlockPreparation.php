@@ -2,12 +2,13 @@
 
 namespace Palasthotel\WordPress\Headless\BlockPreparations;
 
-use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparationExtension;
+use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparation;
+use Palasthotel\WordPress\Headless\Model\BlockName;
 
-class MoreBlockPreparation implements IBlockPreparationExtension {
+class MoreBlockPreparation implements IBlockPreparation {
 
-	function blockName(): string {
-		return "core/more";
+	function blockName(): BlockName {
+		return new BlockName("core", "more");
 	}
 
 	function prepare( array $block ): array {

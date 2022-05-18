@@ -6,6 +6,10 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Security extends Component {
 
+	public function isHeadlessRequest(): bool {
+		return isset( $_GET[ HEADLESS_REST_PARAM ] ) && HEADLESS_REST_VALUE == $_GET[ HEADLESS_REST_PARAM ];
+	}
+
 	public function hasApiKeyAccess(): bool {
 
 		if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {

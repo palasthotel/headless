@@ -2,70 +2,69 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+use Palasthotel\WordPress\Headless\BlockPreparations\GalleryBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ImageBlockPreparation;
-use Palasthotel\WordPress\Headless\BlockPreparations\ParagraphBlockPreparation;
+use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Extensions\Blocks;
 use Palasthotel\WordPress\Headless\Extensions\FeaturedMediaUrl;
+use Palasthotel\WordPress\Headless\Extensions\PostContentAttachments;
 use Palasthotel\WordPress\Headless\Extensions\Title;
-use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparationExtension;
-use Palasthotel\WordPress\Headless\Interfaces\IPostRouteExtension;
+use Palasthotel\WordPress\Headless\Model\BlockPreparations;
+use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
 
 /**
  * @property FeaturedMediaUrl $featuredMediaUrl
  */
 class Extensions extends Component {
 
-	/**
-	 * @var IPostRouteExtension[] $postRouteExtensions
-	 */
-	private array $postRouteExtensions = [];
-
-	/**
-	 * @var IBlockPreparationExtension[]
-	 */
-	private array $blockPreparationExtensions = [];
+	private BlockPreparations $blockPreparations;
+	private PostRouteExtensions $postRouteExtensions;
 
 	public function onCreate() {
 		parent::onCreate();
+
+		if ( ! $this->plugin->security->isHeadlessRequest() ) {
+			return;
+		}
+
+		$this->postRouteExtensions = new PostRouteExtensions();
+		$this->blockPreparations   = new BlockPreparations();
+
+		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [ $this, 'block_preparation_extensions' ] );
+		add_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, [ $this, 'post_route_extensions' ] );
+
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
+	}
+
+	public function block_preparation_extensions( BlockPreparations $extensions ) {
+		$extensions->add( new MoreBlockPreparation() );
+		$extensions->add( new ImageBlockPreparation() );
+		$extensions->add( new GalleryBlockPreparation() );
+	}
+
+	public function post_route_extensions( PostRouteExtensions $extensions ) {
+		$extensions->add( new Blocks( $this->blockPreparations ) );
+		$extensions->add( new Title() );
+		$extensions->add( new FeaturedMediaUrl() );
+		$extensions->add( new PostContentAttachments() );
 	}
 
 	public function rest_api_init() {
 
-		if(!$this->plugin->security->hasApiKeyAccess()) return;
+		if ( ! $this->plugin->security->hasApiKeyAccess() ) {
+			return;
+		}
 
-		add_action(Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, $this);
-		$this->addBlockPreparation(new ParagraphBlockPreparation());
-		$this->addBlockPreparation(new ImageBlockPreparation());
-
-		/**
-		 * @var IPostRouteExtension[]
-		 */
-		$this->addPostExtension(new Title());
-		$this->addPostExtension(new FeaturedMediaUrl());
-		$this->addPostExtension(new Blocks($this->blockPreparationExtensions));
-
-		add_action(Plugin::ACTION_REGISTER_REST_ROUTE_EXTENSIONS, $this);
+		do_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, $this->blockPreparations );
+		do_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, $this->postRouteExtensions );
 
 		$post_types = get_post_types( [ "public" => true ] );
-		foreach ($this->postRouteExtensions as $extension) {
+		foreach ( $this->postRouteExtensions->get() as $extension ) {
 			foreach ( $post_types as $type ) {
 				add_filter( 'rest_prepare_' . $type, [ $extension, 'response' ], 99, 3 );
 			}
 		}
-
 	}
-
-	public function addPostExtension(IPostRouteExtension $extension){
-		$this->postRouteExtensions[] = $extension;
-	}
-
-	public function addBlockPreparation(IBlockPreparationExtension $extension){
-		$this->blockPreparationExtensions[] = $extension;
-	}
-
-
-
 
 }

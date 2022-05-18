@@ -2,24 +2,19 @@
 
 namespace Palasthotel\WordPress\Headless\Extensions;
 
-use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparationExtension;
+use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Palasthotel\WordPress\Headless\Plugin;
 use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
 
 class Blocks extends AbsPostExtensionPost {
-	/**
-	 * @var IBlockPreparationExtension[]
-	 */
-	private array $extensions;
 
-	/**
-	 * @param IBlockPreparationExtension[] $extensions
-	 */
-	public function __construct($extensions) {
+	private BlockPreparations $preparations;
+
+	public function __construct(BlockPreparations $preparations) {
 		parent::__construct();
-		$this->extensions = $extensions;
+		$this->preparations = $preparations;
 		add_filter( Plugin::FILTER_BLOCKS_PREPARE_FILTER, function ( $blockName ) {
 			return $blockName != null;
 		} );
@@ -29,6 +24,7 @@ class Blocks extends AbsPostExtensionPost {
 		$data = $response->get_data();
 
 		if ( has_blocks( $post ) ) {
+			$data["content"]["rendered"] = false;
 			$data["content"]["blocks"] = $this->parse( $post->post_content );
 		} else {
 			$data["content"]["blocks"] = false;
@@ -63,7 +59,7 @@ class Blocks extends AbsPostExtensionPost {
 				$block["innerBlocks"] = $this->prepare( $block["innerBlocks"], $level + 1 );
 			}
 
-			foreach ($this->extensions as $extension){
+			foreach ($this->preparations->get() as $extension){
 				if($extension->blockName() == $block["blockName"]){
 					$block = $extension->prepare($block);
 				}

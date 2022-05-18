@@ -10,7 +10,7 @@ class Title extends AbsPostExtensionPost {
 
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
 		$data = $response->get_data();
-		$data["title"]["decoded"] = html_entity_decode($data["title"]["rendered"]);
+		$data["title"]["rendered"] = html_entity_decode($data["title"]["rendered"]);
 		$response->set_data( $data );
 		return $response;
 	}

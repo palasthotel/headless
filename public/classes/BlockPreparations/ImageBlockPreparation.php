@@ -2,23 +2,25 @@
 
 namespace Palasthotel\WordPress\Headless\BlockPreparations;
 
-use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparationExtension;
+use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparation;
+use Palasthotel\WordPress\Headless\Model\BlockName;
+use Palasthotel\WordPress\Headless\Model\PostContentAttachmentCollector;
 
-class ImageBlockPreparation implements IBlockPreparationExtension {
+class ImageBlockPreparation implements IBlockPreparation {
 
-	function blockName(): string {
-		return "core/image";
+	function blockName(): BlockName {
+		return new BlockName("core", "image");
 	}
 
 	function prepare( array $block ): array {
 
-		$attributes = $block["attrs"];
-		if ( empty( $attributes["id"] ) ) {
-			return $block;
+		unset($block["innerHTML"]);
+		unset($block["innerContent"]);
+
+		if(isset($block["attrs"]) && isset($block["attrs"]["id"])){
+			PostContentAttachmentCollector::add(get_the_ID(), $block["attrs"]["id"]);
 		}
-		$id                = $attributes["id"];
-		$block["caption"]  = wp_get_attachment_caption( $id );
-		$block["imageUrl"] = wp_get_attachment_image_url( $id, "full" );
+
 
 		return $block;
 	}

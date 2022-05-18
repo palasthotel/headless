@@ -8,7 +8,7 @@ use Palasthotel\WordPress\Headless\Plugin;
 abstract class AbsPostExtensionPost implements IPostRouteExtension {
 
 	public function __construct() {
-		add_filter(Plugin::ACTION_REGISTER_REST_ROUTE_EXTENSIONS, [$this, 'register']);
+		add_filter(Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, [$this, 'register']);
 	}
 
 	/**

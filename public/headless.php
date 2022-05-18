@@ -29,6 +29,14 @@ if(!defined('HEADLESS_PREVIEW_TOKEN')){
 	define('HEADLESS_PREVIEW_TOKEN', "");
 }
 
+if(!defined('HEADLESS_REST_PARAM')){
+	// TODO: add admin notice that there is configuration missing
+	define('HEADLESS_REST_PARAM', "headless");
+}
+if(!defined('HEADLESS_REST_VALUE')){
+	define('HEADLESS_REST_VALUE', 'true');
+}
+
 require_once __DIR__."/vendor/autoload.php";
 
 /**
@@ -47,7 +55,7 @@ class Plugin extends Components\Plugin {
 	const FILTER_PREVIEW_DO_REDIRECT = "headless_preview_redirect";
 
 	const ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS = "headless_register_block_preparation_extensions";
-	const ACTION_REGISTER_REST_ROUTE_EXTENSIONS = "headless_register_rest_route_extensions";
+	const ACTION_REGISTER_POST_ROUTE_EXTENSIONS = "headless_register_post_route_extensions";
 
 	const FILTER_BLOCKS_PREPARE_FILTER = "headless_rest_api_prepare_filter";
 	const FILTER_BLOCKS_PREPARE_BLOCK = "headless_rest_api_prepare_block";

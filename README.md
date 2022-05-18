@@ -6,7 +6,7 @@ This plugin adds features to use WordPress as headless CMS.
 
 The namespace for all routes is `headless/v1`.
 
-`/menus` - All registered menu positions
+`/menus` - All registered menus
 
 `/menus/{slug}` - Single menu
 
