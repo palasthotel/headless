@@ -1,6 +1,6 @@
 import {PostResponse} from '@palasthotel/wp-fetch';
 
-type Block = {
+export type Block = {
     blockName: string
     attrs?: Record<string, string | string[] | number | number[]>
     innerHTML?: string
@@ -8,9 +8,9 @@ type Block = {
     innerBlocks?: Block[]
 }
 
-export type HeadlessPostResponse = PostResponse & {
+export type HeadlessPostResponse<T extends Block> = PostResponse & {
     content: {
-        headless_blocks: Block[]|false
+        headless_blocks: T[]|false
         headless_attachment_ids: number[]
         rendered: string|false
         protected: boolean
