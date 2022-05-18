@@ -8,7 +8,7 @@ use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class Blocks extends AbsPostExtensionPost {
+class ContentBlocks extends AbsPostExtensionPost {
 
 	private BlockPreparations $preparations;
 
@@ -25,9 +25,9 @@ class Blocks extends AbsPostExtensionPost {
 
 		if ( has_blocks( $post ) ) {
 			$data["content"]["rendered"] = false;
-			$data["content"]["blocks"] = $this->parse( $post->post_content );
+			$data["content"]["headless_blocks"] = $this->parse( $post->post_content );
 		} else {
-			$data["content"]["blocks"] = false;
+			$data["content"]["headless_blocks"] = false;
 		}
 
 		$response->set_data( $data );

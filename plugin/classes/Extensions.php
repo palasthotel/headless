@@ -6,9 +6,9 @@ use Palasthotel\WordPress\Headless\BlockPreparations\GalleryBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ImageBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
-use Palasthotel\WordPress\Headless\Extensions\Blocks;
+use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
 use Palasthotel\WordPress\Headless\Extensions\FeaturedMediaUrl;
-use Palasthotel\WordPress\Headless\Extensions\PostContentAttachments;
+use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
 use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
@@ -44,10 +44,9 @@ class Extensions extends Component {
 	}
 
 	public function post_route_extensions( PostRouteExtensions $extensions ) {
-		$extensions->add( new Blocks( $this->blockPreparations ) );
 		$extensions->add( new Title() );
-		$extensions->add( new FeaturedMediaUrl() );
-		$extensions->add( new PostContentAttachments() );
+		$extensions->add( new ContentBlocks( $this->blockPreparations ) );
+		$extensions->add( new ContentAttachments() );
 	}
 
 	public function rest_api_init() {
