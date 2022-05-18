@@ -14,7 +14,7 @@
 
 use Palasthotel\WordPress\Headless\Plugin;
 
-include dirname( __FILE__ ) . "/public/headless.php";
+include dirname( __FILE__ ) . "/plugin/headless.php";
 
 register_activation_hook(__FILE__, function($multisite){
 	Plugin::instance()->onActivation($multisite);
