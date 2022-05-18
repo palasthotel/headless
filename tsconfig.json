@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "target": "ES2017",
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "declaration": true,
+    "strict": true,
+    "baseUrl": "./src",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./lib/esm",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@types"
+    ],
+    "paths": {
+      "@palasthotel/wp-fetch": [
+        "src/@types/*"
+      ],
+      "*": [
+        "node_modules/",
+      ]
+    }
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/__tests__",
+    "lib"
+  ]
+}
