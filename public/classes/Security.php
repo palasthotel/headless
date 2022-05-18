@@ -4,7 +4,7 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
 
-class ApiKey extends Component {
+class Security extends Component {
 
 	public function hasApiKeyAccess(): bool {
 

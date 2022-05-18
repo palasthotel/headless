@@ -12,7 +12,7 @@ class Settings extends Component {
 			'methods'             => \WP_REST_Server::READABLE,
 			'callback'            => [ $this, 'get_settings' ],
 			'permission_callback' => function(){
-				return $this->plugin->apiKey->hasApiKeyAccess();
+				return $this->plugin->security->hasApiKeyAccess();
 			},
 		) );
 	}
@@ -20,7 +20,7 @@ class Settings extends Component {
 	public function get_settings() {
 		return [
 			"front_page" => get_option( 'show_on_front' ),
-			"page-on-front" => get_option( 'page_on_front' ),
+			"page_on_front" => get_option( 'page_on_front' ),
 			"home_url" => home_url(),
 		];
 	}
