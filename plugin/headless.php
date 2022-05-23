@@ -19,18 +19,18 @@
 
 namespace Palasthotel\WordPress\Headless;
 
-if(!defined('HEADLESS_PREVIEW_TOKEN')){
-	define('HEADLESS_PREVIEW_TOKEN', "");
+if ( ! defined( 'HEADLESS_PREVIEW_TOKEN' ) ) {
+	define( 'HEADLESS_PREVIEW_TOKEN', "" );
 }
 
-if(!defined('HEADLESS_REST_PARAM')){
-	define('HEADLESS_REST_PARAM', "headless");
+if ( ! defined( 'HEADLESS_REST_PARAM' ) ) {
+	define( 'HEADLESS_REST_PARAM', "headless" );
 }
-if(!defined('HEADLESS_REST_VALUE')){
-	define('HEADLESS_REST_VALUE', 'true');
+if ( ! defined( 'HEADLESS_REST_VALUE' ) ) {
+	define( 'HEADLESS_REST_VALUE', 'true' );
 }
 
-require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 /**
  * @property Routes $routes
@@ -38,6 +38,7 @@ require_once __DIR__."/vendor/autoload.php";
  * @property Security $security
  * @property Links $links
  * @property Preview $preview
+ * @property Query $query
  */
 class Plugin extends Components\Plugin {
 
@@ -56,11 +57,12 @@ class Plugin extends Components\Plugin {
 
 	function onCreate() {
 
-		$this->security = new Security($this);
-		$this->routes   = new Routes($this);
-		$this->extensions = new Extensions($this);
-		$this->links = new Links($this);
-		$this->preview = new Preview($this);
+		$this->security   = new Security( $this );
+		$this->routes     = new Routes( $this );
+		$this->extensions = new Extensions( $this );
+		$this->query      = new Query( $this );
+		$this->links      = new Links( $this );
+		$this->preview    = new Preview( $this );
 
 
 	}

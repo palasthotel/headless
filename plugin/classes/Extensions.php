@@ -6,15 +6,13 @@ use Palasthotel\WordPress\Headless\BlockPreparations\GalleryBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ImageBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
-use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
-use Palasthotel\WordPress\Headless\Extensions\FeaturedMediaUrl;
 use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
+use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
 use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
 
 /**
- * @property FeaturedMediaUrl $featuredMediaUrl
  */
 class Extensions extends Component {
 
@@ -58,7 +56,7 @@ class Extensions extends Component {
 		do_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, $this->blockPreparations );
 		do_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, $this->postRouteExtensions );
 
-		$post_types = get_post_types( [ "public" => true ] );
+		$post_types = get_post_types( [ "public" => true, 'show_in_rest' => true ] );
 		foreach ( $this->postRouteExtensions->get() as $extension ) {
 			foreach ( $post_types as $type ) {
 				add_filter( 'rest_prepare_' . $type, [ $extension, 'response' ], 99, 3 );
