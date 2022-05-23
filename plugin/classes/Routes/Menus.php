@@ -14,14 +14,16 @@ class Menus extends Component {
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'get_all_menus' ],
 			'permission_callback' => function(){
-				return $this->plugin->security->hasApiKeyAccess();
+				return $this->plugin->security->isHeadlessRequest() &&
+				       $this->plugin->security->hasApiKeyAccess();
 			},
 		) );
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus/(?P<menu>[\S]+)', array(
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'get_menu' ],
 			'permission_callback' => function(){
-				return $this->plugin->security->hasApiKeyAccess();
+				return $this->plugin->security->isHeadlessRequest() &&
+				       $this->plugin->security->hasApiKeyAccess();
 			},
 			'args'                => [
 				'menu' => [

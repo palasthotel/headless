@@ -12,7 +12,8 @@ class Settings extends Component {
 			'methods'             => \WP_REST_Server::READABLE,
 			'callback'            => [ $this, 'get_settings' ],
 			'permission_callback' => function(){
-				return $this->plugin->security->hasApiKeyAccess();
+				return $this->plugin->security->isHeadlessRequest() &&
+				       $this->plugin->security->hasApiKeyAccess();
 			},
 		) );
 	}

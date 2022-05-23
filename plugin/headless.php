@@ -19,18 +19,11 @@
 
 namespace Palasthotel\WordPress\Headless;
 
-if(!defined('HEADLESS_DOMAIN')){
-	// TODO: add admin notice that there is configuration missing
-	define('HEADLESS_DOMAIN', 'http://localhost:3000');
-}
-
 if(!defined('HEADLESS_PREVIEW_TOKEN')){
-	// TODO: add admin notice that there is configuration missing
 	define('HEADLESS_PREVIEW_TOKEN', "");
 }
 
 if(!defined('HEADLESS_REST_PARAM')){
-	// TODO: add admin notice that there is configuration missing
 	define('HEADLESS_REST_PARAM', "headless");
 }
 if(!defined('HEADLESS_REST_VALUE')){
