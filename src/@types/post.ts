@@ -1,4 +1,4 @@
-import {PostResponse} from '@palasthotel/wp-fetch';
+import {GetPostsRequestArgs, PostResponse, PostsResponse} from '@palasthotel/wp-fetch';
 
 export type Block = {
     blockName: string
@@ -15,4 +15,10 @@ export type HeadlessPostResponse<T extends Block> = PostResponse & {
         rendered: string|false
         protected: boolean
     }
+}
+
+export type HeadlessGetPostsRequestArgs = GetPostsRequestArgs & {
+    hl_meta_exists: string
+    hl_meta_not_exists: string
+    hl_post_type: string | string[]
 }
