@@ -18,7 +18,7 @@ export type HeadlessPostResponse<T extends Block> = PostResponse & {
 }
 
 export type HeadlessGetPostsRequestArgs = GetPostsRequestArgs & {
-    hl_meta_exists: string
-    hl_meta_not_exists: string
-    hl_post_type: string | string[]
+    hl_meta_exists?: string
+    hl_meta_not_exists?: string
+    hl_post_type?: string | string[]
 }
