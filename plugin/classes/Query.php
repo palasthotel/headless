@@ -18,24 +18,34 @@ class Query extends Component {
 	}
 
 	public function rest_query( array $args, \WP_REST_Request $request ) {
-
-		if ( isset( $_GET["hl_meta_exists"] ) ) {
-			$metaExists         = sanitize_text_field( $_GET["hl_meta_exists"] );
+		$metaExists = $request->get_param("hl_meta_exists");
+		if ( !empty($metaExists) ) {
 			$args['meta_query'] = array(
 				array(
-					'key'     => $metaExists,
+					'key'     => sanitize_text_field($metaExists),
 					'compare' => 'EXISTS',
 				),
 			);
 		}
-		if ( isset( $_GET["hl_meta_not_exists"] ) ) {
-			$metaNotExists      = sanitize_text_field( $_GET["hl_meta_not_exists"] );
+
+		$metaNotExists = $request->get_param("hl_meta_exists");
+		if ( !empty($metaNotExists) ) {
 			$args['meta_query'] = array(
 				array(
-					'key'     => $metaNotExists,
+					'key'     => sanitize_text_field($metaNotExists),
 					'compare' => 'NOT EXISTS',
 				),
 			);
+		}
+
+		$post_types = $request->get_param("hl_post_type");
+		if( ! empty( $post_types ) ){
+			if( is_string( $post_types ) ){
+				$post_types = [$post_types];
+			}
+			$args[ 'post_type' ] = array_filter($post_types, function($type){
+				return post_type_exists($type) && is_post_type_viewable($type);
+			});
 		}
 
 		return $args;
