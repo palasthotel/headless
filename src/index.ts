@@ -1,4 +1,5 @@
 export {setGetParameter, setSecurityHeader} from './config';
-export {wpFetchPosts, wpFetchPostById} from './fetch-post';
-export {wpFetchRevisions, wpFetchRevision} from './fetch-revisions';
+export {wpFetchPosts, wpFetchPostById} from './sources/posts';
+export {wpFetchRevisions, wpFetchRevision} from './sources/revisions';
+export {wpFetchMenus, wpFetchMenu, menuAsHierarchy} from './sources/menus';
 export * from './@types';

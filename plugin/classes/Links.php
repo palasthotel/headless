@@ -10,24 +10,24 @@ class Links extends Component {
 		parent::onCreate();
 
 		// TODO: find a solid way to change links
-//		add_filter( 'post_link', [ $this, 'post_link' ], 10, 3 );
-//		add_filter( 'page_link', [ $this, 'page_link' ], 10, 3 );
-//		add_filter( 'post_type_link', [ $this, 'post_type_link' ], 10, 4 );
+		add_filter( 'post_link', [ $this, 'post_link' ], 10, 3 );
+		add_filter( 'post_type_link', [ $this, 'post_type_link' ], 10, 4 );
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
 	}
 
 	public function post_link( string $permalink, \WP_Post $post, bool $leavename ) {
-		return $this->modifyPostLinkUrl($permalink, $post);
-	}
-
-	public function page_link( string $link, int $pageId, bool $isSample ) {
-		if($isSample) return $link;
-		return $this->modifyPostLinkUrl($link, get_post($pageId));
+		if($post->post_status == "publish"){
+			return $this->modifyPostLinkUrl($permalink, $post);
+		}
+		return $this->preview_post_link($permalink, $post);
 	}
 
 	public function post_type_link( string $link, \WP_Post $post, bool $leavename, bool $isSample ) {
 		if($isSample) return $link;
-		return $this->modifyPostLinkUrl($link, $post);
+		if($post->post_status == "publish"){
+			return $this->modifyPostLinkUrl($link, $post);
+		}
+		return $this->preview_post_link($link, $post);
 	}
 
 	public function modifyPostLinkUrl($link, \WP_Post $post): string{

@@ -19,7 +19,7 @@
       "./src/@types"
     ],
     "paths": {
-      "@palasthotel/wp-fetch": [
+      "@palasthotel/headless": [
         "src/@types/*"
       ],
       "*": [

@@ -1,12 +1,20 @@
-import {getAxios} from "@palasthotel/wp-fetch";
+import {useRequest, setHeader} from "@palasthotel/wp-fetch";
 
 let headlessGetParam = "headless";
 let headlessGetValue = "true";
 
-getAxios().interceptors.request.use((config) => {
-    config.params = {...config.params, [headlessGetParam]: headlessGetValue};
-    return config;
-});
+let initialized = false;
+
+export const init = ()=> {
+    if(!initialized){
+        initialized = true;
+        useRequest(config => {
+            console.debug(headlessGetParam, headlessGetValue);
+            config.params = {...config.params, [headlessGetParam]: headlessGetValue};
+            return config;
+        });
+    }
+}
 
 export const setGetParameter = (param: string, value: string) => {
     headlessGetParam = param;
@@ -14,5 +22,5 @@ export const setGetParameter = (param: string, value: string) => {
 }
 
 export const setSecurityHeader = (key: string, value: string) => {
-    getAxios().defaults.headers.common[key] = value;
+    setHeader(key, value);
 }
