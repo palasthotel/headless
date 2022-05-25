@@ -1,6 +1,6 @@
 {
   "name": "@palasthotel/headless",
-  "version": "0.2.1",
+  "version": "1.1.0",
   "description": "wp-fetch implementation to works with headless plugin.",
   "main": "./lib/cjs/index.js",
   "types": "./lib/esm/index.d.ts",
