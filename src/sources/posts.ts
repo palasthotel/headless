@@ -1,5 +1,5 @@
 import {
-    GetPostByIdRequestArgs,
+    GetPostByIdRequestArgs, WordPressUrl,
     wpFetchPostById as _wpFetchPostById,
     wpFetchPosts as _wpFetchPosts
 } from "@palasthotel/wp-fetch";
@@ -8,7 +8,7 @@ import {Block, HeadlessGetPostsRequestArgs, HeadlessPostResponse} from "../@type
 import {init} from "../config";
 
 export const wpFetchPosts = async <T extends HeadlessPostResponse<B>, B extends Block>(
-    url: string,
+    url: WordPressUrl,
     args: HeadlessGetPostsRequestArgs = {}
 ) => {
     init();
@@ -16,7 +16,7 @@ export const wpFetchPosts = async <T extends HeadlessPostResponse<B>, B extends 
 }
 
 export const wpFetchPostById = async <T extends HeadlessPostResponse<B>, B extends Block>(
-    url: string,
+    url: WordPressUrl,
     args: GetPostByIdRequestArgs
 ) => {
     init();
