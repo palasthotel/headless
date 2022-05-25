@@ -44,7 +44,6 @@ class Links extends Component {
 	}
 
 	public function preview_post_link( string $link, \WP_Post $post ) {
-		error_log($link);
 		return apply_filters(
 			Plugin::FILTER_PREVIEW_URL,
 			untrailingslashit(HEADLESS_HEAD_BASE_URL)."/api/preview?post={$post->ID}&post_type=$post->post_type&secret_token=".HEADLESS_SECRET_TOKEN,
