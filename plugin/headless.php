@@ -19,8 +19,12 @@
 
 namespace Palasthotel\WordPress\Headless;
 
-if ( ! defined( 'HEADLESS_PREVIEW_TOKEN' ) ) {
-	define( 'HEADLESS_PREVIEW_TOKEN', "" );
+if( !defined('HEADLESS_HEAD_BASE_URL')) {
+	define('HEADLESS_HEAD_BASE_URL', '');
+}
+
+if ( ! defined( 'HEADLESS_SECRET_TOKEN' ) ) {
+	define( 'HEADLESS_SECRET_TOKEN', "" );
 }
 
 if ( ! defined( 'HEADLESS_REST_PARAM' ) ) {
@@ -63,7 +67,6 @@ class Plugin extends Components\Plugin {
 		$this->query      = new Query( $this );
 		$this->links      = new Links( $this );
 		$this->preview    = new Preview( $this );
-
 
 	}
 }

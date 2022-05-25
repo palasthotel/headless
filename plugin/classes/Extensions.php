@@ -61,6 +61,7 @@ class Extensions extends Component {
 			foreach ( $post_types as $type ) {
 				add_filter( 'rest_prepare_' . $type, [ $extension, 'response' ], 99, 3 );
 			}
+			add_filter('rest_prepare_revision', [$extension, 'response'], 99, 3);
 		}
 	}
 

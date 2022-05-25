@@ -8,17 +8,18 @@ class Preview extends Component {
 	public function onCreate() {
 		parent::onCreate();
 
-		// TODO: find a solid preview in headless way
-		// add_action('init', [$this, 'init']);
+		// add_action( 'init', [ $this, 'init' ] );
 	}
 
-	public function init(){
-		$isPreview = is_admin() || !isset( $_GET['preview'] ) || true != $_GET['preview'];
-		$previewId = isset($_GET["preview_id"]) ? intval($_GET["preview_id"]) : false;
+	public function init() {
+		$isPreview = ! ( is_admin() || ! isset( $_GET['preview'] ) || true != $_GET['preview'] );
+		$previewId = intval( $_GET["preview_id"] );
 
 
-		$doRedirect = apply_filters(Plugin::FILTER_PREVIEW_DO_REDIRECT, $isPreview);
-		if (!$doRedirect) return;
+		$doRedirect = apply_filters( Plugin::FILTER_PREVIEW_DO_REDIRECT, $isPreview );
+		if ( ! $doRedirect ) {
+			return;
+		}
 
 
 	}

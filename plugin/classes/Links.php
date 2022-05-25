@@ -13,7 +13,7 @@ class Links extends Component {
 //		add_filter( 'post_link', [ $this, 'post_link' ], 10, 3 );
 //		add_filter( 'page_link', [ $this, 'page_link' ], 10, 3 );
 //		add_filter( 'post_type_link', [ $this, 'post_type_link' ], 10, 4 );
-		//add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
+		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
 	}
 
 	public function post_link( string $permalink, \WP_Post $post, bool $leavename ) {
@@ -44,9 +44,10 @@ class Links extends Component {
 	}
 
 	public function preview_post_link( string $link, \WP_Post $post ) {
+		error_log($link);
 		return apply_filters(
 			Plugin::FILTER_PREVIEW_URL,
-			"/api/preview?post={$post->ID}&post_type=$post->post_type&security_token=".HEADLESS_PREVIEW_TOKEN,
+			untrailingslashit(HEADLESS_HEAD_BASE_URL)."/api/preview?post={$post->ID}&post_type=$post->post_type&secret_token=".HEADLESS_SECRET_TOKEN,
 			$post,
 			$link
 		);

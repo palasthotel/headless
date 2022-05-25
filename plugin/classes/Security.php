@@ -6,6 +6,11 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Security extends Component {
 
+	public function onCreate() {
+		parent::onCreate();
+		add_filter('wp_is_application_passwords_available', '__return_true');
+	}
+
 	public function isHeadlessRequest(): bool {
 		return isset( $_GET[ HEADLESS_REST_PARAM ] ) && HEADLESS_REST_VALUE == $_GET[ HEADLESS_REST_PARAM ];
 	}
