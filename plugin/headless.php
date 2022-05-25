@@ -43,6 +43,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Links $links
  * @property Preview $preview
  * @property Query $query
+ * @property Revalidate $revalidate
  */
 class Plugin extends Components\Plugin {
 
@@ -67,6 +68,7 @@ class Plugin extends Components\Plugin {
 		$this->query      = new Query( $this );
 		$this->links      = new Links( $this );
 		$this->preview    = new Preview( $this );
+		$this->revalidate = new Revalidate($this);
 
 	}
 }
