@@ -1,4 +1,4 @@
-import {buildHierarchy, wpFetchGet, WordPressUrl} from "@palasthotel/wp-fetch";
+import {buildHierarchy, wpFetchGet, WordPressUrl, onRequest} from "@palasthotel/wp-fetch";
 import {GetMenuRequestArgs, MenuItemResponse, MenusResponse} from "../@types";
 import {isArrayOfMenuItemResponse, isMenusResponse} from "../type-guard";
 import {init} from "../config";
@@ -17,6 +17,7 @@ export const wpFetchMenus = async (
     wordpressUrl: WordPressUrl,
 ): Promise<MenusResponse|null> => {
     init();
+
     const response = await wpFetchGet<MenusResponse>({
         wordpressUrl,
         path: `/headless/v1/menus`,

@@ -1,25 +1,11 @@
 import {wpFetchPosts} from "../sources/posts";
-import {HeadlessRequestConfig, useRequest} from "@palasthotel/wp-fetch";
+import {reset, setOnHeadlessRequest} from "../config";
 
-type AxiosTestInterceptor = (config: HeadlessRequestConfig) => void
-
-let interceptor: AxiosTestInterceptor|null = null
-const setInterceptor = (fn: AxiosTestInterceptor) => {
-    interceptor = fn;
-}
-const resetInterceptor = () => {
-    interceptor = null;
-}
-
-useRequest((config) => {
-    interceptor?.(config);
-    return config;
-});
 
 describe('wpFetchPosts', function () {
 
-    beforeEach(() => {
-        resetInterceptor();
+    afterEach(() => {
+        setOnHeadlessRequest(null);
     });
 
     describe("when API call is successful", () => {
@@ -29,7 +15,7 @@ describe('wpFetchPosts', function () {
 
             let requestUrl = ""
             let params = {};
-            setInterceptor((config) => {
+            setOnHeadlessRequest(config => {
                 requestUrl = config.url ?? "";
                 params = config.params;
             });

@@ -1,6 +1,7 @@
 import {isMenuItemResponse, isMenusResponse} from "../type-guard";
 import * as fs from "fs";
 import {wpFetchMenus} from "../sources/menus";
+import {reset} from "../config";
 
 describe('Type-Guard', () => {
 
@@ -23,6 +24,10 @@ describe('Type-Guard', () => {
 
 
 describe('Fetch menus', () => {
+
+    beforeEach(()=>{
+        reset();
+    });
 
     const wordpressTestUrl = "http://local.wp.palasthotel.de:8080/";
 
