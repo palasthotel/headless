@@ -24,7 +24,6 @@ class ContentBlocks extends AbsPostExtensionPost {
 		$data = $response->get_data();
 
 		if ( has_blocks( $post ) ) {
-			$data["content"]["rendered"] = false;
 			$data["content"]["headless_blocks"] = $this->parse( $post->post_content );
 		} else {
 			$data["content"]["headless_blocks"] = false;
