@@ -8,6 +8,7 @@ use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
 use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
+use Palasthotel\WordPress\Headless\Extensions\Taxonomies;
 use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
@@ -45,6 +46,7 @@ class Extensions extends Component {
 		$extensions->add( new Title() );
 		$extensions->add( new ContentBlocks( $this->blockPreparations ) );
 		$extensions->add( new ContentAttachments() );
+		$extensions->add( new Taxonomies());
 	}
 
 	public function rest_api_init() {
