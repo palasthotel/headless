@@ -28,9 +28,11 @@ class Taxonomies extends AbsPostExtensionPost {
 		foreach ($taxonomies as $tax) {
 			if(!isset($data[$tax->name])){
 				$terms = get_the_terms($post->ID, $tax->name);
-				$data[$tax->name] = array_map(function($t){
-					return $t->term_id;
-				}, $terms);
+				if(is_array($terms)){
+					$data[$tax->name] = array_map(function($t){
+						return $t->term_id;
+					}, $terms);
+				}
 			}
 		}
 
