@@ -14,9 +14,6 @@ class GalleryBlockPreparation implements IBlockPreparation {
 
 	function prepare( array $block ): array {
 
-		unset($block["innerContent"]);
-		unset($block["innerHTML"]);
-
 		$ids = [];
 		if(!empty($block["innerBlocks"]) && is_array($block["innerBlocks"])){
 			foreach ($block["innerBlocks"] as $imageBlock){
@@ -27,8 +24,18 @@ class GalleryBlockPreparation implements IBlockPreparation {
 				$ids[] = intval($attrs["id"]);
 				PostContentAttachmentCollector::add(get_the_ID(), $attrs["id"]);
 			}
+		} else if(!empty($block["innerHTML"])){
+			preg_match_all('/data-id="(\d+)"/m', $block["innerHTML"], $matches, PREG_SET_ORDER, 0);
+
+			foreach ($matches as $match) {
+				$id = intval($match[1]);
+				$ids[] = $id;
+				PostContentAttachmentCollector::add(get_the_ID(), $id);
+			}
 		}
 
+		unset($block["innerHTML"]);
+		unset($block["innerContent"]);
 		$block["attrs"]["ids"] = $ids;
 
 		return $block;
