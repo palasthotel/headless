@@ -6,8 +6,12 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Query extends Component {
 
+	const META_KEYS = "hl_meta_keys";
+	const META_VALUES = "hl_meta_values";
+	const META_COMPARES = "hl_meta_compares";
 	const META_EXISTS = "hl_meta_exists";
 	const META_NOT_EXISTS = "hl_meta_not_exists";
+	const META_RELATION = "hl_meta_relation";
 	const POST_TYPE = "hl_post_type";
 
 	public function onCreate() {
@@ -37,9 +41,37 @@ class Query extends Component {
 	}
 
 	public function rest_query( array $args, \WP_REST_Request $request ) {
+
+		$metas = $request->get_param(static::META_KEYS);
+		$values = $request->get_param(static::META_VALUES);
+		$compares = $request->get_param(static::META_COMPARES);
+		$comparesMap = [
+			"eq" => "=",
+			"neq" => "!=",
+			"like" => "LIKE",
+		];
+		$validCompares = array_keys($comparesMap);
+		$meta_query = [];
+		if(!empty($metas) && is_array($metas)){
+			foreach ($metas as $index =>  $metaKey) {
+				$compare = "=";
+				if(is_array($compares) && !empty($compares[$index]) && in_array($compares[$index], $validCompares)){
+					$compare = $comparesMap[$compares[$index]];
+				}
+				if(is_array($values) && isset($values[$index])){
+					$meta_query[] = [
+						"key" => sanitize_text_field($metaKey),
+						"value" => sanitize_text_field($values[$index]),
+						"compare" => $compare,
+					];
+				}
+
+			}
+		}
+
 		$metaExists = $request->get_param( static::META_EXISTS );
 		if ( ! empty( $metaExists ) ) {
-			$args['meta_query'] = array(
+			$meta_query[] = array(
 				array(
 					'key'     => sanitize_text_field( $metaExists ),
 					'compare' => 'EXISTS',
@@ -49,13 +81,23 @@ class Query extends Component {
 
 		$metaNotExists = $request->get_param( static::META_NOT_EXISTS );
 		if ( ! empty( $metaNotExists ) ) {
-			$args['meta_query'] = array(
+			$meta_query[] = array(
 				array(
 					'key'     => sanitize_text_field( $metaNotExists ),
 					'compare' => 'NOT EXISTS',
 				),
 			);
 		}
+
+		if(count($meta_query) > 0){
+			$relation = "AND";
+			if($request->get_param(static::META_RELATION) == "OR"){
+				$relation = "OR";
+			}
+			$meta_query['relation'] = $relation;
+			$args['meta_query'] = $meta_query;
+		}
+
 
 		$post_types = static::getRequestPostTypes( $request );
 		if ( ! empty( $post_types ) ) {

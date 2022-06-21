@@ -8,10 +8,10 @@ export type Block = {
     innerBlocks?: Block[]
 }
 
-export type BlockContent<B extends Block> =  {
-    headless_blocks: B[]|false
+export type BlockContent<B extends Block> = {
+    headless_blocks: B[] | false
     headless_attachment_ids: number[]
-    rendered: string|false
+    rendered: string | false
     protected: boolean
 }
 
@@ -19,7 +19,21 @@ export type HeadlessPostResponse<B extends Block> = PostResponse & {
     content: BlockContent<B>
 }
 
+export type CompareParam = "eq" | "neq" | "like";
+export type CompareArg = "=" | "!=" | "like";
+
 export type HeadlessGetPostsRequestArgs = GetPostsRequestArgs & {
+
+    hl_meta_query?: {
+        key: string
+        value: string | number
+        compare: CompareArg
+    }[]
+
+    hl_meta_keys?: string[]
+    hl_meta_values?: (string | number)[]
+    hl_meta_compares?: CompareParam[]
+
     hl_meta_exists?: string
     hl_meta_not_exists?: string
     hl_post_type?: string[]
