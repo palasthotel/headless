@@ -1,5 +1,8 @@
 # Releases
 
+## [1.2.0] - 2022-06-21
+- Add post meta query to rest request
+
 ## [1.1.2] - 2022-05-12
 - Update dependencies
 
