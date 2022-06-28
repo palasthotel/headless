@@ -1,5 +1,8 @@
 # Releases
 
+## [1.2.1] - 2022-06-28
+- Allow blockName null for freeform blocks
+
 ## [1.2.0] - 2022-06-21
 - Add post meta query to rest request
 

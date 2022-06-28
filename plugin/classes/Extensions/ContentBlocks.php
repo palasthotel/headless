@@ -15,9 +15,6 @@ class ContentBlocks extends AbsPostExtensionPost {
 	public function __construct(BlockPreparations $preparations) {
 		parent::__construct();
 		$this->preparations = $preparations;
-		add_filter( Plugin::FILTER_BLOCKS_PREPARE_FILTER, function ( $blockName ) {
-			return $blockName != null;
-		} );
 	}
 
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
@@ -46,7 +43,6 @@ class ContentBlocks extends AbsPostExtensionPost {
 	}
 
 	private function prepare( $blocks, $level ) {
-		$noNulls = $this->filterBlocks( $blocks );
 
 		return array_map( function ( $block ) use ( $level ) {
 
@@ -65,7 +61,7 @@ class ContentBlocks extends AbsPostExtensionPost {
 			}
 
 			return apply_filters( Plugin::FILTER_BLOCKS_PREPARE_BLOCK, $block, $level, $block );
-		}, $noNulls );
+		}, $blocks );
 	}
 
 }
