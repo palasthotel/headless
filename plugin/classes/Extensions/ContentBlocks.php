@@ -15,6 +15,9 @@ class ContentBlocks extends AbsPostExtensionPost {
 	public function __construct(BlockPreparations $preparations) {
 		parent::__construct();
 		$this->preparations = $preparations;
+		add_filter( Plugin::FILTER_BLOCKS_PREPARE_FILTER, function ( $blockName, $block ) {
+			return $blockName != null || !empty(trim($block["innerHTML"]));
+		}, 10, 2);
 	}
 
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
@@ -43,6 +46,7 @@ class ContentBlocks extends AbsPostExtensionPost {
 	}
 
 	private function prepare( $blocks, $level ) {
+		$blocks = $this->filterBlocks( $blocks );
 
 		return array_map( function ( $block ) use ( $level ) {
 
