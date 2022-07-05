@@ -1,5 +1,9 @@
 # Releases
 
+## [1.3.0] - 2022-07-05
+- Add feature media fields to post
+- core/image and core/gallery extensions
+
 ## [1.2.1] - 2022-06-28
 - Allow blockName null for freeform blocks
 
