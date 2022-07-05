@@ -50,18 +50,18 @@ class ContentBlocks extends AbsPostExtensionPost {
 
 		return array_map( function ( $block ) use ( $level ) {
 
+			foreach ($this->preparations->get() as $extension){
+				if($extension->blockName() == $block["blockName"]){
+					$block = $extension->prepare($block);
+				}
+			}
+
 			if (
 				isset( $block["innerBlocks"] ) &&
 				is_array( $block["innerBlocks"] ) &&
 				count( $block["innerBlocks"] )
 			) {
 				$block["innerBlocks"] = $this->prepare( $block["innerBlocks"], $level + 1 );
-			}
-
-			foreach ($this->preparations->get() as $extension){
-				if($extension->blockName() == $block["blockName"]){
-					$block = $extension->prepare($block);
-				}
 			}
 
 			return apply_filters( Plugin::FILTER_BLOCKS_PREPARE_BLOCK, $block, $level, $block );

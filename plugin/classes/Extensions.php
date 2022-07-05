@@ -2,12 +2,14 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+use Palasthotel\WordPress\Headless\BlockPreparations\FreeFormBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\GalleryBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ImageBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
 use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
+use Palasthotel\WordPress\Headless\Extensions\FeaturedMedia;
 use Palasthotel\WordPress\Headless\Extensions\Taxonomies;
 use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
@@ -40,13 +42,15 @@ class Extensions extends Component {
 		$extensions->add( new MoreBlockPreparation() );
 		$extensions->add( new ImageBlockPreparation() );
 		$extensions->add( new GalleryBlockPreparation() );
+		$extensions->add( new FreeFormBlockPreparation() );
 	}
 
 	public function post_route_extensions( PostRouteExtensions $extensions ) {
 		$extensions->add( new Title() );
+		$extensions->add( new FeaturedMedia() );
 		$extensions->add( new ContentBlocks( $this->blockPreparations ) );
 		$extensions->add( new ContentAttachments() );
-		$extensions->add( new Taxonomies());
+		$extensions->add( new Taxonomies() );
 	}
 
 	public function rest_api_init() {
@@ -63,7 +67,7 @@ class Extensions extends Component {
 			foreach ( $post_types as $type ) {
 				add_filter( 'rest_prepare_' . $type, [ $extension, 'response' ], 99, 3 );
 			}
-			add_filter('rest_prepare_revision', [$extension, 'response'], 99, 3);
+			add_filter( 'rest_prepare_revision', [ $extension, 'response' ], 99, 3 );
 		}
 	}
 

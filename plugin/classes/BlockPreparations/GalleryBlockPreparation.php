@@ -31,6 +31,12 @@ class GalleryBlockPreparation implements IBlockPreparation {
 				$id = intval($match[1]);
 				$ids[] = $id;
 				PostContentAttachmentCollector::add(get_the_ID(), $id);
+				$attrs = ["id" => $id];
+				$attrs = ImageBlockPreparation::addAttachmentAttributes($id, $attrs, "");
+				$block["innerBlocks"][] = [
+					"blockName" => "core/image",
+					"attrs" => $attrs,
+				];
 			}
 		}
 

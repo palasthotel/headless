@@ -1,5 +1,5 @@
 import {wpFetchPosts} from "../sources/posts";
-import {reset, setOnHeadlessRequest} from "../config";
+import {setOnHeadlessRequest} from "../config";
 
 
 describe('wpFetchPosts', function () {
