@@ -6,6 +6,7 @@ export type Block = {
     innerHTML?: string
     innerContent?: string[]
     innerBlocks?: Block[]
+    ref?:number
 }
 
 export type BlockContent<B extends Block> = {
