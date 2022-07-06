@@ -27,6 +27,6 @@
     "registry": "https://npm.palasthotel.de"
   },
   "dependencies": {
-    "@palasthotel/wp-fetch": "^0.3.1"
+    "@palasthotel/wp-fetch": "^0.4.0"
   }
 }

@@ -1,5 +1,9 @@
 # Releases
 
+## [1.4.0] - 2022-07-06
+- add reference block preparation for content resolution
+- add paragraph block preparation for smaller response size
+
 ## [1.3.0] - 2022-07-05
 - Add feature media fields to post
 - core/image and core/gallery extensions
