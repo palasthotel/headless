@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 6.0.0
 Requires PHP: 8.0
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -26,6 +26,9 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 1.4.1 =
+* renamed attribute for reference block because of react attribute name problems
 
 = 1.4.0 =
 * add reference block preparation for content resolution
