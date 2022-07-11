@@ -19,7 +19,7 @@ class ReferenceBlockPreparation implements IBlockPreparation {
 				$blocks = parse_blocks($post->post_content);
 				if(count($blocks) == 1){
 					$theBlock = $blocks[0];
-					$theBlock["ref"] = $post->ID;
+					$theBlock["block_reference_id"] = $post->ID;
 					return $theBlock;
 				}
 			}

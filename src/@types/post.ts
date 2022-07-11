@@ -1,4 +1,4 @@
-import {GetPostsRequestArgs, PostResponse} from '@palasthotel/wp-fetch';
+import {GetPostsRequestArgs, PostId, PostResponse} from '@palasthotel/wp-fetch';
 
 export type Block = {
     blockName: string|null
@@ -6,7 +6,7 @@ export type Block = {
     innerHTML?: string
     innerContent?: string[]
     innerBlocks?: Block[]
-    ref?:number
+    block_reference_id?:PostId
 }
 
 export type BlockContent<B extends Block> = {
