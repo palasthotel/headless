@@ -1,5 +1,6 @@
 import {wpFetchPosts} from "../sources/posts";
 import {setOnHeadlessRequest} from "../config";
+import {HeadlessGetPostsRequestArgs} from "../@types";
 
 
 describe('wpFetchPosts', function () {
@@ -67,6 +68,19 @@ describe('wpFetchPosts', function () {
             })).rejects.toThrow("hl_meta_ fields need have the same length");
         });
 
+    });
+
+    it("Should fetch with tax query", async () => {
+        const response = await  wpFetchPosts(url,{
+            categories: { operator: 'AND', terms: 1 },
+            page: 1,
+            per_page: 20,
+            hl_meta_exists: '_thumbnail_id',
+            tags: { operator: 'AND', terms: 55 },
+            type: 'posts'
+        });
+
+        expect(response.posts.length).toBeGreaterThan(0);
     });
 
 });

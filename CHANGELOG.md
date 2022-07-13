@@ -1,5 +1,8 @@
 # Releases
 
+## [1.4.1] - 2022-07-13
+- wp-fetch update
+
 ## [1.4.0] - 2022-07-06
 - add reference block preparation for content resolution
 - add paragraph block preparation for smaller response size

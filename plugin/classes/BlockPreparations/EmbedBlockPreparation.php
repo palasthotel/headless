@@ -16,7 +16,8 @@ class EmbedBlockPreparation implements IBlockPreparation {
 		if ( ! empty( $block["attrs"] ) && !empty($block["attrs"]["url"]) ) {
 			$url = $block["attrs"]["url"];
 			$oembed = wp_oembed_get($url);
-			$block["innerHTML"] = $oembed;
+			$block["attrs"]["isResolved"] = $oembed !== false;
+			$block["attrs"]["resolvedHTML"] = $oembed;
 		}
 
 		unset($block["innerContent"]);

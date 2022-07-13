@@ -2,6 +2,7 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+use Palasthotel\WordPress\Headless\BlockPreparations\CoreEmbedBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\EmbedBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\FreeFormBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\GalleryBlockPreparation;
@@ -53,7 +54,10 @@ class Extensions extends Component {
 		$extensions->add( new ImageBlockPreparation() );
 		$extensions->add( new GalleryBlockPreparation() );
 		$extensions->add( new FreeFormBlockPreparation() );
+		// order is important --->
+		$extensions->add( new CoreEmbedBlockPreparation() );
 		$extensions->add( new EmbedBlockPreparation() );
+		// <--- order is important
 	}
 
 	public function post_route_extensions( PostRouteExtensions $extensions ) {
