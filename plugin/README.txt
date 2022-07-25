@@ -27,6 +27,9 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.5.0 =
+* Feature: Revalidation system via schedules
+
 = 1.4.2 =
 * add embed block preparations
 * update wp fetch lib
