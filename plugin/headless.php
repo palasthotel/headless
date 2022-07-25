@@ -19,6 +19,8 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+use Palasthotel\WordPress\Headless\Store\RevalidationDatabase;
+
 if( !defined('HEADLESS_HEAD_BASE_URL')) {
 	define('HEADLESS_HEAD_BASE_URL', '');
 }
@@ -44,6 +46,8 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Preview $preview
  * @property Query $query
  * @property Revalidate $revalidate
+ * @property RevalidationDatabase $dbRevalidation
+ * @property Schedule $schedule
  */
 class Plugin extends Components\Plugin {
 
@@ -59,8 +63,16 @@ class Plugin extends Components\Plugin {
 	const FILTER_BLOCKS_PREPARE_FILTER = "headless_rest_api_prepare_filter";
 	const FILTER_BLOCKS_PREPARE_BLOCK = "headless_rest_api_prepare_block";
 
+	const FILTER_REVALIDATE_URL = "headless_revalidate_url";
+	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
+	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
+
+	const OPTION_SCHEMA_VERSION = "headless_schema_version";
+
 
 	function onCreate() {
+
+		$this->dbRevalidation = new RevalidationDatabase();
 
 		$this->security   = new Security( $this );
 		$this->routes     = new Routes( $this );
@@ -69,6 +81,16 @@ class Plugin extends Components\Plugin {
 		$this->links      = new Links( $this );
 		$this->preview    = new Preview( $this );
 		$this->revalidate = new Revalidate($this);
+
+		$this->schedule = new Schedule($this);
+
+		new Migration($this);
+
+	}
+
+	public function onSiteActivation() {
+		parent::onSiteActivation();
+		$this->dbRevalidation->createTables();
 
 	}
 }
