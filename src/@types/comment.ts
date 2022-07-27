@@ -5,6 +5,6 @@ type AuthorUser = {
     nickname: string
 }
 
-export type HeadlessCommentResponse<C extends CommentResponse> = CommentResponse & {
+export type HeadlessCommentResponse = CommentResponse & {
     author_user: null | AuthorUser
 }
