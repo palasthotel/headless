@@ -11,20 +11,21 @@ use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ParagraphBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ReferenceBlockPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
+use Palasthotel\WordPress\Headless\Extensions\CommentAuthorUser;
 use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
 use Palasthotel\WordPress\Headless\Extensions\ContentBlocks;
 use Palasthotel\WordPress\Headless\Extensions\FeaturedMedia;
 use Palasthotel\WordPress\Headless\Extensions\Taxonomies;
 use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
+use Palasthotel\WordPress\Headless\Model\CommentRouteExtensions;
 use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
 
-/**
- */
 class Extensions extends Component {
 
 	private BlockPreparations $blockPreparations;
 	private PostRouteExtensions $postRouteExtensions;
+	private CommentRouteExtensions $commentRouteExtensions;
 
 	public function onCreate() {
 		parent::onCreate();
@@ -35,10 +36,12 @@ class Extensions extends Component {
 
 		$this->postRouteExtensions = new PostRouteExtensions();
 		$this->blockPreparations   = new BlockPreparations();
+		$this->commentRouteExtensions = new CommentRouteExtensions();
 
 		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [ $this, 'block_preparation_extensions_with_prio' ], 2 );
 		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [ $this, 'block_preparation_extensions' ] );
 		add_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, [ $this, 'post_route_extensions' ] );
+		add_action( Plugin::ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS, [ $this, 'comment_route_extensions' ] );
 
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}
@@ -68,6 +71,10 @@ class Extensions extends Component {
 		$extensions->add( new Taxonomies() );
 	}
 
+	public function comment_route_extensions(CommentRouteExtensions $extensions){
+		$extensions->add(new CommentAuthorUser());
+	}
+
 	public function rest_api_init() {
 
 		if ( ! $this->plugin->security->hasApiKeyAccess() ) {
@@ -76,6 +83,7 @@ class Extensions extends Component {
 
 		do_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, $this->blockPreparations );
 		do_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, $this->postRouteExtensions );
+		do_action( Plugin::ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS, $this->commentRouteExtensions );
 
 		$post_types = get_post_types( [ "public" => true, 'show_in_rest' => true ] );
 		foreach ( $this->postRouteExtensions->get() as $extension ) {
@@ -83,6 +91,9 @@ class Extensions extends Component {
 				add_filter( 'rest_prepare_' . $type, [ $extension, 'response' ], 99, 3 );
 			}
 			add_filter( 'rest_prepare_revision', [ $extension, 'response' ], 99, 3 );
+		}
+		foreach ($this->commentRouteExtensions->get() as $extension){
+			add_filter('rest_prepare_comment', [$extension, 'response'], 99, 3);
 		}
 	}
 

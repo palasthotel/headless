@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.0.0
+Tested up to: 6.0.1
 Requires PHP: 8.0
-Stable tag: 1.4.2
+Stable tag: 1.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -28,6 +28,8 @@ Adds features to use WordPress as headless CMS
 == Changelog ==
 
 = 1.5.0 =
+* Feature: Comment extensions with display_name and nickname
+* Feature: Revalidation via gutenberg button
 * Feature: Revalidation system via schedules
 
 = 1.4.2 =
