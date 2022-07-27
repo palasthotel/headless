@@ -1,0 +1,28 @@
+{
+  "name": "@palasthotel/wp-headless",
+  "version": "1.0.0",
+  "description": "Assets for headless plugin",
+  "private": true,
+  "scripts": {
+    "watch": "wp-scripts start src/gutenberg.ts --output-path=../plugin/dist",
+    "build": "wp-scripts build src/gutenberg.ts --output-path=../plugin/dist"
+  },
+  "author": "Edward Bock <edward.bock@palasthotel.de> (https://www.edwardbock.de/)",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.0.15",
+    "@types/wordpress__components": "^19.10.1",
+    "@types/wordpress__data": "^6.0.1",
+    "@types/wordpress__edit-post": "^4.0.1",
+    "@types/wordpress__plugins": "^3.0.0",
+    "@wordpress/scripts": "^23.5.0"
+  },
+  "dependencies": {
+    "@wordpress/components": "^19.15.0",
+    "@wordpress/data": "^6.13.0",
+    "@wordpress/edit-post": "^6.10.0",
+    "@wordpress/element": "^4.11.0",
+    "@wordpress/icons": "^9.4.0",
+    "@wordpress/plugins": "^4.11.0"
+  }
+}

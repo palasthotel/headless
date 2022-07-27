@@ -22,5 +22,16 @@ class Revalidate extends Component {
 		$this->plugin->dbRevalidation->addPost($comment->comment_post_ID);
 	}
 
+	function getPostRevalidateUrl($post_id){
+		$baseUrl = (empty(HEADLESS_HEAD_BASE_URL)) ? home_url() : HEADLESS_HEAD_BASE_URL;
+		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&post=".$post_id;
+		return apply_filters(Plugin::FILTER_REVALIDATE_URL, $url, $post_id);
+	}
+
+	function revalidatePost($post_id){
+		$url = $this->plugin->revalidate->getPostRevalidateUrl($post_id);
+		return wp_remote_get($url);
+	}
+
 
 }

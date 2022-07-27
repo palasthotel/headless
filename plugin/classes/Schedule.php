@@ -21,12 +21,6 @@ class Schedule extends Component {
 		}
 	}
 
-	private function getPostRevalidateUrl($post_id){
-		$baseUrl = (empty(HEADLESS_HEAD_BASE_URL)) ? home_url() : HEADLESS_HEAD_BASE_URL;
-		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&post=".$post_id;
-		return apply_filters(Plugin::FILTER_REVALIDATE_URL, $url, $post_id);
-	}
-
 	public function revalidate(){
 		$lastRun = get_option(Plugin::OPTION_LAST_REVALIDATION_RUN, "");
 		$now = date("Y-m-d H:i:s");
@@ -34,8 +28,7 @@ class Schedule extends Component {
 		$postIds = $this->plugin->dbRevalidation->getPendingPosts($lastRun);
 
 		foreach ($postIds as $id){
-			$url = $this->getPostRevalidateUrl($id);
-			wp_remote_get($url);
+			$this->plugin->revalidate->revalidatePost($id);
 		}
 
 		update_option(Plugin::OPTION_LAST_REVALIDATION_RUN, $now);

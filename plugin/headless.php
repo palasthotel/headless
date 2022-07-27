@@ -21,8 +21,8 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Store\RevalidationDatabase;
 
-if( !defined('HEADLESS_HEAD_BASE_URL')) {
-	define('HEADLESS_HEAD_BASE_URL', '');
+if ( ! defined( 'HEADLESS_HEAD_BASE_URL' ) ) {
+	define( 'HEADLESS_HEAD_BASE_URL', '' );
 }
 
 if ( ! defined( 'HEADLESS_SECRET_TOKEN' ) ) {
@@ -48,6 +48,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Revalidate $revalidate
  * @property RevalidationDatabase $dbRevalidation
  * @property Schedule $schedule
+ * @property Gutenberg $gutenberg
  */
 class Plugin extends Components\Plugin {
 
@@ -80,11 +81,12 @@ class Plugin extends Components\Plugin {
 		$this->query      = new Query( $this );
 		$this->links      = new Links( $this );
 		$this->preview    = new Preview( $this );
-		$this->revalidate = new Revalidate($this);
+		$this->revalidate = new Revalidate( $this );
+		$this->gutenberg  = new Gutenberg( $this );
 
-		$this->schedule = new Schedule($this);
+		$this->schedule = new Schedule( $this );
 
-		new Migration($this);
+		new Migration( $this );
 
 	}
 

@@ -30,7 +30,7 @@ class Links extends Component {
 		return $this->preview_post_link($link, $post);
 	}
 
-	public function modifyPostLinkUrl($link, \WP_Post $post): string{
+	public function modifyPostLinkUrl($link, \WP_Post $post): string {
 		return apply_filters(
 			Plugin::FILTER_POST_LINK,
 			$this->removeHomeUrl($link),
