@@ -1,5 +1,8 @@
 # Releases
 
+## [1.5.0] - 2022-07-27
+* HeadlessCommentResponse with display_name and nickname
+
 ## [1.4.1] - 2022-07-13
 - wp-fetch update
 
