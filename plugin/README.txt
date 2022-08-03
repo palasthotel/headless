@@ -27,6 +27,9 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.5.1 =
+* Optimization: add image sizes
+
 = 1.5.0 =
 * Feature: Comment extensions with display_name and nickname
 * Feature: Revalidation via gutenberg button
