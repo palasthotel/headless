@@ -16,11 +16,12 @@ export type BlockContent<B extends Block> = {
     protected: boolean
 }
 
-export type HeadlessImageSrc = [url:string,width:number,height:number,isResized: boolean]
+export type HeadlessImageSrc = [url:string,width:number,height:number,cropped: boolean]
 
 export type HeadlessPostResponse<B extends Block> = PostResponse & {
     featured_media_url: string|false
     featured_media_src: HeadlessImageSrc|false
+    featured_media_sizes: HeadlessImageSrc[]
     featured_media_caption: string|false
     featured_media_description: string|false
     featured_media_alt: string|false

@@ -20,6 +20,9 @@ class FeaturedMedia extends AbsPostExtensionPost {
 
 		$src = wp_get_attachment_image_src($id, 'full');
 		$data["featured_media_src"] = $src;
+
+		$data["featured_media_sizes"] = self::imageSizes($id);
+
 		$attachment = get_post($id);
 		$data["featured_media_caption"] = $attachment instanceof WP_Post ? $attachment->post_excerpt : false;
 		$data["featured_media_description"] = $attachment instanceof WP_Post ? $attachment->post_content : false;
@@ -27,7 +30,14 @@ class FeaturedMedia extends AbsPostExtensionPost {
 		$data["featured_media_alt"] = is_string($alt) ? $alt : false;
 
 
+
 		$response->set_data( $data );
 		return $response;
+	}
+
+	static function imageSizes($imageId){
+		return array_map(function($size) use ( $imageId ) {
+			return wp_get_attachment_image_src($imageId, $size);
+		},get_intermediate_image_sizes());
 	}
 }
