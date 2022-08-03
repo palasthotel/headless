@@ -1,5 +1,8 @@
 # Releases
 
+## [1.5.2] - 2022-07-27
+* Featured image sizes array
+
 ## [1.5.1] - 2022-07-27
 * Nothing changed
 
