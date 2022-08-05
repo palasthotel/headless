@@ -1,6 +1,9 @@
 # Releases
 
-## [1.5.2] - 2022-07-27
+## [1.5.4] - 2022-08-05
+* Headless settings endpoint
+
+## [1.5.3] - 2022-08-04
 * Featured image sizes array
 
 ## [1.5.1] - 2022-07-27
