@@ -27,6 +27,12 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.5.4 =
+* Headless settings as rest api
+
+= 1.5.3 =
+* Featured media sizes to rest api
+
 = 1.5.1 =
 * Optimization: add image sizes
 
