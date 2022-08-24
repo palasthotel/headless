@@ -27,6 +27,10 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.6.0 =
+* Feature: Tag Cloud Block extension
+
+
 = 1.5.5 =
 * Headless settings as rest api
 
