@@ -10,6 +10,7 @@ use Palasthotel\WordPress\Headless\BlockPreparations\ImageBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\MoreBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ParagraphBlockPreparation;
 use Palasthotel\WordPress\Headless\BlockPreparations\ReferenceBlockPreparation;
+use Palasthotel\WordPress\Headless\BlockPreparations\TagCloudPreparation;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Extensions\CommentAuthorUser;
 use Palasthotel\WordPress\Headless\Extensions\ContentAttachments;
@@ -35,10 +36,13 @@ class Extensions extends Component {
 		}
 
 		$this->postRouteExtensions = new PostRouteExtensions();
-		$this->blockPreparations   = new BlockPreparations();
+		$this->blockPreparations = new BlockPreparations();
 		$this->commentRouteExtensions = new CommentRouteExtensions();
 
-		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [ $this, 'block_preparation_extensions_with_prio' ], 2 );
+		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [
+			$this,
+			'block_preparation_extensions_with_prio'
+		], 2 );
 		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [ $this, 'block_preparation_extensions' ] );
 		add_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, [ $this, 'post_route_extensions' ] );
 		add_action( Plugin::ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS, [ $this, 'comment_route_extensions' ] );
@@ -46,9 +50,9 @@ class Extensions extends Component {
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}
 
-	public function block_preparation_extensions_with_prio(BlockPreparations $extensions){
+	public function block_preparation_extensions_with_prio( BlockPreparations $extensions ) {
 		// needs to be the very first preparation step so others can apply to the result
-		$extensions->add(new ReferenceBlockPreparation());
+		$extensions->add( new ReferenceBlockPreparation() );
 	}
 
 	public function block_preparation_extensions( BlockPreparations $extensions ) {
@@ -57,6 +61,7 @@ class Extensions extends Component {
 		$extensions->add( new ImageBlockPreparation() );
 		$extensions->add( new GalleryBlockPreparation() );
 		$extensions->add( new FreeFormBlockPreparation() );
+		$extensions->add( new TagCloudPreparation() );
 		// order is important --->
 		$extensions->add( new CoreEmbedBlockPreparation() );
 		$extensions->add( new EmbedBlockPreparation() );
@@ -71,8 +76,8 @@ class Extensions extends Component {
 		$extensions->add( new Taxonomies() );
 	}
 
-	public function comment_route_extensions(CommentRouteExtensions $extensions){
-		$extensions->add(new CommentAuthorUser());
+	public function comment_route_extensions( CommentRouteExtensions $extensions ) {
+		$extensions->add( new CommentAuthorUser() );
 	}
 
 	public function rest_api_init() {
@@ -92,8 +97,8 @@ class Extensions extends Component {
 			}
 			add_filter( 'rest_prepare_revision', [ $extension, 'response' ], 99, 3 );
 		}
-		foreach ($this->commentRouteExtensions->get() as $extension){
-			add_filter('rest_prepare_comment', [$extension, 'response'], 99, 3);
+		foreach ( $this->commentRouteExtensions->get() as $extension ) {
+			add_filter( 'rest_prepare_comment', [ $extension, 'response' ], 99, 3 );
 		}
 	}
 
