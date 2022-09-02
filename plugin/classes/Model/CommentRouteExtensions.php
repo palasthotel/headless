@@ -7,7 +7,7 @@ use Palasthotel\WordPress\Headless\Interfaces\ICommentRouteExtension;
 class CommentRouteExtensions {
 
 	/**
-	 * @var ICommentRouteExtension[] $postRouteExtensions
+	 * @var ICommentRouteExtension[]
 	 */
 	private array $items = [];
 
