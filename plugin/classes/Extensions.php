@@ -21,6 +21,7 @@ use Palasthotel\WordPress\Headless\Extensions\Title;
 use Palasthotel\WordPress\Headless\Model\BlockPreparations;
 use Palasthotel\WordPress\Headless\Model\CommentRouteExtensions;
 use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
+use Palasthotel\WordPress\Headless\Model\TermRouteExtensions;
 use Palasthotel\WordPress\Headless\Model\UserRouteExtensions;
 
 class Extensions extends Component {
@@ -29,6 +30,7 @@ class Extensions extends Component {
 	private PostRouteExtensions $postRouteExtensions;
 	private CommentRouteExtensions $commentRouteExtensions;
 	private UserRouteExtensions $userRouteExtensions;
+	private TermRouteExtensions $termRouteExtensions;
 
 	public function onCreate() {
 		parent::onCreate();
@@ -41,6 +43,7 @@ class Extensions extends Component {
 		$this->blockPreparations = new BlockPreparations();
 		$this->commentRouteExtensions = new CommentRouteExtensions();
 		$this->userRouteExtensions = new UserRouteExtensions();
+		$this->termRouteExtensions = new TermRouteExtensions();
 
 		add_action( Plugin::ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS, [
 			$this,
@@ -50,6 +53,7 @@ class Extensions extends Component {
 		add_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, [ $this, 'post_route_extensions' ] );
 		add_action( Plugin::ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS, [ $this, 'comment_route_extensions' ] );
 		//add_action( Plugin::ACTION_REGISTER_USER_ROUTE_EXTENSIONS, [ $this, 'user_route_extensions' ] );
+		//add_action( Plugin::ACTION_REGISTER_TERM_ROUTE_EXTENSIONS, [ $this, 'term_route_extensions' ] );
 
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}
@@ -94,6 +98,7 @@ class Extensions extends Component {
 		do_action( Plugin::ACTION_REGISTER_POST_ROUTE_EXTENSIONS, $this->postRouteExtensions );
 		do_action( Plugin::ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS, $this->commentRouteExtensions );
 		do_action( Plugin::ACTION_REGISTER_USER_ROUTE_EXTENSIONS, $this->userRouteExtensions );
+		do_action( Plugin::ACTION_REGISTER_TERM_ROUTE_EXTENSIONS, $this->termRouteExtensions );
 
 		$post_types = get_post_types( [ "public" => true, 'show_in_rest' => true ] );
 		foreach ( $this->postRouteExtensions->get() as $extension ) {
@@ -107,6 +112,11 @@ class Extensions extends Component {
 		}
 		foreach ($this->userRouteExtensions->get() as $extension) {
 			add_filter( 'rest_prepare_user', [$extension, 'response'], 99, 3);
+		}
+		foreach ($this->termRouteExtensions->get() as $extension) {
+			foreach ($extension->taxonomies() as $taxonomy) {
+				add_filter('rest_prepare_'.$taxonomy, [$extension, 'response'], 99, 3);
+			}
 		}
 	}
 

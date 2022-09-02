@@ -62,6 +62,7 @@ class Plugin extends Components\Plugin {
 	const ACTION_REGISTER_POST_ROUTE_EXTENSIONS = "headless_register_post_route_extensions";
 	const ACTION_REGISTER_COMMENT_ROUTE_EXTENSIONS = "headless_register_comment_route_extensions";
 	const ACTION_REGISTER_USER_ROUTE_EXTENSIONS = "headless_register_user_route_extensions";
+	const ACTION_REGISTER_TERM_ROUTE_EXTENSIONS = "headless_register_term_route_extensions";
 
 	const FILTER_BLOCKS_PREPARE_FILTER = "headless_rest_api_prepare_filter";
 	const FILTER_BLOCKS_PREPARE_BLOCK = "headless_rest_api_prepare_block";

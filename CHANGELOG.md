@@ -1,5 +1,10 @@
 # Releases
 
+## [1.5.5] - 2022-09-02
+* Terms extensions
+* Users extensions
+* Bump dependencies
+
 ## [1.5.4] - 2022-08-05
 * Headless settings endpoint
 
