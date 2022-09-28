@@ -1,5 +1,11 @@
 # Releases
 
+## [1.6.0] - 2022-09-28
+* Terms extensions
+* Optimization: stale-while-revalidate cache-control header for headless requests to the rest api
+* Optimization: api key restriction
+* Bump dependencies
+
 ## [1.5.5] - 2022-09-02
 * Terms extensions
 * Users extensions

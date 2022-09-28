@@ -36,6 +36,13 @@ if ( ! defined( 'HEADLESS_REST_VALUE' ) ) {
 	define( 'HEADLESS_REST_VALUE', 'true' );
 }
 
+if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {
+	define( 'HEADLESS_API_KEY_HEADER_KEY', "" );
+}
+if ( ! defined( 'HEADLESS_API_KEY_HEADER_VALUE' ) ) {
+	define( 'HEADLESS_API_KEY_HEADER_VALUE', "" );
+}
+
 require_once __DIR__ . "/vendor/autoload.php";
 
 /**
@@ -49,6 +56,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property RevalidationDatabase $dbRevalidation
  * @property Schedule $schedule
  * @property Gutenberg $gutenberg
+ * @property Headers $headers
  */
 class Plugin extends Components\Plugin {
 
@@ -67,6 +75,8 @@ class Plugin extends Components\Plugin {
 	const FILTER_BLOCKS_PREPARE_FILTER = "headless_rest_api_prepare_filter";
 	const FILTER_BLOCKS_PREPARE_BLOCK = "headless_rest_api_prepare_block";
 
+	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
+
 	const FILTER_REVALIDATE_URL = "headless_revalidate_url";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
@@ -79,6 +89,7 @@ class Plugin extends Components\Plugin {
 		$this->dbRevalidation = new RevalidationDatabase();
 
 		$this->security   = new Security( $this );
+		$this->headers    = new Headers( $this );
 		$this->routes     = new Routes( $this );
 		$this->extensions = new Extensions( $this );
 		$this->query      = new Query( $this );

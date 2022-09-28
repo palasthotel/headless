@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.0.1
-Requires PHP: 8.0
-Stable tag: 1.5.5
+Tested up to: 6.0.2
+Requires PHP: 7.4
+Stable tag: 1.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -31,6 +31,8 @@ Adds features to use WordPress as headless CMS
 * Feature: Tag Cloud Block extension
 * Feature: User extensions
 * Feature: Term extensions
+* Optimization: stale-while-revalidate cache-control header for headless requests to the rest api
+* Optimization: api key restriction
 
 = 1.5.5 =
 * Headless settings as rest api

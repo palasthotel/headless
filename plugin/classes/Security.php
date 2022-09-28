@@ -17,14 +17,11 @@ class Security extends Component {
 
 	public function hasApiKeyAccess(): bool {
 
-		if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {
-			// if no header config is present grant access
+		if ( empty(HEADLESS_API_KEY_HEADER_KEY) || empty(HEADLESS_API_KEY_HEADER_VALUE)) {
+			// if api key values are empty there is no api key restriction
 			return true;
 		}
-		if ( ! defined( 'HEADLESS_API_KEY_HEADER_VALUE' ) ) {
-			// if no header value config is present deny access
-			return false;
-		}
+
 		$header =  "HTTP_" . strtoupper( str_replace("-", "_",HEADLESS_API_KEY_HEADER_KEY ));
 		if ( ! isset( $_SERVER[ $header ] ) ) {
 			// on missing header in request deny access
