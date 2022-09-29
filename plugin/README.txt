@@ -27,6 +27,9 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.6.1 =
+* Bugfix: Remove domain from page rest api response
+
 = 1.6.0 =
 * Feature: Tag Cloud Block extension
 * Feature: User extensions
