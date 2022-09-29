@@ -11,7 +11,7 @@ class Links extends Component {
 
 		// TODO: find a solid way to change links
 		add_filter( 'post_link', [ $this, 'post_link' ], 10, 3 );
-		add_filter( 'page_link', [ $this, 'page_link' ], 10, 2 );
+		add_filter( 'page_link', [ $this, 'page_link' ], 10, 3 );
 		add_filter( 'post_type_link', [ $this, 'post_type_link' ], 10, 4 );
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
 	}
@@ -24,8 +24,8 @@ class Links extends Component {
 		return $this->preview_post_link( $permalink, $post );
 	}
 
-	public function page_link(string $permalink, int $postId){
-		if(get_post_status($postId) == "publish"){
+	public function page_link(string $permalink, int $postId, $sample){
+		if(!$sample && get_post_status($postId) == "publish"){
 			return $this->modifyPostLinkUrl($permalink, get_post($postId));
 		}
 		return $permalink;
