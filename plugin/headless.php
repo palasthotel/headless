@@ -8,8 +8,8 @@
  * Author: Palasthotel (Edward Bock) <edward.bock@palasthotel.de>
  * Author URI: http://www.palasthotel.de
  * Requires at least: 5.0
- * Tested up to: 6.0.1
- * Requires PHP: 8.0
+ * Tested up to: 6.0.2
+ * Requires PHP: 7.4
  * Text Domain: headless
  * License: http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  * @copyright Copyright (c) 2022, Palasthotel
@@ -77,7 +77,7 @@ class Plugin extends Components\Plugin {
 
 	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
 
-	const FILTER_REVALIDATE_URL = "headless_revalidate_url";
+	const FILTER_REVALIDATE_URLS = "headless_revalidate_urls";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
 

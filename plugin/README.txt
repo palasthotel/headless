@@ -28,6 +28,7 @@ Adds features to use WordPress as headless CMS
 == Changelog ==
 
 = 1.6.1 =
+* Optimization: revalidation uses url array
 * Bugfix: Remove domain from page rest api response
 
 = 1.6.0 =
