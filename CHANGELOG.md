@@ -1,5 +1,12 @@
 # Releases
 
+## [1.6.2]
+* Add headless_rest_api_prepare_post filter for uniform post responses
+
+## [1.6.1]
+* Optimization: revalidation uses url array
+* Bugfix: Remove domain from page rest api response
+
 ## [1.6.0] - 2022-09-28
 * Terms extensions
 * Optimization: stale-while-revalidate cache-control header for headless requests to the rest api

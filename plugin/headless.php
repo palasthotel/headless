@@ -4,7 +4,7 @@
  * Plugin Name: Headless
  * Plugin URI: https://github.com/palasthotel/headless
  * Description: Adds features to use WordPress as headless CMS
- * Version: 1.6.1
+ * Version: 1.6.2
  * Author: Palasthotel (Edward Bock) <edward.bock@palasthotel.de>
  * Author URI: http://www.palasthotel.de
  * Requires at least: 5.0
@@ -57,6 +57,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Schedule $schedule
  * @property Gutenberg $gutenberg
  * @property Headers $headers
+ * @property Post $post
  */
 class Plugin extends Components\Plugin {
 
@@ -74,6 +75,7 @@ class Plugin extends Components\Plugin {
 
 	const FILTER_BLOCKS_PREPARE_FILTER = "headless_rest_api_prepare_filter";
 	const FILTER_BLOCKS_PREPARE_BLOCK = "headless_rest_api_prepare_block";
+	const FILTER_PREPARE_POST = "headless_rest_api_prepare_post";
 
 	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
 
@@ -97,6 +99,7 @@ class Plugin extends Components\Plugin {
 		$this->preview    = new Preview( $this );
 		$this->revalidate = new Revalidate( $this );
 		$this->gutenberg  = new Gutenberg( $this );
+		$this->post       = new Post( $this );
 
 		$this->schedule = new Schedule( $this );
 

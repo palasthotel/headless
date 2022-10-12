@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 6.0.2
 Requires PHP: 7.4
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -26,6 +26,9 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 1.6.2 =
+* Add headless_rest_api_prepare_post filter for uniform post responses
 
 = 1.6.1 =
 * Optimization: revalidation uses url array
