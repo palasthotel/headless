@@ -27,6 +27,11 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 1.6.3 =
+* Optimization: changed preview url magic to redirect
+* Removed: filter headless_post_link because it is not healthy
+* Removed: filter headless_preview_redirect because it is not in use
+
 = 1.6.2 =
 * Add headless_rest_api_prepare_post filter for uniform post responses
 

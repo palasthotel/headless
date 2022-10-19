@@ -64,8 +64,6 @@ class Plugin extends Components\Plugin {
 	const REST_NAMESPACE = "headless/v1";
 
 	const FILTER_PREVIEW_URL = "headless_preview_url";
-	const FILTER_POST_LINK = "headless_post_link";
-	const FILTER_PREVIEW_DO_REDIRECT = "headless_preview_redirect";
 
 	const ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS = "headless_register_block_preparation_extensions";
 	const ACTION_REGISTER_POST_ROUTE_EXTENSIONS = "headless_register_post_route_extensions";
@@ -95,7 +93,6 @@ class Plugin extends Components\Plugin {
 		$this->routes     = new Routes( $this );
 		$this->extensions = new Extensions( $this );
 		$this->query      = new Query( $this );
-		$this->links      = new Links( $this );
 		$this->preview    = new Preview( $this );
 		$this->revalidate = new Revalidate( $this );
 		$this->gutenberg  = new Gutenberg( $this );
