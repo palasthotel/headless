@@ -35,7 +35,7 @@ class Gutenberg extends Component {
 				"actions" => [
 					"reload" => "headless_reload",
 				],
-				"preview_url" => get_preview_post_link(intval($_GET["post"])),
+				"preview_url" => !empty($_GET["post"]) ? get_preview_post_link(intval($_GET["post"])) : null,
 			]
 		);
 	}
