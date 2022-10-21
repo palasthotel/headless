@@ -9,15 +9,6 @@ class Preview extends Component {
 		parent::onCreate();
 
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
-
-		add_filter( 'rest_prepare_post', [ $this, 'hack_fix_preview_link' ], 10, 2 );
-		$post_types = get_post_types( [ "public" => true, 'show_in_rest' => true ] );
-		foreach ( $post_types as $type ) {
-			add_filter( 'rest_prepare_' . $type, [ $this, 'hack_fix_preview_link' ], 99, 3 );
-		}
-		add_filter( 'rest_prepare_autosave', [ $this, 'hack_fix_preview_link' ], 99, 2 );
-		add_filter( 'rest_prepare_revision', [ $this, 'hack_fix_preview_link' ], 99, 2 );
-
 		add_action( 'wp_ajax_headless_preview', [ $this, 'admin_preview' ] );
 		add_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'redirect' ] );
 	}
@@ -41,23 +32,6 @@ class Preview extends Component {
 			$post,
 			$link
 		);
-	}
-
-	/**
-	 * Hack Function that changes the preview link for draft articles,
-	 * this must be removed when wordpress do the properly fix https://github.com/WordPress/gutenberg/issues/13998
-	 *
-	 * @param $response
-	 * @param $post
-	 *
-	 * @return mixed
-	 */
-	function hack_fix_preview_link( $response, $post ) {
-		if ( 'publish' !== $post->post_status ) {
-			$response->data['link'] = get_preview_post_link( $post );
-		}
-
-		return $response;
 	}
 
 	public function admin_preview() {

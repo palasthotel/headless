@@ -34,7 +34,8 @@ class Gutenberg extends Component {
 				"ajax" => admin_url('admin-ajax.php'),
 				"actions" => [
 					"reload" => "headless_reload",
-				]
+				],
+				"preview_url" => get_preview_post_link(intval($_GET["post"])),
 			]
 		);
 	}
