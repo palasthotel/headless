@@ -17,11 +17,10 @@ class ReferenceBlockPreparation implements IBlockPreparation {
 			$post = get_post($block["attrs"]["ref"]);
 			if($post instanceof \WP_Post && $post->post_type == 'wp_block'){
 				$blocks = parse_blocks($post->post_content);
-				if(count($blocks) == 1){
-					$theBlock = $blocks[0];
-					$theBlock["block_reference_id"] = $post->ID;
-					return $theBlock;
-				}
+				unset($block["attrs"]);
+				unset($block["innerHTML"]);
+				unset($block["innerContent"]);
+				$block["innerBlocks"] = $blocks;
 			}
 
 		}

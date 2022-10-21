@@ -28,6 +28,7 @@ Adds features to use WordPress as headless CMS
 == Changelog ==
 
 = 1.6.3 =
+* BREAKING CHANGE: core/block for block references has changed
 * Optimization: changed preview url magic to redirect
 * Removed: filter headless_post_link because it is not healthy
 * Removed: filter headless_preview_redirect because it is not in use
@@ -91,4 +92,4 @@ Adds features to use WordPress as headless CMS
 
 == Arbitrary section ==
 
-
+* BREAKING CHANGE 1.6.3: core/block for block references has changed
