@@ -63,6 +63,7 @@ class Plugin extends Components\Plugin {
 
 	const REST_NAMESPACE = "headless/v1";
 
+	const FILTER_PREVIEW_REDIRECT_URL = "headless_preview_redirect_url";
 	const FILTER_PREVIEW_URL = "headless_preview_url";
 
 	const ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS = "headless_register_block_preparation_extensions";

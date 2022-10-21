@@ -9,9 +9,15 @@ class Preview extends Component {
 		parent::onCreate();
 
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
+
 		add_filter( 'rest_prepare_post', [ $this, 'hack_fix_preview_link' ], 10, 2 );
-		add_filter( 'rest_prepare_autosave', [ $this, 'hack_fix_preview_link' ], 10, 2 );
-		add_filter( 'rest_prepare_revision', [ $this, 'hack_fix_preview_link' ], 10, 2 );
+		$post_types = get_post_types( [ "public" => true, 'show_in_rest' => true ] );
+		foreach ( $post_types as $type ) {
+			add_filter( 'rest_prepare_' . $type, [ $this, 'hack_fix_preview_link' ], 99, 3 );
+		}
+		add_filter( 'rest_prepare_autosave', [ $this, 'hack_fix_preview_link' ], 99, 2 );
+		add_filter( 'rest_prepare_revision', [ $this, 'hack_fix_preview_link' ], 99, 2 );
+
 		add_action( 'wp_ajax_headless_preview', [ $this, 'admin_preview' ] );
 		add_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'redirect' ] );
 	}
@@ -19,7 +25,7 @@ class Preview extends Component {
 	public function getRedirectLink( $id ) {
 		$postType = get_post_type( $id );
 
-		return home_url() . "/wp-admin/admin-ajax.php?action=headless_preview&p=$id&post_type=$postType";
+		return rtrim(get_admin_url(),"/") . "/admin-ajax.php?action=headless_preview&p=$id&post_type=$postType";
 	}
 
 	public function getHeadlessPreviewLink( \WP_Post $post ) {
@@ -30,7 +36,7 @@ class Preview extends Component {
 
 	public function preview_post_link( string $link, \WP_Post $post ) {
 		return apply_filters(
-			Plugin::FILTER_PREVIEW_URL,
+			Plugin::FILTER_PREVIEW_REDIRECT_URL,
 			$this->plugin->preview->getRedirectLink( $post->ID ),
 			$post,
 			$link
