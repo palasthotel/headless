@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 Requires PHP: 7.4
-Stable tag: 1.6.2
+Stable tag: 1.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -27,7 +27,7 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
-= 1.6.3 =
+= 1.7.0 =
 * BREAKING CHANGE: core/block for block references has changed
 * Optimization: changed preview url magic to redirect
 * Removed: filter headless_post_link because it is not healthy
@@ -92,4 +92,4 @@ Adds features to use WordPress as headless CMS
 
 == Arbitrary section ==
 
-* BREAKING CHANGE 1.6.3: core/block for block references has changed
+* BREAKING CHANGE 1.7.0: core/block for block references has changed
