@@ -31,6 +31,7 @@ class Revalidate extends Component {
 	function revalidatePost($post_id) {
 		$urls = $this->plugin->revalidate->getPostRevalidateUrls($post_id);
 		foreach ($urls as $url){
+			$url = add_query_arg('invalidate_cache', time(),$url);
 			$result = wp_remote_get($url);
 			if(is_wp_error($result)) return $result;
 		}
