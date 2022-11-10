@@ -2,7 +2,9 @@ import {GetPostsRequestArgs, PostId, PostResponse} from '@palasthotel/wp-fetch';
 
 export type Block = {
     blockName: string|null
-    attrs?: Record<string, string | string[] | number | number[]>
+    attrs?:{
+        [key: string]: unknown
+    }
     innerHTML?: string
     innerContent?: string[]
     innerBlocks?: Block[]

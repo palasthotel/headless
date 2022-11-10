@@ -6,7 +6,9 @@ export type GetMenuRequestArgs = {
     slug: MenuSlug
 }
 
-export type MenusResponse = Record<MenuSlug, MenuItemResponse[]>
+export type MenusResponse = {
+    [slug: MenuSlug]: MenusResponse[]
+}
 
 export type MenuItemResponse = {
     ID: PostId
