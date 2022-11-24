@@ -35,8 +35,9 @@ class Post extends Component {
 				continue;
 			}
 			$terms = get_the_terms( $post, $taxonomy->name );
-			if ( is_array( $terms ) && is_string( $taxonomy->rest_base ) ) {
-				$postJson[ $taxonomy->rest_base ] = array_map( function ( $term ) {
+			$taxonomyKey = is_string($taxonomy->rest_base) ? $taxonomy->rest_base : $taxonomy->name;
+			if ( is_array( $terms ) && is_string( $taxonomyKey ) ) {
+				$postJson[ $taxonomyKey] = array_map( function ( $term ) {
 					/**
 					 * @var WP_Term
 					 */
