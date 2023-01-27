@@ -5,6 +5,9 @@ namespace Palasthotel\WordPress\Headless;
 use Palasthotel\WordPress\Headless\Components\Component;
 
 class Preview extends Component {
+
+	const POST_ID_PLACEHOLDER = "{{post_id}}";
+
 	public function onCreate() {
 		parent::onCreate();
 
@@ -14,9 +17,11 @@ class Preview extends Component {
 	}
 
 	public function getRedirectLink( $id ) {
-		$postType = get_post_type( $id );
+		if($id == null){
+			$id = self::POST_ID_PLACEHOLDER;
+		}
 
-		return rtrim(get_admin_url(),"/") . "/admin-ajax.php?action=headless_preview&p=$id&post_type=$postType";
+		return rtrim(get_admin_url(),"/") . "/admin-ajax.php?action=headless_preview&post=$id";
 	}
 
 	public function getHeadlessPreviewLink( \WP_Post $post ) {
@@ -35,19 +40,10 @@ class Preview extends Component {
 	}
 
 	public function admin_preview() {
-		$postType = $_GET["post_type"];
-		if ( ! post_type_exists( $postType ) ) {
-			echo "Post type not exists";
-			exit;
-		}
-		$postId = intval( $_GET["p"] );
+		$postId = intval( $_GET["post"] );
 		$post   = get_post( $postId );
 		if ( ! ( $post instanceof \WP_Post ) ) {
 			echo "Post not found";
-			exit;
-		}
-		if ( $post->post_type != $postType ) {
-			echo "That's weired";
 			exit;
 		}
 		if ( ! current_user_can( "edit_post", $postId ) ) {
@@ -62,7 +58,7 @@ class Preview extends Component {
 
 	public function redirect() {
 
-		$postId    = intval( $_GET["p"] );
+		$postId    = intval( $_GET["post"] );
 		$permalink = get_permalink( $postId );
 		if ( ! is_string( $permalink ) ) {
 			wp_redirect( get_home_url() );

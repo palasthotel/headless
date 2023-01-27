@@ -11,6 +11,7 @@ use Palasthotel\WordPress\Headless\Components\Component;
 class Gutenberg extends Component {
 
 	const HANDLE_SCRIPT = "headless_gutenberg_script";
+	const HANDLE_STYLE = "headless_gutenberg_styles";
 
 	public function onCreate() {
 		parent::onCreate();
@@ -35,13 +36,19 @@ class Gutenberg extends Component {
 				"actions" => [
 					"reload" => "headless_reload",
 				],
-				"preview_url" => !empty($_GET["post"]) ? get_preview_post_link(intval($_GET["post"])) : null,
+				"post_id_placeholder" => Preview::POST_ID_PLACEHOLDER,
+				"preview_url" => $this->plugin->preview->getRedirectLink(null),
 			]
+		);
+		$this->assets->registerStyle(
+			self::HANDLE_STYLE,
+			"dist/gutenberg.ts.css",
 		);
 	}
 
 	public function enqueue() {
 		wp_enqueue_script( self::HANDLE_SCRIPT );
+		wp_enqueue_style(self::HANDLE_STYLE);
 	}
 
 	public function reload(){
