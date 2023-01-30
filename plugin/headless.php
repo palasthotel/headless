@@ -4,7 +4,7 @@
  * Plugin Name: Headless
  * Plugin URI: https://github.com/palasthotel/headless
  * Description: Adds features to use WordPress as headless CMS
- * Version: 1.7.1
+ * Version: 1.7.2
  * Author: Palasthotel (Edward Bock) <edward.bock@palasthotel.de>
  * Author URI: http://www.palasthotel.de
  * Requires at least: 5.0
@@ -49,7 +49,6 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Routes $routes
  * @property Extensions $extensions
  * @property Security $security
- * @property Links $links
  * @property Preview $preview
  * @property Query $query
  * @property Revalidate $revalidate
@@ -62,6 +61,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 class Plugin extends Components\Plugin {
 
 	const REST_NAMESPACE = "headless/v1";
+	const FILTER_IS_HEADLESS_POST_TYPE = "headless_is_headless_post_type";
 
 	const FILTER_PREVIEW_REDIRECT_URL = "headless_preview_redirect_url";
 	const FILTER_PREVIEW_URL = "headless_preview_url";
