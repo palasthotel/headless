@@ -14,9 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const coreEditorSelect = select("core/editor");
     const getCurrentPostId = coreEditorSelect.getCurrentPostId;
     const isSavingPost = coreEditorSelect.isSavingPost;
+    const isDraft = ()=> {
+        const status = coreEditorSelect.getCurrentPost().status;
+        return status == "draft" || status == "auto-draft";
+    }
 
     const coreEditorDispatch = dispatch("core/editor");
     const autosave = coreEditorDispatch.autosave;
+    const savePost = coreEditorDispatch.savePost;
 
     // --------------------------------------------------------
     // create replacement for preview link
@@ -29,8 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if(isSavingPost()){
             return;
         }
-        autosave().then(()=>{
-            console.debug("open ", a.href, a.target)
+        const saveFn = (isDraft()) ? savePost : autosave;
+        saveFn().then(()=>{
             window.open(a.href, a.target);
         });
 
@@ -82,7 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
         icon.className = "dashicons dashicons-external";
         a.append(icon);
         a.target = target;
-        console.debug(target);
         a.href = previewUrl;
         a.id = id;
         externalPreviewGroup.querySelector('[role="group"]').append(a);
