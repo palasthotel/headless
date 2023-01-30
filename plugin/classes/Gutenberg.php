@@ -23,6 +23,10 @@ class Gutenberg extends Component {
 		add_action( 'wp_ajax_headless_reload', [ $this, 'reload' ] );
 	}
 
+	public function isHeadlessPostType(string $postType){
+		return apply_filters(Plugin::FILTER_IS_HEADLESS_POST_TYPE, true, $postType);
+	}
+
 	public function init() {
 		$this->assets->registerScript(
 			self::HANDLE_SCRIPT,
@@ -47,6 +51,7 @@ class Gutenberg extends Component {
 	}
 
 	public function enqueue() {
+		if(!$this->isHeadlessPostType(get_post_type())) return;
 		wp_enqueue_script( self::HANDLE_SCRIPT );
 		wp_enqueue_style(self::HANDLE_STYLE);
 	}
