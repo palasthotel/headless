@@ -17,7 +17,6 @@ export const getAjaxUrl = ()=> window.Headless.ajax;
 export const getReloadAjaxUrl = (post: number) =>
     getAjaxUrl()+"?action="+window.Headless.actions.reload+"&post="+post;
 
-export const getPreviewUrl = () => {
-    const postId = select("core/editor").getCurrentPostId();
-    return window.Headless.preview_url.replace(window.Headless.post_id_placeholder, postId)
+export const getPreviewUrl = (postId: number) => {
+    return window.Headless.preview_url.replace(window.Headless.post_id_placeholder, `${postId}`)
 };
