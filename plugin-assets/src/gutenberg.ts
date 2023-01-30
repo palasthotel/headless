@@ -1,8 +1,10 @@
 import {registerPlugin} from "@wordpress/plugins";
 import ReloadPanel from "./components/ReloadPanel";
 import {getPreviewUrl} from "./store/window";
-import "./styles.css"
 import {select, dispatch, subscribe} from "@wordpress/data";
+import {writeInterstitialMessage} from "./preview";
+
+import "./styles.css"
 
 registerPlugin('headless-plugin', {
     icon: () => null,
@@ -34,9 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if(isSavingPost()){
             return;
         }
+        const ref = window.open('about:blank', a.target);
+        writeInterstitialMessage(ref.document);
+
         const saveFn = (isDraft()) ? savePost : autosave;
         saveFn().then(()=>{
-            window.open(a.href, a.target);
+            ref.location = a.href;
         });
 
     });
@@ -68,8 +73,29 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        // replace notice link
+        const notices =  editor.querySelectorAll<HTMLAnchorElement>(".components-snackbar-list .components-snackbar__content a.components-button");
+        notices.forEach((notice) => {
+            if(
+                notice.href.includes("?post="+postId) // custom post types
+                ||
+                notice.href.includes("?page_id="+postId) // pages
+                ||
+                notice.href.includes("?p="+postId) // posts
+            ){
+                notice.href = previewUrl;
+                notice.target = "wp-preview-"+postId;
+            }
+        })
+
         // replace this special preview link
-        const externalPreviewGroup = editor.querySelector(".edit-post-post-preview-dropdown .components-menu-group:has(.edit-post-header-preview__grouping-external)");
+        const previewGroups = editor.querySelectorAll(".edit-post-post-preview-dropdown .components-menu-group");
+        let externalPreviewGroup: null|Element = null
+        previewGroups.forEach((group)=>{
+            if(group.querySelector(".edit-post-header-preview__grouping-external")){
+                externalPreviewGroup = group;
+            }
+        })
         if(!externalPreviewGroup){
             return;
         }
