@@ -13,7 +13,7 @@ class Preview extends Component {
 
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
 		add_action( 'wp_ajax_headless_preview', [ $this, 'admin_preview' ] );
-		add_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'redirect' ] );
+		add_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'no_permission' ] );
 	}
 
 	public function getRedirectLink( $id ) {
@@ -31,6 +31,9 @@ class Preview extends Component {
 	}
 
 	public function preview_post_link( string $link, \WP_Post $post ) {
+
+		if(!$this->plugin->post->isHeadlessPostType($post->post_type)) return $link;
+
 		return apply_filters(
 			Plugin::FILTER_PREVIEW_REDIRECT_URL,
 			$this->plugin->preview->getRedirectLink( $post->ID ),
@@ -56,16 +59,9 @@ class Preview extends Component {
 		exit;
 	}
 
-	public function redirect() {
-
-		$postId    = intval( $_GET["post"] );
-		$permalink = get_permalink( $postId );
-		if ( ! is_string( $permalink ) ) {
-			wp_redirect( get_home_url() );
-			exit;
-		}
-		wp_redirect( $permalink );
-		exit;
+	public function no_permission() {
+		header('HTTP/1.0 403 Forbidden');
+		die('Missing permission to access this area!');
 	}
 
 

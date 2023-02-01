@@ -12,6 +12,10 @@ class Post extends Component {
 		add_filter( Plugin::FILTER_PREPARE_POST, [ $this, 'prepare_post' ], 10, 2 );
 	}
 
+	public function isHeadlessPostType(string $postType){
+		return apply_filters(Plugin::FILTER_IS_HEADLESS_POST_TYPE, true, $postType);
+	}
+
 	public function prepare_post( array $response, $id_or_post ): array {
 		$post            = get_post( $id_or_post );
 		$featuredImageId = get_post_thumbnail_id( $post );
