@@ -57,8 +57,12 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Gutenberg $gutenberg
  * @property Headers $headers
  * @property Post $post
+ * @property Dashboard $dashboard
+ * @property Headquarter $headquarter
  */
 class Plugin extends Components\Plugin {
+
+	const DOMAIN = "headless";
 
 	const REST_NAMESPACE = "headless/v1";
 	const FILTER_IS_HEADLESS_POST_TYPE = "headless_is_headless_post_type";
@@ -78,7 +82,9 @@ class Plugin extends Components\Plugin {
 
 	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
 
+	const FILTER_FRONTENDS = "headless_frontends";
 	const FILTER_REVALIDATE_URLS = "headless_revalidate_urls";
+	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_urls";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
 
@@ -89,15 +95,17 @@ class Plugin extends Components\Plugin {
 
 		$this->dbRevalidation = new RevalidationDatabase();
 
-		$this->security   = new Security( $this );
-		$this->headers    = new Headers( $this );
-		$this->routes     = new Routes( $this );
-		$this->extensions = new Extensions( $this );
-		$this->query      = new Query( $this );
-		$this->preview    = new Preview( $this );
-		$this->revalidate = new Revalidate( $this );
-		$this->gutenberg  = new Gutenberg( $this );
-		$this->post       = new Post( $this );
+		$this->security    = new Security( $this );
+		$this->headers     = new Headers( $this );
+		$this->routes      = new Routes( $this );
+		$this->extensions  = new Extensions( $this );
+		$this->query       = new Query( $this );
+		$this->preview     = new Preview( $this );
+		$this->headquarter = new Headquarter( $this );
+		$this->revalidate  = new Revalidate( $this );
+		$this->gutenberg   = new Gutenberg( $this );
+		$this->post        = new Post( $this );
+		$this->dashboard   = new Dashboard( $this );
 
 		$this->schedule = new Schedule( $this );
 

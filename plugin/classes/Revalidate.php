@@ -3,6 +3,7 @@
 namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
+use Palasthotel\WordPress\Headless\Model\Frontend;
 
 class Revalidate extends Component {
 
@@ -35,6 +36,18 @@ class Revalidate extends Component {
 			$result = wp_remote_get($url);
 			if(is_wp_error($result)) return $result;
 		}
+		return true;
+	}
+
+	function revalidateByPath(Frontend $frontend, $path){
+		$url = $frontend->getBaseUrl()."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
+		$url = apply_filters(Plugin::FILTER_REVALIDATE_BY_PATH_URL, $url, $path, $frontend);
+
+		$url = add_query_arg('invalidate_cache', time(),$url);
+		$result = wp_remote_get($url);
+
+		if($result instanceof \WP_Error) return $result;
+
 		return true;
 	}
 
