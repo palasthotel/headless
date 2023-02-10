@@ -11,10 +11,13 @@ class Headquarter extends Component {
 	 * @return Frontend[]
 	 */
 	public function getFrontends(): array {
-		$baseUrl = (empty(HEADLESS_HEAD_BASE_URL)) ? home_url() : HEADLESS_HEAD_BASE_URL;
-		return apply_filters(Plugin::FILTER_FRONTENDS, [
-			new Frontend(untrailingslashit($baseUrl))
-		]);
+		$baseUrl = trailingslashit(
+			empty( HEADLESS_HEAD_BASE_URL ) ? home_url() : HEADLESS_HEAD_BASE_URL
+		);
+
+		return apply_filters( Plugin::FILTER_FRONTENDS, [
+			new Frontend( $baseUrl )
+		], $baseUrl );
 	}
 
 

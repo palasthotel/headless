@@ -84,7 +84,8 @@ class Plugin extends Components\Plugin {
 
 	const FILTER_FRONTENDS = "headless_frontends";
 	const FILTER_REVALIDATE_URLS = "headless_revalidate_urls";
-	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_urls";
+	const FILTER_REVALIDATE_BY_POST_ID_URL = "headless_revalidate_by_post_id_url";
+	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_url";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
 

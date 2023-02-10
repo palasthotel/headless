@@ -23,27 +23,36 @@ class Revalidate extends Component {
 		$this->plugin->dbRevalidation->addPost($comment->comment_post_ID);
 	}
 
-	function getPostRevalidateUrls($post_id){
-		$baseUrl = (empty(HEADLESS_HEAD_BASE_URL)) ? home_url() : HEADLESS_HEAD_BASE_URL;
-		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&post=".$post_id;
-		return apply_filters(Plugin::FILTER_REVALIDATE_URLS, [$url], $post_id);
+	/**
+	 * @param $post_id
+	 *
+	 * @return (\WP_Error|true)[]
+	 */
+	function revalidatePost($post_id) {
+		$frontends = $this->plugin->headquarter->getFrontends();
+		$results = [];
+		foreach ($frontends as $frontend){
+			$results[] = $this->revalidateByPostId($frontend, $post_id);
+		}
+		return $results;
 	}
 
-	function revalidatePost($post_id) {
-		$urls = $this->plugin->revalidate->getPostRevalidateUrls($post_id);
-		foreach ($urls as $url){
-			$url = add_query_arg('invalidate_cache', time(),$url);
-			$result = wp_remote_get($url);
-			if(is_wp_error($result)) return $result;
-		}
-		return true;
+	function revalidateByPostId(Frontend $frontend, $post_id) {
+		$url = untrailingslashit($frontend->getBaseUrl())."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&post=".$post_id;
+		return $this->executeRavalidation(
+			apply_filters(Plugin::FILTER_REVALIDATE_BY_POST_ID_URL, $url, $post_id, $frontend)
+		);
 	}
 
 	function revalidateByPath(Frontend $frontend, $path){
-		$url = $frontend->getBaseUrl()."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
-		$url = apply_filters(Plugin::FILTER_REVALIDATE_BY_PATH_URL, $url, $path, $frontend);
+		$url = untrailingslashit($frontend->getBaseUrl())."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
+		return $this->executeRavalidation(
+			apply_filters(Plugin::FILTER_REVALIDATE_BY_PATH_URL, $url, $path, $frontend)
+		);
+	}
 
-		$url = add_query_arg('invalidate_cache', time(),$url);
+	private function executeRavalidation($finalUrl){
+		$url = add_query_arg('invalidate___cache', time(),$finalUrl);
 		$result = wp_remote_get($url);
 
 		if($result instanceof \WP_Error) return $result;

@@ -54,11 +54,14 @@ class Gutenberg extends Component {
 
 	public function reload(){
 		$postId = intval($_GET["post"]);
-		$result = $this->plugin->revalidate->revalidatePost($postId);
-		if($result instanceof \WP_Error){
-			wp_send_json_error($result);
+		$results = $this->plugin->revalidate->revalidatePost($postId);
+		$errors = array_values(array_filter($results, function($result){
+			return $result instanceof \WP_Error;
+		}));
+		if(count($errors) > 0){
+			wp_send_json_error($errors[0]);
 		} else {
-			wp_send_json_success($result);
+			wp_send_json_success(true);
 		}
 		exit;
 	}
