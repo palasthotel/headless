@@ -21,17 +21,34 @@ class Schedule extends Component {
 		}
 	}
 
+	public function getNextSchedule(){
+		return wp_next_scheduled(Plugin::SCHEDULE_REVALIDATE);
+	}
+
+	public function getLastRevalidationRun(): int{
+		return intval(get_option(Plugin::OPTION_LAST_REVALIDATION_RUN, 0));
+	}
+
+	public function setLastRevalidationRun(int $time) {
+		update_option(Plugin::OPTION_LAST_REVALIDATION_RUN, $time);
+	}
+
 	public function revalidate(){
-		$lastRun = get_option(Plugin::OPTION_LAST_REVALIDATION_RUN, "");
-		$now = date("Y-m-d H:i:s");
+		$lastRun = $this->getLastRevalidationRun();
+		$now = time();
 
-		$postIds = $this->plugin->dbRevalidation->getPendingPosts($lastRun);
+		$postIds = $this->plugin->dbRevalidation->getPendingPosts();
 
+		if(class_exists("\WP_CLI")){
+			\WP_CLI::log("headless: lastRun $lastRun ");
+			\WP_CLI::log("headless: revalidate post ids ".implode(", ", $postIds));
+		}
 		foreach ($postIds as $id){
 			$this->plugin->revalidate->revalidatePost($id);
+			$this->plugin->dbRevalidation->setPostRevalidated($id);
 		}
 
-		update_option(Plugin::OPTION_LAST_REVALIDATION_RUN, $now);
+		$this->setLastRevalidationRun($now);
 
 	}
 

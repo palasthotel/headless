@@ -21,26 +21,52 @@ class RevalidationDatabase extends Database {
 	 *
 	 * @return bool|int
 	 */
-	public function addPost( $post_id, $at = "" ) {
+	public function addPost( $post_id ) {
 		return $this->wpdb->replace(
 			$this->table,
 			[
 				"content_id"    => $post_id,
 				"content_type"  => "post",
-				"revalidate_at" => empty($at) ? date( "Y-m-d H:i:s" ) : $at,
+				"revalidated_at" => null,
+				"revalidation_state" => "pending",
 			]
 		);
 	}
 
 	/**
-	 * @param string $after Y-m-d H:i:s
+	 * @param int $after
 	 *
 	 * @return Int[]
 	 */
-	public function getPendingPosts(string $after = "") {
-		$afterSQL = !empty($after) ? $this->wpdb->prepare("AND revalidate_at >= %s", $after) : "";
-		$sql = "SELECT content_id FROM $this->table WHERE content_type = 'post' $afterSQL";
+	public function getPendingPosts() {
+		$sql = "SELECT content_id FROM $this->table WHERE content_type = 'post' AND revalidation_state = 'pending'";
 		return  $this->wpdb->get_col( $sql);
+	}
+
+	/**
+	 * @param int $after
+	 *
+	 * @return int
+	 */
+	public function countPendingPosts(): int{
+		$sql = "SELECT count(content_id) FROM $this->table WHERE content_type = 'post' AND revalidation_state = 'pending'";
+		return intval($this->wpdb->get_var($sql));
+	}
+
+	public function setPostRevalidated(int $post_id) {
+		return $this->wpdb->update(
+			$this->table,
+			[
+				"revalidated_at" => current_time( 'mysql' ),
+				"revalidation_state" => "revalidated",
+			],
+			[
+				"content_id" => $post_id,
+				"content_type" => "post",
+			],
+			["%s", "%s"],
+			["%d", "%s"]
+		);
 	}
 
 	public function createTables() {
@@ -50,10 +76,13 @@ class RevalidationDatabase extends Database {
 			 id bigint(20) unsigned auto_increment,
     		 content_id bigint(20) unsigned NOT NULL,
     		 content_type varchar(40) NOT NULL,
-    		 revalidate_at DATETIME NOT NULL,
+    		 revalidation_state varchar(30),
+    		 revalidated_at TIMESTAMP,
 			 primary key (id),
     		 key (content_id),
 			 key (content_type),
+    		 key (revalidation_state),
+    		 key (revalidated_at),
     		 unique key exact_content (content_id, content_type)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 	}

@@ -19,9 +19,18 @@ class Dashboard extends Components\Component {
 	}
 
 	public function render(){
+        $timeFormat = get_option('time_format');
+        $dateFormat = get_option('date_format');
+
+        $lastRevalidationRun = $this->plugin->schedule->getLastRevalidationRun();
+        $lastRevalidationRunDate = strtotime($lastRevalidationRun);
+        $nextRevalidationRun = $this->plugin->schedule->getNextSchedule();
 
 		$frontends = $this->plugin->headquarter->getFrontends();
 		?>
+            <p>Last automatic revalidation run: <?= date_i18n($dateFormat,$lastRevalidationRunDate)." ".date_i18n($timeFormat, $lastRevalidationRunDate); ?></p>
+            <p>Next automatic revalidation run: <?= ($nextRevalidationRun === false) ? "🚨 Broken" : date_i18n($dateFormat, $nextRevalidationRun)." ".date_i18n($timeFormat, $nextRevalidationRun); ?></p>
+            <p>Pending posts to be revalidated: <?= $this->plugin->dbRevalidation->countPendingPosts(); ?></p>
             <p>Available frontends:</p>
             <ol>
                 <?php
