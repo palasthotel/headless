@@ -88,6 +88,7 @@ class Plugin extends Components\Plugin {
 	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_url";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
+	const ACTION_REVALIDATION_SIDE_EFFECT = "headless_revalidation_side_effect";
 
 	const OPTION_SCHEMA_VERSION = "headless_schema_version";
 
@@ -122,3 +123,5 @@ class Plugin extends Components\Plugin {
 }
 
 Plugin::instance();
+
+require_once __DIR__."/public-functions.php";

@@ -41,7 +41,7 @@ class Dashboard extends Components\Component {
 		                $path = "/".urlencode(sanitize_text_field($_POST["headless_invalidate"]));
 		                $cleared = $this->plugin->revalidate->revalidateByPath($frontend, $path);
 	                }
-                    $basePath = $frontend->getBaseUrl();
+                    $basePath = untrailingslashit($frontend->getBaseUrl());
                     $suffix = "";
                     if($cleared === true){
                         $suffix = "$path 🧹 <strong>cleared</strong>";

@@ -6,8 +6,6 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Schedule extends Component {
 
-
-
 	public function onCreate() {
 		parent::onCreate();
 
@@ -47,6 +45,9 @@ class Schedule extends Component {
 			$this->plugin->revalidate->revalidatePost($id);
 			$this->plugin->dbRevalidation->setPostRevalidated($id);
 		}
+
+		// do stuff like revalidating landingpages
+		do_action(Plugin::ACTION_REVALIDATION_SIDE_EFFECT, $postIds);
 
 		$this->setLastRevalidationRun($now);
 

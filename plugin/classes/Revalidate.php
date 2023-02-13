@@ -53,7 +53,7 @@ class Revalidate extends Component {
 
 	private function executeRavalidation($finalUrl){
 		$url = add_query_arg('invalidate___cache', time(),$finalUrl);
-		$result = wp_remote_get($url);
+		$result = wp_remote_get($url, ["timeout" => 30]);
 
 		if($result instanceof \WP_Error) return $result;
 
