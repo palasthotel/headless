@@ -1,45 +1,61 @@
 import {getReloadAjaxUrl} from "../store/window";
 import {useSelect} from '@wordpress/data';
-import {useState} from "@wordpress/element";
+import {useMemo, useState} from "@wordpress/element";
 
-type State = "idle" | "loading" | "success" | "error"
+export type State = "idle" | "loading" | "success" | "error"
 
-type UseReload = {
-    state: State
-    reload: () => void
-}
 
 type Post = {
     id: number
+    link: string
+    status: string
 }
-export const useReload = (): UseReload => {
+
+const usePost = (): Post|undefined => {
+    return useSelect<Post>(
+        select => select("core/editor").getCurrentPost(),
+        []
+    );
+}
+
+export const useCanRevalidate = ()=> {
+    return usePost().status == "publish";
+}
+
+
+export const useReload = (frontend:number) => {
 
     const [state, setState] = useState<State>("idle");
-    const post = useSelect<Post>(
-        select => select("core/editor").getCurrentPost()
-    );
+    const post = usePost();
+
+    const path = useMemo(()=>{
+        if(post?.link){
+            const url = new URL(post?.link);
+            return url.pathname;
+        } else {
+            return "";
+        }
+    }, [post.link]);
 
     return {
         state,
         reload: () => {
             setState("loading");
-            fetch(getReloadAjaxUrl(post.id))
-                .then(res => res.json())
-                .then(json => {
+            (async ()=>{
+                try {
+                    const response = await fetch(getReloadAjaxUrl(frontend, path));
+                    const json = await response.json()
                     if(json.success){
                         setState("success");
                     } else {
                         console.error(json);
                         setState("error");
                     }
-                })
-                .catch(() => {
+                } catch(e) {
                     setState("error");
-                }).finally(() => {
-                setTimeout(() => {
-                    setState("idle");
-                }, 4000);
-            });
+                }
+
+            })();
         }
     }
 }

@@ -43,7 +43,8 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByPath(Frontend $frontend, $path){
-		$url = untrailingslashit($frontend->getBaseUrl())."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
+		$baseUrl = $frontend->getBaseUrl();
+		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
 		return $this->executeRavalidation(
 			apply_filters(Plugin::FILTER_REVALIDATE_BY_PATH_URL, $url, $path, $frontend)
 		);

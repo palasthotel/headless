@@ -20,7 +20,6 @@ class Gutenberg extends Component {
 
 		add_action( 'init', [ $this, 'init' ], 0 );
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue' ] );
-		add_action( 'wp_ajax_headless_reload', [ $this, 'reload' ] );
 	}
 
 	public function init() {
@@ -32,12 +31,18 @@ class Gutenberg extends Component {
 			self::HANDLE_SCRIPT,
 			"Headless",
 			[
-				"ajax" => admin_url('admin-ajax.php'),
-				"actions" => [
-					"reload" => "headless_reload",
+				"ajax"                => admin_url( 'admin-ajax.php' ),
+				"frontends"           => array_map(
+					function ( $frontend ) {
+						return $frontend->getBaseUrl();
+					},
+					$this->plugin->headquarter->getFrontends()
+				),
+				"actions"             => [
+					"revalidate" => Ajax::GET_ACTION,
 				],
 				"post_id_placeholder" => Preview::POST_ID_PLACEHOLDER,
-				"preview_url" => $this->plugin->preview->getRedirectLink(null),
+				"preview_url"         => $this->plugin->preview->getRedirectLink( null ),
 			]
 		);
 		$this->assets->registerStyle(
@@ -47,22 +52,10 @@ class Gutenberg extends Component {
 	}
 
 	public function enqueue() {
-		if(!$this->plugin->post->isHeadlessPostType(get_post_type())) return;
-		wp_enqueue_script( self::HANDLE_SCRIPT );
-		wp_enqueue_style(self::HANDLE_STYLE);
-	}
-
-	public function reload(){
-		$postId = intval($_GET["post"]);
-		$results = $this->plugin->revalidate->revalidatePost($postId);
-		$errors = array_values(array_filter($results, function($result){
-			return $result instanceof \WP_Error;
-		}));
-		if(count($errors) > 0){
-			wp_send_json_error($errors[0]);
-		} else {
-			wp_send_json_success(true);
+		if ( ! $this->plugin->post->isHeadlessPostType( get_post_type() ) ) {
+			return;
 		}
-		exit;
+		wp_enqueue_script( self::HANDLE_SCRIPT );
+		wp_enqueue_style( self::HANDLE_STYLE );
 	}
 }

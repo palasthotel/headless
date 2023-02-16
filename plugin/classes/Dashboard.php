@@ -5,17 +5,17 @@ namespace Palasthotel\WordPress\Headless;
 class Dashboard extends Components\Component {
 	public function onCreate() {
 		parent::onCreate();
-
 		add_action('wp_dashboard_setup', [$this, 'setup']);
-
 	}
 
 	public function setup(){
-		wp_add_dashboard_widget(
-			Plugin::DOMAIN,
-			__("Headless", Plugin::DOMAIN),
-			array($this, 'render')
-		);
+        if(!current_user_can('edit_posts')) return;
+
+        wp_add_dashboard_widget(
+            Plugin::DOMAIN,
+            __("Headless", Plugin::DOMAIN),
+            array($this, 'render')
+        );
 	}
 
 	public function render(){
@@ -92,7 +92,6 @@ class Dashboard extends Components\Component {
                     }
 
                     const queryFrontend = (frontend) => {
-                        console.debug("queryFrontend", frontend)
                         return document.querySelector(`[data-headless-frontend="${frontend}"]`)
                     };
 
@@ -105,7 +104,6 @@ class Dashboard extends Components\Component {
                     }
 
                     const form = queryForm();
-                    console.debug("form", form);
                     const input = queryInput(form);
                     form.addEventListener("submit", (e)=>{
                         e.preventDefault();
@@ -126,11 +124,9 @@ class Dashboard extends Components\Component {
                             return revalidateFrontendPath(frontend, pathEncoded)
                         });
 
-
                         Promise.all(promises)
                             .then((responses) => {
                                 responses.forEach((json, index) =>{
-                                    console.debug("json" , json, index);
                                     frontendMessage(
                                         queryFrontend(index),
                                         json.success ? "✅" : "⚠️"

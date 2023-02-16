@@ -1,34 +1,117 @@
 import {PluginDocumentSettingPanel} from '@wordpress/edit-post';
 import {Button} from "@wordpress/components";
-import {useReload} from "../hooks/use-reload";
+import {useReload, State, useCanRevalidate} from "../hooks/use-reload";
+import {getFrontends} from "../store/window";
+import {useEffect, useMemo, useState} from "@wordpress/element";
 
-export default function ReloadPanel(
+type Controller = {
+    add: (frontend: number, fn: () => void) => void
+    run: () => void
+}
 
-) {
+const buildController = (): Controller => {
+    const fns = new Map<number, ()=>void>();
+    return {
+        add: (frontend, fn) => {
+            fns.set(frontend, fn);
+        },
+        run: () => {
+            fns.forEach((fn) => {
+                fn();
+            });
+        }
+    }
+}
 
+type FrontendProps = {
+    index: number
+    baseUrl: string
+    controller: Controller,
+    onStateChanged: (frontend: number, state: State) => void
+}
+const FrontendItem = (
+    {
+        index,
+        baseUrl,
+        controller,
+        onStateChanged,
+    }: FrontendProps
+) => {
     const {
         state,
         reload,
-    } = useReload();
+    } = useReload(index);
 
+    useEffect(() => {
+        controller.add(index, reload);
+    }, [index]);
+
+    useEffect(() => {
+        onStateChanged(index, state);
+    }, [state])
+
+    return <div title={baseUrl}>
+        Frontend
+        {state == "loading" && <> 🧹</>}
+        {state == "success" && <> ✅</>}
+        {state == "error" && <> 🚨</>}
+    </div>
+}
+
+export default function ReloadPanel() {
+
+    const frontends = getFrontends();
+
+    const controller = useMemo(() => buildController(), []);
+    const [loadingState, setLoadingState] = useState<{ [key: number]: boolean}>({});
+    const canRevalidate = useCanRevalidate();
+
+    const handleClick = () => {
+        controller.run();
+    }
+
+    console.debug(canRevalidate, loadingState);
+
+    const isLoading = Object.values(loadingState).find(value => value == true);
 
     return (
         <PluginDocumentSettingPanel
             title="Headless"
         >
-            <Button
-                variant="secondary"
-                disabled={state != "idle"}
-                onClick={reload}
-            >
-                Reload cache
-            </Button>
-            {state == "idle" && <p className="description">
-                Reload contents in headless frontend.
-            </p>}
-            {state == "loading" && <p>Loading...</p>}
-            {state == "success" && <p>🎉 Success</p>}
-            {state == "error" && <p>🚨 Something went wrong</p>}
+            {canRevalidate ?
+                <>
+                    <ol>
+
+                        {frontends.map((frontend, index) => {
+                            return <li key={index}>
+                                <FrontendItem
+                                    baseUrl={frontend}
+                                    index={index}
+                                    controller={controller}
+                                    onStateChanged={(index, state) => {
+                                        setLoadingState(prev => {
+                                            const copy = {...prev};
+                                            copy[index] = state  == "loading";
+                                            return copy;
+                                        });
+                                    }}
+                                />
+                            </li>
+                        })}
+                    </ol>
+
+                    <Button
+                        variant="secondary"
+                        disabled={isLoading || !canRevalidate}
+                        onClick={handleClick}
+                    >
+                        Revalidate cache
+                    </Button>
+                </>
+                :
+                <p className="description">Only published contents can be revalidated.</p>
+            }
+
 
         </PluginDocumentSettingPanel>
     )
