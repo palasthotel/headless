@@ -38,10 +38,8 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByPostId(Frontend $frontend, $post_id) {
-		$url = untrailingslashit($frontend->getBaseUrl())."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&post=".$post_id;
-		return $this->executeRavalidation(
-			apply_filters(Plugin::FILTER_REVALIDATE_BY_POST_ID_URL, $url, $post_id, $frontend)
-		);
+		$path = parse_url(get_post_permalink($post_id), PHP_URL_PATH);
+		return $this->revalidateByPath($frontend, $path);
 	}
 
 	function revalidateByPath(Frontend $frontend, $path){
@@ -57,7 +55,9 @@ class Revalidate extends Component {
 
 		if($result instanceof \WP_Error) return $result;
 
-		return true;
+		$responseCode = wp_remote_retrieve_response_code($result);
+		$isSuccess = $responseCode == 200;
+		return $isSuccess ? true : new \WP_Error($responseCode, "Error");
 	}
 
 
