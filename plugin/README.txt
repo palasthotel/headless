@@ -30,6 +30,7 @@ Adds features to use WordPress as headless CMS
 = 1.8.0 =
 * Feature: Dashboard widget
 * Refactor: revalidation hooks and process
+* Optimization: Gutenberg panel
 * Optimization: migration to new revalidation database schema
 
 = 1.7.5 =
