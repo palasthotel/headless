@@ -129,7 +129,7 @@ class Dashboard extends Components\Component {
                                 responses.forEach((json, index) =>{
                                     frontendMessage(
                                         queryFrontend(index),
-                                        json.success ? "✅" : "⚠️"
+                                        json.success ? "✅" : "🚨"
                                     )
                                 })
                             })
