@@ -11,7 +11,7 @@ type Post = {
     status: string
 }
 
-const usePost = (): Post|undefined => {
+export const usePost = (): Post|undefined => {
     return useSelect<Post>(
         select => select("core/editor").getCurrentPost(),
         []

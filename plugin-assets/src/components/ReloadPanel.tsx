@@ -1,6 +1,6 @@
 import {PluginDocumentSettingPanel} from '@wordpress/edit-post';
 import {Button} from "@wordpress/components";
-import {useReload, State, useCanRevalidate} from "../hooks/use-reload";
+import {useReload, State, useCanRevalidate, usePost} from "../hooks/use-reload";
 import {getFrontends} from "../store/window";
 import {useEffect, useMemo, useState} from "@wordpress/element";
 
@@ -42,6 +42,14 @@ const FrontendItem = (
         reload,
     } = useReload(index);
 
+    const post = usePost();
+
+    const url = useMemo(()=>{
+        const link = post.link;
+        const url = new URL(link);;
+        return baseUrl.replace(/^\/|\/$/g, '')+url.pathname;
+    }, [post.link])
+
     useEffect(() => {
         controller.add(index, reload);
     }, [index]);
@@ -50,8 +58,8 @@ const FrontendItem = (
         onStateChanged(index, state);
     }, [state])
 
-    return <div title={baseUrl}>
-        Frontend
+    return <div title={url}>
+        <a href={url} target="_blank">Frontend {index}</a>
         {state == "loading" && <> 🧹</>}
         {state == "success" && <> ✅</>}
         {state == "error" && <> 🚨</>}
