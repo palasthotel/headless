@@ -29,7 +29,9 @@ Adds features to use WordPress as headless CMS
 
 = 1.9.0 =
 * Feature: Add headless_revalidate_permalink_path filter
+* Optimization: Add revalidation state "error"
 * Optimization: Add cli log messages
+* Optimization: Add cron logger support for messages
 
 = 1.8.0 =
 * Feature: Dashboard widget
