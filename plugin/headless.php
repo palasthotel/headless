@@ -85,6 +85,7 @@ class Plugin extends Components\Plugin {
 
 	const FILTER_FRONTENDS = "headless_frontends";
 	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_url";
+	const FILTER_REVALIDATE_PERMALINK_PATH = "headless_revalidate_permalink_path";
 	const OPTION_LAST_REVALIDATION_RUN = "headless_last_revalidation_run";
 	const SCHEDULE_REVALIDATE = "headless_schedule_revalidate";
 	const ACTION_REVALIDATION_SIDE_EFFECT = "headless_revalidation_side_effect";
@@ -108,7 +109,7 @@ class Plugin extends Components\Plugin {
 		$this->post        = new Post( $this );
 		$this->dashboard   = new Dashboard( $this );
 		$this->ajax        = new Ajax( $this );
-		$this->schedule = new Schedule( $this );
+		$this->schedule    = new Schedule( $this );
 
 		new Migration( $this );
 

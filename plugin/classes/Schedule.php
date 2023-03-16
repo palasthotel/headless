@@ -42,7 +42,15 @@ class Schedule extends Component {
 			\WP_CLI::log("headless: revalidate post ids ".implode(", ", $postIds));
 		}
 		foreach ($postIds as $id){
-			$this->plugin->revalidate->revalidatePost($id);
+			$results = $this->plugin->revalidate->revalidatePost($id);
+			if(class_exists("\WP_CLI")){
+				foreach ($results as $result){
+					if($result instanceof \WP_Error){
+						error_log($result->get_error_message());
+						\WP_CLI::warning("revalidate post id: $id");
+					}
+				}
+			}
 			$this->plugin->dbRevalidation->setPostRevalidated($id);
 		}
 

@@ -38,8 +38,12 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByPostId(Frontend $frontend, $post_id) {
-		$path = parse_url(get_post_permalink($post_id), PHP_URL_PATH);
-		return $this->revalidateByPath($frontend, $path);
+		$permalink = get_permalink($post_id);
+		$path = parse_url($permalink, PHP_URL_PATH);
+		return $this->revalidateByPath(
+			$frontend,
+			apply_filters(Plugin::FILTER_REVALIDATE_PERMALINK_PATH, $path, $post_id,  $path, $frontend)
+		);
 	}
 
 	function revalidateByPath(Frontend $frontend, $path){
@@ -51,7 +55,12 @@ class Revalidate extends Component {
 	}
 
 	private function executeRavalidation($finalUrl){
-		$url = add_query_arg('invalidate___cache', time(),$finalUrl);
+		$url = add_query_arg('invalidate___cache', time(), $finalUrl);
+
+		if(class_exists("\WP_CLI")){
+			\WP_CLI::log("headless: execute revalidation -> $url");
+		}
+
 		$result = wp_remote_get($url, ["timeout" => 30]);
 
 		if($result instanceof \WP_Error) return $result;
