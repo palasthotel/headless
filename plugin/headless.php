@@ -60,6 +60,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Dashboard $dashboard
  * @property Headquarter $headquarter
  * @property Ajax $ajax
+ * @property Log $log
  */
 class Plugin extends Components\Plugin {
 
@@ -96,6 +97,7 @@ class Plugin extends Components\Plugin {
 	function onCreate() {
 
 		$this->dbRevalidation = new RevalidationDatabase();
+		$this->log            = new Log( $this );
 
 		$this->security    = new Security( $this );
 		$this->headers     = new Headers( $this );

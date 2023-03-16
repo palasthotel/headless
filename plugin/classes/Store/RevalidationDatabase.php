@@ -53,12 +53,12 @@ class RevalidationDatabase extends Database {
 		return intval($this->wpdb->get_var($sql));
 	}
 
-	public function setPostRevalidated(int $post_id) {
+	public function setPostState(int $post_id, $state = "revalidated") {
 		return $this->wpdb->update(
 			$this->table,
 			[
 				"revalidated_at" => current_time( 'mysql' ),
-				"revalidation_state" => "revalidated",
+				"revalidation_state" => $state,
 			],
 			[
 				"content_id" => $post_id,

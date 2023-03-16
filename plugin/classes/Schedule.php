@@ -37,21 +37,27 @@ class Schedule extends Component {
 
 		$postIds = $this->plugin->dbRevalidation->getPendingPosts();
 
-		if(class_exists("\WP_CLI")){
-			\WP_CLI::log("headless: lastRun $lastRun ");
-			\WP_CLI::log("headless: revalidate post ids ".implode(", ", $postIds));
-		}
+		$this->plugin->log->add("headless: lastRun $lastRun ");
+		$this->plugin->log->add("headless: revalidate post ids ".implode(", ", $postIds));
+
 		foreach ($postIds as $id){
 			$results = $this->plugin->revalidate->revalidatePost($id);
-			if(class_exists("\WP_CLI")){
-				foreach ($results as $result){
-					if($result instanceof \WP_Error){
-						error_log($result->get_error_message());
-						\WP_CLI::warning("revalidate post id: $id");
-					}
+
+			$success = true;
+			foreach ($results as $result){
+				if($result instanceof \WP_Error){
+					$this->plugin->log->warning($result->get_error_message());
+					$title = get_the_title($id);
+					$this->plugin->log->warning("revalidate post id: $id $title");
+					$success = false;
 				}
 			}
-			$this->plugin->dbRevalidation->setPostRevalidated($id);
+
+			if($success){
+				$this->plugin->dbRevalidation->setPostState($id);
+			} else {
+				$this->plugin->dbRevalidation->setPostState($id, "error");
+			}
 		}
 
 		// do stuff like revalidating landingpages
