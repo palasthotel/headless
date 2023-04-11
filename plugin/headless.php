@@ -54,7 +54,7 @@ require_once __DIR__ . "/vendor/autoload.php";
  * @property Revalidate $revalidate
  * @property RevalidationDatabase $dbRevalidation
  * @property Schedule $schedule
- * @property Gutenberg $gutenberg
+ * @property PluginAssets $gutenberg
  * @property Headers $headers
  * @property Post $post
  * @property Dashboard $dashboard
@@ -107,7 +107,7 @@ class Plugin extends Components\Plugin {
 		$this->preview     = new Preview( $this );
 		$this->headquarter = new Headquarter( $this );
 		$this->revalidate  = new Revalidate( $this );
-		$this->gutenberg   = new Gutenberg( $this );
+		$this->gutenberg   = new PluginAssets( $this );
 		$this->post        = new Post( $this );
 		$this->dashboard   = new Dashboard( $this );
 		$this->ajax        = new Ajax( $this );

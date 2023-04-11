@@ -3,6 +3,7 @@
 namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
+use WP_Post;
 
 class Preview extends Component {
 
@@ -24,13 +25,28 @@ class Preview extends Component {
 		return rtrim(get_admin_url(),"/") . "/admin-ajax.php?action=headless_preview&post=$id";
 	}
 
-	public function getHeadlessPreviewLink( \WP_Post $post ) {
-		$link = untrailingslashit( HEADLESS_HEAD_BASE_URL ) . "/api/preview?post={$post->ID}&post_type=$post->post_type&secret_token=" . HEADLESS_SECRET_TOKEN;
+    public function getHeadlessPreviewPath(){
+        return "/api/preview?secret_token=".HEADLESS_SECRET_TOKEN;
+    }
+
+    /**
+     * @param WP_Post|null $post
+     * @return string
+     */
+	public function getHeadlessPreviewLink( $post = null ) {
+
+        $path = $this->getHeadlessPreviewPath();
+
+		$link = untrailingslashit( HEADLESS_HEAD_BASE_URL ) . $path;
+
+        if($post instanceof WP_Post){
+            $link .= "&post=$post->ID&post_type=$post->post_type";
+        }
 
 		return apply_filters( Plugin::FILTER_PREVIEW_URL, $link, $post, $link );
 	}
 
-	public function preview_post_link( string $link, \WP_Post $post ) {
+	public function preview_post_link( string $link, WP_Post $post ) {
 
 		if(!$this->plugin->post->isHeadlessPostType($post->post_type)) return $link;
 
@@ -45,7 +61,7 @@ class Preview extends Component {
 	public function admin_preview() {
 		$postId = intval( $_GET["post"] );
 		$post   = get_post( $postId );
-		if ( ! ( $post instanceof \WP_Post ) ) {
+		if ( ! ( $post instanceof WP_Post ) ) {
 			echo "Post not found";
 			exit;
 		}

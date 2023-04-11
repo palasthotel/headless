@@ -4,21 +4,21 @@
   "description": "Assets for headless plugin",
   "private": true,
   "scripts": {
-    "watch": "wp-scripts start src/gutenberg.ts --output-path=../plugin/dist",
-    "build": "wp-scripts build src/gutenberg.ts --output-path=../plugin/dist"
+    "watch": "wp-scripts start",
+    "build": "wp-scripts build"
   },
   "author": "Edward Bock <edward.bock@palasthotel.de> (https://www.edwardbock.de/)",
   "license": "ISC",
   "devDependencies": {
-    "@wordpress/scripts": "^25.4.0"
+    "@wordpress/scripts": "^26.1.0"
   },
   "dependencies": {
-    "@wordpress/components": "^23.4.0",
-    "@wordpress/data": "^8.4.0",
-    "@wordpress/edit-post": "^7.4.0",
-    "@wordpress/element": "^5.4.0",
-    "@wordpress/i18n": "^4.27.0",
-    "@wordpress/icons": "^9.18.0",
-    "@wordpress/plugins": "^5.4.0"
+    "@wordpress/components": "^23.7.0",
+    "@wordpress/data": "^9.0.0",
+    "@wordpress/edit-post": "^7.7.0",
+    "@wordpress/element": "^5.7.0",
+    "@wordpress/i18n": "^4.30.0",
+    "@wordpress/icons": "^9.21.0",
+    "@wordpress/plugins": "^5.7.0"
   }
 }
