@@ -18,7 +18,8 @@ class ImageBlockPreparation implements IBlockPreparation {
 		if(isset($block["attrs"]) && isset($block["attrs"]["id"])){
 			$imageId = $block["attrs"]["id"];
 			PostContentAttachmentCollector::add(get_the_ID(), $imageId);
-			$block["attrs"] = static::addAttachmentAttributes($imageId, $block["attrs"], $block["innerHTML"]);
+			$innerHTML = (isset($block["innerHTML"])) ? $block["innerHTML"] : "";
+			$block["attrs"] = static::addAttachmentAttributes($imageId, $block["attrs"], $innerHTML);
 		}
 
 		unset($block["innerHTML"]);

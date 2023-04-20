@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.1.1
+Tested up to: 6.2.0
 Requires PHP: 7.4
-Stable tag: 1.8.0
+Stable tag: 1.9.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -26,6 +26,9 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 1.9.1 =
+* Bugfix: Undefined property innerHTML in ImageBockPreparation.php
 
 = 1.9.0 =
 * Feature: Add headless_revalidate_permalink_path filter
