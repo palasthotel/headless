@@ -15,12 +15,10 @@ class RevalidationDatabase extends Database {
 		$this->table = $this->wpdb->prefix . "headless_revalidate";
 	}
 
-	/**
-	 * @param int $post_id
-	 * @param string $at
-	 *
-	 * @return bool|int
-	 */
+    /**
+     * @param int $post_id
+     * @return bool|int
+     */
 	public function addPost( $post_id ) {
 		return $this->wpdb->replace(
 			$this->table,
@@ -77,7 +75,7 @@ class RevalidationDatabase extends Database {
     		 content_id bigint(20) unsigned NOT NULL,
     		 content_type varchar(40) NOT NULL,
     		 revalidation_state varchar(30),
-    		 revalidated_at TIMESTAMP,
+    		 revalidated_at TIMESTAMP default null,
 			 primary key (id),
     		 key (content_id),
 			 key (content_type),
