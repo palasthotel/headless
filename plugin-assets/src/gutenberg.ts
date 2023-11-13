@@ -59,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // --------------------------------------------------------
     // workaround script until there's an official solution for https://github.com/WordPress/gutenberg/issues/13998
     setInterval(checkPreview, 300);
-    const editor = document.querySelector("#editor");
 
     function checkPreview() {
         const postId = getCurrentPostId();
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // replace notice link
-        const notices =  editor.querySelectorAll<HTMLAnchorElement>(".components-snackbar-list .components-snackbar__content a.components-button");
+        const notices =  document.querySelectorAll<HTMLAnchorElement>(".components-snackbar-list .components-snackbar__content a.components-button");
         notices.forEach((notice) => {
             if(
                 notice.href.includes("?post="+postId) // custom post types
@@ -86,16 +85,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 notice.href = previewUrl;
                 notice.target = "wp-preview-"+postId;
             }
-        })
+        });
 
         // replace this special preview link
-        const previewGroups = editor.querySelectorAll(".edit-post-post-preview-dropdown .components-menu-group");
+        const previewGroups = document.querySelectorAll(".edit-post-post-preview-dropdown .components-menu-group");
         let externalPreviewGroup: null|Element = null
         previewGroups.forEach((group)=>{
             if(group.querySelector(".edit-post-header-preview__grouping-external")){
                 externalPreviewGroup = group;
             }
         })
+
         if(!externalPreviewGroup){
             return;
         }
