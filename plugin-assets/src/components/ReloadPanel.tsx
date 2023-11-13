@@ -78,8 +78,6 @@ export default function ReloadPanel() {
         controller.run();
     }
 
-    console.debug(canRevalidate, loadingState);
-
     const isLoading = Object.values(loadingState).find(value => value == true);
 
     return (
