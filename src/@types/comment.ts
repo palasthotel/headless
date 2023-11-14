@@ -1,4 +1,4 @@
-import {CommentResponse} from "@palasthotel/wp-fetch";
+import {CommentResponse} from "@palasthotel/wp-rest";
 
 type AuthorUser = {
     display_name: string

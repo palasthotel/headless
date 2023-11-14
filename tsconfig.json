@@ -1,38 +1,24 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "target": "ES2017",
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "declaration": true,
-    "strict": true,
-    "baseUrl": "./src",
-    "rootDir": "src",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./lib/esm",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/@types"
-    ],
-    "paths": {
-      "@palasthotel/headless": [
-        "src/@types/*"
-      ],
-      "*": [
-        "node_modules/",
-      ]
-    }
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "src/__tests__",
-    "lib"
-  ]
+  "include": ["src"]
 }

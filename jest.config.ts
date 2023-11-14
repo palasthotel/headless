@@ -4,26 +4,9 @@
  */
 
 export default {
-
-    clearMocks: true,
-
-    coverageDirectory: "coverage",
-
-    coverageProvider: "v8",
-
-    roots: [
-        "<rootDir>/src"
-    ],
-
+    preset: "ts-jest",
     testEnvironment: "node",
-
-    testMatch: [
-        "**/__tests__/**/*.+(ts|tsx|js)",
-        "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    roots: [
+        "<rootDir>/__tests__"
     ],
-
-    transform: {
-        "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-
 };

@@ -1,4 +1,4 @@
-import {GetPostsRequestArgs, PostId, PostResponse} from '@palasthotel/wp-fetch';
+import {GetPostsRequestArgs, PostId, PostResponse} from '@palasthotel/wp-rest';
 
 export type Block = {
     blockName: string|null
