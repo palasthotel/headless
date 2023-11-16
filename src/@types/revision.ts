@@ -1,6 +1,4 @@
-import {RevisionResponse} from "@palasthotel/wp-rest";
-import {Block, BlockContent} from "./post";
+import {z} from "zod";
+import {revisionWithBlocksResponseSchema} from "../schema";
 
-export type HeadlessRevisionResponse<B extends Block> = RevisionResponse & {
-    content: BlockContent<B>
-}
+export type HeadlessRevisionResponse = z.infer<typeof revisionWithBlocksResponseSchema>

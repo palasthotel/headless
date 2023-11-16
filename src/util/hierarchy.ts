@@ -1,10 +1,10 @@
 import {buildHierarchy, Hierarchy} from "@palasthotel/wp-rest";
-import {MenuItemResponse} from "../@types";
+import {MenuResponse} from "../@types";
 
 export function menuAsHierarchy(
-    menu: MenuItemResponse[],
-): Hierarchy<MenuItemResponse>[] {
-    return buildHierarchy<MenuItemResponse>(
+    menu: MenuResponse[],
+): Hierarchy<MenuResponse>[] {
+    return buildHierarchy<MenuResponse>(
         menu,
         (item) => item.ID,
         (item) => item.menu_item_parent === '0' ? false : parseInt(item.menu_item_parent),

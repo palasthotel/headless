@@ -10,4 +10,4 @@ export type GetMenuRequestArgs = BaseRequestArgs & {
 
 export type MenusResponse = z.infer<typeof menusResponseSchema>
 
-export type MenuItemResponse = z.infer<typeof menuResponseSchema>
+export type MenuResponse = z.infer<typeof menuResponseSchema>

@@ -1,10 +1,4 @@
-import {CommentResponse} from "@palasthotel/wp-rest";
+import {z} from "zod";
+import {commentResponseSchema} from "../schema";
 
-type AuthorUser = {
-    display_name: string
-    nickname: string
-}
-
-export type HeadlessCommentResponse = CommentResponse & {
-    author_user: null | AuthorUser
-}
+export type HeadlessCommentResponse = z.infer<typeof commentResponseSchema>

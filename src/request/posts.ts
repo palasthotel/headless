@@ -1,25 +1,9 @@
-import {CompareArg, CompareParam} from "../@types";
-import {getPostsRequest, GetPostsRequestArgs} from "@palasthotel/wp-rest";
+import {GetPostByIdRequestArgs, getPostRequest, getPostsRequest} from "@palasthotel/wp-rest";
 import {mapQueryToParam} from "../mapping/compare.ts";
 import {searchParamsAddHeadless} from "./headless.ts";
+import {GetHeadlessPostsRequestArgs} from "../@types";
 
-export type GetHeadlessPostsRequestArgs = GetPostsRequestArgs & {
-    hl_meta_query?: {
-        key: string
-        value: string | number
-        compare: CompareArg
-    }[]
-
-    hl_meta_keys?: string[]
-    hl_meta_values?: (string | number)[]
-    hl_meta_compares?: CompareParam[]
-
-    hl_meta_exists?: string
-    hl_meta_not_exists?: string
-    hl_post_type?: string[]
-}
-
-export const getHeadlessPostsRequest = (args: GetHeadlessPostsRequestArgs) => {
+export const getPostsWithBlocksRequest = (args: GetHeadlessPostsRequestArgs) => {
     if (Array.isArray(args.hl_meta_query)) {
         args.hl_meta_keys = [
             ...(args.hl_meta_query.map(q => q.key)),
@@ -47,6 +31,12 @@ export const getHeadlessPostsRequest = (args: GetHeadlessPostsRequestArgs) => {
     }
 
     const url = getPostsRequest(args);
+    searchParamsAddHeadless(url.searchParams);
+    return url;
+}
+
+export const getPostWithBlocksRequest = (args: GetPostByIdRequestArgs) => {
+    const url = getPostRequest(args);
     searchParamsAddHeadless(url.searchParams);
     return url;
 }

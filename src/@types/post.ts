@@ -1,40 +1,19 @@
-import {GetPostsRequestArgs, PostId, PostResponse} from '@palasthotel/wp-rest';
+import {z} from "zod";
+import {GetPostsRequestArgs} from '@palasthotel/wp-rest';
+import {postContentSchema} from "../schema";
+import {postWithBlocksResponseSchema} from "../schema/posts.ts";
 
 export type Block = {
     blockName: string|null
-    attrs?:{
-        [key: string]: unknown
-    }
-    innerHTML?: string
-    innerContent?: string[]
     innerBlocks?: Block[]
-    block_reference_id?:PostId
 }
 
-export type BlockContent<B extends Block> = {
-    headless_blocks: B[] | false
-    headless_attachment_ids: number[]
-    rendered: string | false
-    protected: boolean
-}
-
-export type HeadlessImageSrc = [url:string,width:number,height:number,cropped: boolean]
-
-export type HeadlessPostResponse<B extends Block> = PostResponse & {
-    featured_media_url: string|false
-    featured_media_src: HeadlessImageSrc|false
-    featured_media_sizes: HeadlessImageSrc[]
-    featured_media_caption: string|false
-    featured_media_description: string|false
-    featured_media_alt: string|false
-    content: BlockContent<B>
-}
+export type Content = z.infer<typeof postContentSchema>
 
 export type CompareParam = "eq" | "neq" | "like";
 export type CompareArg = "=" | "!=" | "like";
 
-export type HeadlessGetPostsRequestArgs = GetPostsRequestArgs & {
-
+export type GetHeadlessPostsRequestArgs = GetPostsRequestArgs & {
     hl_meta_query?: {
         key: string
         value: string | number
@@ -49,3 +28,5 @@ export type HeadlessGetPostsRequestArgs = GetPostsRequestArgs & {
     hl_meta_not_exists?: string
     hl_post_type?: string[]
 }
+
+export type HeadlessPostResponse = z.infer<typeof postWithBlocksResponseSchema>
