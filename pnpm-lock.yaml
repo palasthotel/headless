@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@palasthotel/wp-rest':
-    specifier: ^0.4.0
-    version: 0.4.0
+    specifier: ^0.5.0
+    version: 0.5.0
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -867,8 +867,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@palasthotel/wp-rest@0.4.0:
-    resolution: {integrity: sha512-BbVw3leRGkvXS8jnVjZ7J1LuYG2C95u+YNYeSH2abCzVg9EzEICZLNDMHKcPX8lPaSDKin4bxjFB/VCQB6c7xQ==}
+  /@palasthotel/wp-rest@0.5.0:
+    resolution: {integrity: sha512-1eAiiZbAVx/6asmXWGDKytc+jQ1c2+du0CL6kVT6zqpOLnSHcvCRvC25A+tpRdj+wu4eFruKczPMrqafhxM9IQ==}
     dependencies:
       zod: 3.22.4
     dev: false
