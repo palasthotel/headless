@@ -9,7 +9,7 @@ export const blockAttrSchema = entityMetaSchema
 
 export const blockSchema = z.object({
     blockName: blockNameSchema,
-    attrs: blockAttrSchema,
+    attrs: blockAttrSchema.optional(),
     innerHTML: z.string().optional(),
     innerContent: z.array(z.string().nullish()).optional(),
     innerBlocks: z.array(z.unknown()).optional(),
