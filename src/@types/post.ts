@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {GetPostsRequestArgs} from '@palasthotel/wp-rest';
 import {postContentSchema} from "../schema";
-import {postWithBlocksResponseSchema} from "../schema/posts.ts";
+import {postWithBlocksResponseSchema} from "../schema";
 
 export type Block = {
     blockName: string|null
