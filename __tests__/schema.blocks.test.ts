@@ -3,9 +3,9 @@ import {
     coreImageBlockSchema,
     coreQuoteBlockSchema,
     coreTextBlockSchema,
-    groupBlockSchema, isParseError, sustainingParse
+    groupBlockSchema, isParseError, sustainingParse,
+    coreListBlockSchema
 } from "../src";
-import {coreListBlockSchema} from "../src/schema/blocks/list";
 
 describe('Blocks', () => {
     test('Should parse core paragraph block', ()=>{

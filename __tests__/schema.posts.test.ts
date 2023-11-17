@@ -1,7 +1,6 @@
 import {post} from '../__test_data__/post.ts';
-import {postWithBlocksResponseSchema} from "../src/schema/posts";
+import {postWithBlocksResponseSchema, blockSchema} from "../src";
 import {z} from "zod";
-import {blockSchema} from "../src";
 
 
 test("Should parse post", ()=>{
