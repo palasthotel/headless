@@ -1,6 +1,6 @@
 {
   "name": "@palasthotel/headless",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "wp-rest extensions to works with headless plugin.",
   "type": "module",
   "main": "./dist/index.cjs",
