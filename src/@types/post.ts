@@ -6,6 +6,9 @@ import {postWithBlocksResponseSchema} from "../schema";
 export type Block = {
     blockName: string|null
     innerBlocks?: Block[]
+    innerHTML?: string
+    innerContent?: (string|null)[]
+    attrs: {[key: string]: any}
 }
 
 export type Content = z.infer<typeof postContentSchema>
