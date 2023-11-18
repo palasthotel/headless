@@ -6,6 +6,10 @@ import {z} from "zod";
 test("Should parse post", ()=>{
 
     const parsed = postWithBlocksResponseSchema.parse(post);
+    if(!Array.isArray(parsed.content.headless_blocks)) {
+        expect(Array.isArray(parsed.content.headless_blocks)).toBeTruthy();
+        return;
+    }
     expect(parsed.content.headless_blocks.length).toBeGreaterThan(0);
 
     const customBlock = parsed.content.headless_blocks.find(b => b.blockName == "custom/block");
