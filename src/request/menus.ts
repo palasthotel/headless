@@ -1,15 +1,13 @@
 import {BaseRequestArgs, trimEndSlash} from "@palasthotel/wp-rest";
-import {searchParamsAddHeadless} from "./headless.ts";
-import {GetMenuRequestArgs} from "../@types";
+import {asHeadlessRequest} from "./headless.ts";
+import {GetMenuRequestArgs, HeadlessParam} from "../@types";
 
-export const getMenusRequest = (args: BaseRequestArgs) => {
+export const getMenusRequest = (args: BaseRequestArgs, param: HeadlessParam = {}) => {
     const url = new URL(`${trimEndSlash(args.baseUrl)}/wp-json/headless/v1/menus`)
-    searchParamsAddHeadless(url.searchParams);
-    return url;
+    return asHeadlessRequest(url, param);
 }
 
-export const getMenuRequest = (args: GetMenuRequestArgs) => {
+export const getMenuRequest = (args: GetMenuRequestArgs, param: HeadlessParam = {}) => {
     const url = new URL(`${trimEndSlash(args.baseUrl)}/wp-json/headless/v1/menus/${args.slug}`)
-    searchParamsAddHeadless(url.searchParams);
-    return url;
+    return asHeadlessRequest(url, param);
 }

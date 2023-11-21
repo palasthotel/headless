@@ -1,4 +1,15 @@
+import {HeadlessParam} from "../@types";
 
-export const searchParamsAddHeadless = (searchParams: URLSearchParams, value: string = "true", name: string = "headless") => {
+
+export const searchParamsAddHeadless = (searchParams: URLSearchParams, param: HeadlessParam = {}) => {
+    const {
+        name = "headless",
+        value = "true",
+    } = param;
     searchParams.append(name, value);
+}
+
+export const asHeadlessRequest = (url: URL, param: HeadlessParam = {}) => {
+    searchParamsAddHeadless(url.searchParams, param);
+    return url;
 }

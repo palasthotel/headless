@@ -1,8 +1,10 @@
 import {BaseRequestArgs, trimEndSlash} from "@palasthotel/wp-rest";
-import {searchParamsAddHeadless} from "./headless.ts";
+import {asHeadlessRequest} from "./headless.ts";
+import {HeadlessParam} from "../@types";
 
-export const getSettingsRequest = (args: BaseRequestArgs)=> {
-    const url = new URL(`${trimEndSlash(args.baseUrl)}/wp-json/headless/v1/settings`);
-    searchParamsAddHeadless(url.searchParams);
-    return url;
+export const getSettingsRequest = (args: BaseRequestArgs, param: HeadlessParam = {})=> {
+    return asHeadlessRequest(
+        new URL(`${trimEndSlash(args.baseUrl)}/wp-json/headless/v1/settings`),
+        param
+    );
 }

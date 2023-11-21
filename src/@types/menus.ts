@@ -4,6 +4,11 @@ import {menuResponseSchema, menusResponseSchema} from "../schema";
 
 export type MenuSlug = string
 
+export type HeadlessParam = {
+    name?: string
+    value?: string
+}
+
 export type GetMenuRequestArgs = BaseRequestArgs & {
     slug: MenuSlug
 }
