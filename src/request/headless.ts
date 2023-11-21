@@ -9,7 +9,7 @@ export const searchParamsAddHeadless = (searchParams: URLSearchParams, param: He
     searchParams.append(name, value);
 }
 
-export const asHeadlessRequest = (url: URL, param: HeadlessParam = {}) => {
+export const withHeadlessParam = (url: URL, param: HeadlessParam = {}) => {
     searchParamsAddHeadless(url.searchParams, param);
     return url;
 }

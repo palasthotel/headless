@@ -1,6 +1,6 @@
 import {GetPostByIdRequestArgs, getPostRequest, getPostsRequest} from "@palasthotel/wp-rest";
 import {mapQueryToParam} from "../mapping/compare.ts";
-import {asHeadlessRequest} from "./headless.ts";
+import {withHeadlessParam} from "./headless.ts";
 import {GetHeadlessPostsRequestArgs, HeadlessParam} from "../@types";
 
 export const getPostsWithBlocksRequest = (args: GetHeadlessPostsRequestArgs, param: HeadlessParam = {}) => {
@@ -30,12 +30,12 @@ export const getPostsWithBlocksRequest = (args: GetHeadlessPostsRequestArgs, par
         }
     }
 
-    return asHeadlessRequest(
+    return withHeadlessParam(
         getPostsRequest(args),
         param
     );
 }
 
 export const getPostWithBlocksRequest = (args: GetPostByIdRequestArgs, param: HeadlessParam = {}) => {
-    return asHeadlessRequest(getPostRequest(args), param);
+    return withHeadlessParam(getPostRequest(args), param);
 }
