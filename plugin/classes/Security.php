@@ -15,6 +15,10 @@ class Security extends Component {
 		return isset( $_GET[ HEADLESS_REST_PARAM ] ) && HEADLESS_REST_VALUE == $_GET[ HEADLESS_REST_PARAM ];
 	}
 
+	public function isHeadlessRequestVariant(string $variant): bool {
+		return isset( $_GET[ HEADLESS_REST_VARIANT_PARAM ] ) && $variant == $_GET[ HEADLESS_REST_VARIANT_PARAM ];
+	}
+
 	public function hasApiKeyAccess(): bool {
 
 		if ( empty(HEADLESS_API_KEY_HEADER_KEY) || empty(HEADLESS_API_KEY_HEADER_VALUE)) {

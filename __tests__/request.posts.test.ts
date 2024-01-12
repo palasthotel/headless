@@ -48,3 +48,15 @@ test("Should default params working correct", () => {
         `${baseUrl}wp-json/wp/v2/posts?categories=123&headless=true`
     )
 })
+
+test("Should default add headless variant correct", () => {
+    const url = getPostsWithBlocksRequest({
+        baseUrl,
+        headless_variant: "teasers",
+    });
+
+    const decodedUrl = decodeURIComponent(url.toString());
+    expect(decodedUrl).toBe(
+        `${baseUrl}wp-json/wp/v2/posts?headless_variant=teasers&headless=true`
+    )
+})

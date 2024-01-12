@@ -1,5 +1,8 @@
 # Releases
 
+## [2.1.0]
+* New headless_variant params with teasers value for smaller response sizes
+
 ## [2.0.0]
 * BREAKING CHANGES
 * Moves from @palasthotel/wp-fetch to @palasthotel/wp-rest

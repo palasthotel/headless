@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.4.1
+Tested up to: 6.4.2
 Requires PHP: 8.0
-Stable tag: 1.9.3
+Stable tag: 2.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -26,6 +26,13 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 2.1.0 =
+* Feature: smaller response sizes with headless_variant=teasers
+
+= 2.0.0 =
+* BREAKING CHANGES
+* Moves from @palasthotel/wp-fetch to @palasthotel/wp-rest
 
 = 1.9.3 =
 * Bugfix: post preview with wordpress 6.4.x fixed

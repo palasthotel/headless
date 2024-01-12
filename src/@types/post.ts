@@ -30,6 +30,8 @@ export type GetHeadlessPostsRequestArgs = GetPostsRequestArgs & {
     hl_meta_exists?: string
     hl_meta_not_exists?: string
     hl_post_type?: string[]
+
+    headless_variant?: string
 }
 
 export type HeadlessPostResponse = z.infer<typeof postWithBlocksResponseSchema>
