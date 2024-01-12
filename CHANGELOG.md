@@ -1,5 +1,15 @@
 # Releases
 
+## [2.1.0]
+* New headless_variant params with teasers value for smaller response sizes
+
+## [2.0.0]
+* BREAKING CHANGES
+* Moves from @palasthotel/wp-fetch to @palasthotel/wp-rest
+* Does not perform fetch requests anymore but provide Url builders and other utility functions
+
+---
+
 ## [1.6.2]
 * Add headless_rest_api_prepare_post filter for uniform post responses
 

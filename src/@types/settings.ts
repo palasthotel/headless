@@ -1,7 +1,4 @@
-import {PostId} from "@palasthotel/wp-fetch";
+import {z} from "zod";
+import {settingsResponseSchema} from "../schema";
 
-export type HeadlessSettingsResponse = {
-    front_page: string
-    page_on_front: PostId
-    home_url: string
-}
+export type SettingsResponse = z.infer<typeof settingsResponseSchema>

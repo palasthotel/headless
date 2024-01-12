@@ -23,7 +23,12 @@ class ContentBlocks extends AbsPostExtensionPost {
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
 		$data = $response->get_data();
 
-		if ( has_blocks( $post ) ) {
+		if(Plugin::instance()->security->isHeadlessRequestVariant(HEADLESS_REST_VARIANT_TEASERS_VALUE)){
+			unset($data["content"]["rendered"]);
+			unset($data["content"]["headless_blocks"]);
+			unset($data["yoast_head"]);
+			unset($data["yoast_head_json"]);
+		} else if ( has_blocks( $post ) ) {
 			$data["content"]["headless_blocks"] = $this->parse( $post->post_content );
 		} else {
 			$data["content"]["headless_blocks"] = false;

@@ -4,11 +4,11 @@
  * Plugin Name: Headless
  * Plugin URI: https://github.com/palasthotel/headless
  * Description: Adds features to use WordPress as headless CMS
- * Version: 1.9.3
+ * Version: 2.0.1
  * Author: Palasthotel (Edward Bock) <edward.bock@palasthotel.de>
  * Author URI: http://www.palasthotel.de
  * Requires at least: 5.0
- * Tested up to: 6.4.1
+ * Tested up to: 6.4.2
  * Requires PHP: 8.0
  * Text Domain: headless
  * License: http://www.gnu.org/licenses/gpl-2.0.html GPLv2
@@ -34,6 +34,13 @@ if ( ! defined( 'HEADLESS_REST_PARAM' ) ) {
 }
 if ( ! defined( 'HEADLESS_REST_VALUE' ) ) {
 	define( 'HEADLESS_REST_VALUE', 'true' );
+}
+
+if ( ! defined( 'HEADLESS_REST_VARIANT_PARAM' ) ) {
+	define( 'HEADLESS_REST_VARIANT_PARAM', "headless_variant" );
+}
+if ( ! defined( 'HEADLESS_REST_VARIANT_TEASERS_VALUE' ) ) {
+	define( 'HEADLESS_REST_VARIANT_TEASERS_VALUE', 'teasers' );
 }
 
 if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {
