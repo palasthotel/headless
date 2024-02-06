@@ -40,7 +40,7 @@ if ( ! defined( 'HEADLESS_REST_VARIANT_PARAM' ) ) {
 	define( 'HEADLESS_REST_VARIANT_PARAM', "headless_variant" );
 }
 if ( ! defined( 'HEADLESS_REST_VARIANT_TEASERS_VALUE' ) ) {
-	define( 'HEADLESS_REST_VARIANT_TEASERS_VALUE', 'teasers' );
+	define( 'HEADLESS_REST_VARIANT_TEASERS_VALUE', 'teaser' );
 }
 
 if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {
