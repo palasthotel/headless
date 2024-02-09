@@ -7,6 +7,7 @@ use Palasthotel\WordPress\Headless\Components\Component;
 class Ajax extends Component {
 
 	const GET_ACTION = "headless_revalidate";
+	const GET_ACTION_PENDING = "headless_revalidate_pending";
 	const GET_FRONTEND_INDEX = "frontend";
 	const GET_PATH = "path";
 	const GET_POST_ID = "post_id";
@@ -14,6 +15,7 @@ class Ajax extends Component {
 	public function onCreate() {
 		parent::onCreate();
 		add_action('wp_ajax_'.self::GET_ACTION, [$this, 'revalidate']);
+		add_action('wp_ajax_'.self::GET_ACTION_PENDING, [$this, 'revalidate_pending']);
 	}
 
 	public function revalidate(){
@@ -70,4 +72,15 @@ class Ajax extends Component {
 	}
 
 
+	function revalidate_pending() {
+		if(!current_user_can('edit_posts')){
+			wp_send_json_error();
+			exit;
+		}
+		$this->plugin->schedule->revalidate();
+		wp_send_json_success([
+			"success" => true,
+		]);
+		exit;
+	}
 }

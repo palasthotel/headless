@@ -23,17 +23,53 @@ class Dashboard extends Components\Component {
         $dateFormat = get_option('date_format');
 
         $lastRevalidationRun = $this->plugin->schedule->getLastRevalidationRun();
-        $lastRevalidationRunDate = strtotime($lastRevalidationRun);
         $nextRevalidationRun = $this->plugin->schedule->getNextSchedule();
 
 		$frontends = $this->plugin->headquarter->getFrontends();
         $ajaxUrl = admin_url('admin-ajax.php');
 		?>
-            <p>Last automatic revalidation run: <?= date_i18n($dateFormat,$lastRevalidationRunDate)." ".date_i18n($timeFormat, $lastRevalidationRunDate); ?></p>
-            <p>Next automatic revalidation run: <?= ($nextRevalidationRun === false) ? "🚨 Broken" : date_i18n($dateFormat, $nextRevalidationRun)." ".date_i18n($timeFormat, $nextRevalidationRun); ?></p>
+            <p><strong>Automatic revalidation</strong></p>
+            <p>Last revalidation run: <span data-headless-timestamp="<?= $lastRevalidationRun; ?>">
+                    <?= date_i18n($dateFormat,$lastRevalidationRun)." ".date_i18n($timeFormat, $lastRevalidationRun); ?>
+                </span></p>
+
+            <p>Next revalidation run:  <span data-headless-timestamp="<?= $nextRevalidationRun; ?>">
+                <?= ($nextRevalidationRun === false) ? "🚨 Broken" : date_i18n($dateFormat, $nextRevalidationRun)." ".date_i18n($timeFormat, $nextRevalidationRun); ?>
+                </span></p>
+
             <p>Pending posts to be revalidated: <?= $this->plugin->dbRevalidation->countPendingPosts(); ?></p>
-            <p>Available frontends:</p>
-            <ol>
+
+            <button class="button button-secondary" id="headless-revalidate-pending">Revalidate pending</button>
+            <span id="headless-revalidate-pending-spinner" class="spinner"></span>
+
+            <script>
+                document.querySelectorAll("[data-headless-timestamp]").forEach((el) => {
+                    const timestamp = el.getAttribute("data-headless-timestamp");
+                    console.debug("headless timestamp", timestamp, el);
+                    console.debug(Intl.DateTimeFormat().format(parseInt(timestamp) * 1000));
+                });
+                const button = document.getElementById("headless-revalidate-pending");
+                const spinner = document.getElementById("headless-revalidate-pending-spinner");
+
+                button.addEventListener("click", (e)=> {
+                    e.preventDefault();
+                    console.debug(button);
+                    button.disabled = true;
+                    spinner.classList.add("is-active");
+                    fetch("<?= $ajaxUrl ?>?action=headless_revalidate_pending")
+                        .then(res => res.json())
+                        .then(console.debug)
+                        .finally(()=>{
+                            spinner.classList.remove("is-active");
+                            button.disabled = false;
+                        });
+                })
+            </script>
+
+            <hr />
+
+            <p><strong>Manual revalidation</strong></p>
+            <ul>
                 <?php
                 foreach ($frontends as $index => $frontend){
                     $basePath = untrailingslashit($frontend->getBaseUrl());
@@ -45,7 +81,7 @@ class Dashboard extends Components\Component {
                     echo "</li>";
                 }
                 ?>
-            </ol>
+            </ul>
             <form method="post" id="headless-revalidate-form">
 		        <input type="text" name="headless_invalidate_path" placeholder="path/to/invalidate" />
                 <button class="button button-secondary">Revalidate cache</button>
