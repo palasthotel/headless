@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@palasthotel/wp-rest':
-    specifier: ^0.5.2
-    version: 0.5.2
+    specifier: ^0.5.3
+    version: 0.5.3
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -29,8 +29,8 @@ devDependencies:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.17)(typescript@5.3.3)
   tsup:
-    specifier: ^8.0.1
-    version: 8.0.1(ts-node@10.9.2)(typescript@5.3.3)
+    specifier: ^8.0.2
+    version: 8.0.2(ts-node@10.9.2)(typescript@5.3.3)
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
@@ -867,8 +867,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@palasthotel/wp-rest@0.5.2:
-    resolution: {integrity: sha512-OhiqJoqJeg7fWMnY5f0RFMZYMIPDKfIiZxaqxMxV33T8efA0JDs/HkKhyogUYa9Q4J3bR5OU1RQZ73a2F8FRkg==}
+  /@palasthotel/wp-rest@0.5.3:
+    resolution: {integrity: sha512-VRkDdVQy4BDK3vouhINRnEq1qDmpn+cJ8sPcyNBuiEdn7ArVYElHjMK495bLZXQLb941riVTcvyPmQf6wkqpmQ==}
     dependencies:
       zod: 3.22.4
     dev: false
@@ -2936,8 +2936,8 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /tsup@8.0.1(ts-node@10.9.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-hvW7gUSG96j53ZTSlT4j/KL0q1Q2l6TqGBFc6/mu/L46IoNWqLLUzLRLP1R8Q7xrJTmkDxxDoojV5uCVs1sVOg==}
+  /tsup@8.0.2(ts-node@10.9.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-NY8xtQXdH7hDUAZwcQdY/Vzlw9johQsaqf7iwZ6g1DOUlFYQ5/AtVAjTvihhEyeRlGo4dLRVHtrRaL35M1daqQ==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
