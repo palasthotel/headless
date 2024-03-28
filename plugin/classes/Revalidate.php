@@ -9,18 +9,32 @@ class Revalidate extends Component {
 
 	public function onCreate() {
 		parent::onCreate();
-		add_action('save_post', [$this, 'save_post']);
-		add_action('edit_comment', [$this, 'edit_comment']);
+		add_action('save_post', [$this, 'on_post_change']);
+		add_action('edit_comment', [$this, 'on_comment_change']);
+		add_action('wp_insert_comment', [$this, 'on_comment_change']);
 	}
 
-	public function save_post($post_id){
+	public function on_post_change($post_id){
 		if(wp_is_post_revision($post_id)) return;
 		$this->plugin->dbRevalidation->addPost($post_id);
 	}
 
-	public function edit_comment($comment_id){
+	public function on_comment_change($comment_id){
 		$comment = get_comment($comment_id);
 		$this->plugin->dbRevalidation->addPost($comment->comment_post_ID);
+		$this->plugin->dbRevalidation->addComment($comment_id);
+	}
+
+	function revalidateComments($post_id){
+		$frontends = $this->plugin->headquarter->getFrontends();
+		$results = [];
+		foreach ($frontends as $frontend){
+			$results[] = $this->revalidateByTag(
+				$frontend,
+				apply_filters(Plugin::FILTER_REVALIDATE_COMMENTS_BY_TAG, "post-$post_id-comments")
+			);
+		}
+		return $results;
 	}
 
 	/**
@@ -32,12 +46,13 @@ class Revalidate extends Component {
 		$frontends = $this->plugin->headquarter->getFrontends();
 		$results = [];
 		foreach ($frontends as $frontend){
-			$results[] = $this->revalidateByPostId($frontend, $post_id);
+			$results[] = $this->revalidateByTag($frontend, "post-$post_id");
+			$results[] = $this->revalidateByPathByPostId($frontend, $post_id);
 		}
 		return $results;
 	}
 
-	function revalidateByPostId(Frontend $frontend, $post_id) {
+	function revalidateByPathByPostId(Frontend $frontend, $post_id) {
 		$permalink = get_permalink($post_id);
 		$path = parse_url($permalink, PHP_URL_PATH);
 		return $this->revalidateByPath(
@@ -51,6 +66,14 @@ class Revalidate extends Component {
 		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
 		return $this->executeRavalidation(
 			apply_filters(Plugin::FILTER_REVALIDATE_BY_PATH_URL, $url, $path, $frontend)
+		);
+	}
+
+	function revalidateByTag(Frontend $frontend, string $tag) {
+		$baseUrl = $frontend->getBaseUrl();
+		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&tag=".urlencode($tag);
+		return $this->executeRavalidation(
+			apply_filters(Plugin::FILTER_REVALIDATE_BY_TAG_URL, $url, $tag, $frontend)
 		);
 	}
 

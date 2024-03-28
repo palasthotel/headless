@@ -35,6 +35,29 @@ class Schedule extends Component {
 		$lastRun = $this->getLastRevalidationRun();
 		$now = time();
 
+		$commentIds = $this->plugin->dbRevalidation->getPendingComments();
+		foreach ($commentIds as $id){
+			$comment = get_comment($id);
+			$postId = $comment->comment_post_ID;
+			$results = $this->plugin->revalidate->revalidateComments($postId);
+
+			$success = true;
+			foreach ($results as $result){
+				if($result instanceof \WP_Error){
+					$this->plugin->log->warning($result->get_error_message());
+					$title = get_the_title($id);
+					$this->plugin->log->warning("revalidate comment id: $id ; post: $postId $title");
+					$success = false;
+				}
+			}
+
+			if($success){
+				$this->plugin->dbRevalidation->setCommentState($id);
+			} else {
+				$this->plugin->dbRevalidation->setCommentState($id, "error");
+			}
+		}
+
 		$postIds = $this->plugin->dbRevalidation->getPendingPosts();
 
 		$this->plugin->log->add("headless: lastRun $lastRun ");
@@ -60,8 +83,13 @@ class Schedule extends Component {
 			}
 		}
 
+
+
+
 		// do stuff like revalidating landingpages
 		do_action(Plugin::ACTION_REVALIDATION_SIDE_EFFECT, $postIds);
+
+
 
 		$this->setLastRevalidationRun($now);
 

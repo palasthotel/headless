@@ -38,6 +38,7 @@ class Dashboard extends Components\Component {
                 </span></p>
 
             <p>Pending posts to be revalidated: <?= $this->plugin->dbRevalidation->countPendingPosts(); ?></p>
+            <p>Pending comments to be revalidated: <?= $this->plugin->dbRevalidation->countPendingComments(); ?></p>
 
             <button class="button button-secondary" id="headless-revalidate-pending">Revalidate pending</button>
             <span id="headless-revalidate-pending-spinner" class="spinner"></span>

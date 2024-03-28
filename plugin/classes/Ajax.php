@@ -55,7 +55,7 @@ class Ajax extends Component {
 
 		if(isset($_GET[self::GET_POST_ID]) && !empty($_GET[self::GET_POST_ID])){
 			$postId = intval($_GET[self::GET_POST_ID]);
-			$result = $this->plugin->revalidate->revalidateByPostId($frontends[$frontendIndex], $postId);
+			$result = $this->plugin->revalidate->revalidateByPathByPostId($frontends[$frontendIndex], $postId);
 			if($result instanceof \WP_Error){
 				wp_send_json_error($result);
 			} else {
