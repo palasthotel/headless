@@ -28,7 +28,7 @@ class Query extends Component {
 
 	public static function getRequestPostTypes( \WP_REST_Request $request ) {
 		$post_types = $request->get_param( static::POST_TYPE );
-		if(in_array("any",$post_types)){
+		if(is_array($post_types) && in_array("any",$post_types)){
 			return ["any"];
 		}
 		if ( empty( $post_types ) ) {
