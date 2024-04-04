@@ -27,6 +27,9 @@ Adds features to use WordPress as headless CMS
 
 == Changelog ==
 
+= 2.2.4 =
+* Feature: Add filter "headless_rest_response_data"
+
 = 2.2.3 =
 * Bugfix: fatal error without hl_post_type in rest api
 

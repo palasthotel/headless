@@ -34,7 +34,8 @@ class ContentBlocks extends AbsPostExtensionPost {
 			$data["content"]["headless_blocks"] = false;
 		}
 
-		$response->set_data( $data );
+        $data = apply_filters(Plugin::FILTER_REST_RESPONSE_DATA, $data );
+        $response->set_data( $data );
 
 		return $response;
 	}

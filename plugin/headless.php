@@ -90,8 +90,9 @@ class Plugin extends Components\Plugin {
 	const FILTER_PREPARE_POST = "headless_rest_api_prepare_post";
 
 	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
+    const FILTER_REST_RESPONSE_DATA = "headless_rest_response_data";
 
-	const FILTER_FRONTENDS = "headless_frontends";
+    const FILTER_FRONTENDS = "headless_frontends";
 	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_url";
 	const FILTER_REVALIDATE_BY_TAG_URL = "headless_revalidate_by_tag_url";
 	const FILTER_REVALIDATE_COMMENTS_BY_TAG = "headless_revalidate_comments_by_tag";
