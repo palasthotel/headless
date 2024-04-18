@@ -3,9 +3,9 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.4.3
+Tested up to: 6.5.2
 Requires PHP: 8.0
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -29,6 +29,7 @@ Adds features to use WordPress as headless CMS
 
 = 2.2.4 =
 * Feature: Add filter "headless_rest_response_data"
+* Fix: Gutenberg preview in new tab link
 
 = 2.2.3 =
 * Bugfix: fatal error without hl_post_type in rest api
