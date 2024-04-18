@@ -21,7 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return status == "draft" || status == "auto-draft";
     }
 
-    const coreEditorDispatch = dispatch("core/editor");
+    const coreEditorDispatch = dispatch("core/editor") as {
+        autosave: () => Promise<void>
+        savePost: () => Promise<void>
+    };
     const autosave = coreEditorDispatch.autosave;
     const savePost = coreEditorDispatch.savePost;
 
@@ -88,10 +91,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         // replace this special preview link
-        const previewGroups = document.querySelectorAll(".edit-post-post-preview-dropdown .components-menu-group");
+        const previewGroups = document.querySelectorAll(".components-menu-group");
         let externalPreviewGroup: null|Element = null
         previewGroups.forEach((group)=>{
-            if(group.querySelector(".edit-post-header-preview__grouping-external")){
+            if(group.querySelector(".editor-preview-dropdown__button-external")){
                 externalPreviewGroup = group;
             }
         })
@@ -106,15 +109,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // is hidden via styles.css
-        const gutenbergLink = externalPreviewGroup.querySelector(".edit-post-header-preview__grouping-external a");
+        const gutenbergLink = externalPreviewGroup.querySelector<HTMLAnchorElement>(".editor-preview-dropdown__button-external");
+        const svg = gutenbergLink.querySelector("svg");
         const target = gutenbergLink.getAttribute("target");
         a.text = gutenbergLink.textContent;
-        const icon = document.createElement("span");
-        icon.className = "dashicons dashicons-external";
-        a.append(icon);
+        a.append(svg);
         a.target = target;
         a.href = previewUrl;
         a.id = id;
+        gutenbergLink.style.display = "none";
         externalPreviewGroup.querySelector('[role="group"]').append(a);
     }
 });
