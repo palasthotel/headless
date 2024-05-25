@@ -1,5 +1,8 @@
 # Releases
 
+## [2.0.1]
+* settings schema uses coerce number for page_on_front
+
 ## [2.0.0]
 * BREAKING CHANGES
 * Moves from @palasthotel/wp-fetch to @palasthotel/wp-rest
