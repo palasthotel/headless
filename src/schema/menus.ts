@@ -27,7 +27,7 @@ export const menuItemResponseSchema = z.object({
         filter: z.string(),
         db_id: z.coerce.number(),
         menu_item_parent: z.string(),
-        object_id: z.number(),
+        object_id: z.coerce.number(),
         object: z.string(),
         type: z.string(),
         type_label: z.string(),
