@@ -8,7 +8,7 @@ class Log extends Components\Component {
 	 */
 	private $log;
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action("cron_logger_init", function(\CronLogger\Plugin $logger){
 			$this->log = $logger->log;

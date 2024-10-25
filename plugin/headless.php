@@ -52,23 +52,6 @@ if ( ! defined( 'HEADLESS_API_KEY_HEADER_VALUE' ) ) {
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-/**
- * @property Routes $routes
- * @property Extensions $extensions
- * @property Security $security
- * @property Preview $preview
- * @property Query $query
- * @property Revalidate $revalidate
- * @property RevalidationDatabase $dbRevalidation
- * @property Schedule $schedule
- * @property PluginAssets $gutenberg
- * @property Headers $headers
- * @property Post $post
- * @property Dashboard $dashboard
- * @property Headquarter $headquarter
- * @property Ajax $ajax
- * @property Log $log
- */
 class Plugin extends Components\Plugin {
 
 	const DOMAIN = "headless";
@@ -103,6 +86,21 @@ class Plugin extends Components\Plugin {
 
 	const OPTION_SCHEMA_VERSION = "headless_schema_version";
 
+	public Routes $routes;
+	public Extensions $extensions;
+	public Security $security;
+	public Preview $preview;
+	public Query $query;
+	public Revalidate $revalidate;
+	public RevalidationDatabase $dbRevalidation;
+	public Schedule $schedule;
+	public PluginAssets $gutenberg;
+	public Headers $headers;
+	public Post $post;
+	public Dashboard $dashboard;
+	public Headquarter $headquarter;
+	public Ajax $ajax;
+	public Log $log;
 
 	function onCreate() {
 

@@ -12,7 +12,7 @@ class Ajax extends Component {
 	const GET_PATH = "path";
 	const GET_POST_ID = "post_id";
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action('wp_ajax_'.self::GET_ACTION, [$this, 'revalidate']);
 		add_action('wp_ajax_'.self::GET_ACTION_PENDING, [$this, 'revalidate_pending']);

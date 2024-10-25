@@ -6,15 +6,14 @@ namespace Palasthotel\WordPress\Headless\Store;
 
 use Palasthotel\WordPress\Headless\Components\Database;
 
-/**
- * @property string $table
- */
 class RevalidationDatabase extends Database {
 
 	const TYPE_POST = "post";
 	const TYPE_COMMENT = "comment";
 
-	function init() {
+	public string $table;
+
+	function init(): void {
 		$this->table = $this->wpdb->prefix . "headless_revalidate";
 	}
 
@@ -103,7 +102,7 @@ class RevalidationDatabase extends Database {
 		return $this->setContentState($comment_id, self::TYPE_COMMENT, $state);
 	}
 
-	public function createTables() {
+	public function createTables(): void {
 		parent::createTables();
 		\dbDelta("CREATE TABLE IF NOT EXISTS $this->table
 			(

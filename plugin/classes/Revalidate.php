@@ -7,7 +7,7 @@ use Palasthotel\WordPress\Headless\Model\Frontend;
 
 class Revalidate extends Component {
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action('save_post', [$this, 'on_post_change']);
 		add_action('edit_comment', [$this, 'on_comment_change']);

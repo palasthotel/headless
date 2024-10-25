@@ -32,7 +32,7 @@ class Extensions extends Component {
 	private UserRouteExtensions $userRouteExtensions;
 	private TermRouteExtensions $termRouteExtensions;
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 
 		if ( ! $this->plugin->security->isHeadlessRequest() ) {

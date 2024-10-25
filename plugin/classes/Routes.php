@@ -12,7 +12,7 @@ use Palasthotel\WordPress\Headless\Routes\Settings;
  */
 class Routes extends Components\Component {
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}

@@ -3,7 +3,7 @@
 namespace Palasthotel\WordPress\Headless;
 
 class Dashboard extends Components\Component {
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action('wp_dashboard_setup', [$this, 'setup']);
 	}

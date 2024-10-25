@@ -3,29 +3,18 @@
 
 namespace Palasthotel\WordPress\Headless\Components;
 
-/**
- * Class Component
- *
- * @property \Palasthotel\WordPress\Headless\Plugin plugin
- *
- * @package Palasthotel\WordPress
- * @version 0.1.2
- */
 abstract class Component {
-	/**
-	 * _Component constructor.
-	 *
-	 * @param \Palasthotel\WordPress\Headless\Plugin $plugin
-	 */
-	public function __construct(Plugin $plugin) {
-		$this->plugin = $plugin;
+
+	public function __construct(
+		public \Palasthotel\WordPress\Headless\Plugin $plugin
+	) {
 		$this->onCreate();
 	}
 
 	/**
 	 * overwrite this method in component implementations
 	 */
-	public function onCreate(){
+	public function onCreate(): void {
 		// init your hooks and stuff
 	}
 }

@@ -14,7 +14,7 @@ class Query extends Component {
 	const META_RELATION = "hl_meta_relation";
 	const POST_TYPE = "hl_post_type";
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 
 		if ( ! $this->plugin->security->hasApiKeyAccess() ) {

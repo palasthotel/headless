@@ -6,7 +6,7 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Schedule extends Component {
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 
 		add_action('admin_init', [$this, 'init']);

@@ -5,20 +5,16 @@ namespace Palasthotel\WordPress\Headless\Components;
 use ReflectionClass;
 use ReflectionException;
 
-/**
- * @property string path
- * @property string url
- * @property string basename
- * @version 0.1.3
- */
 abstract class Plugin {
 
 	/**
 	 * @var ReflectionClass
 	 */
 	private $ref;
-
 	private $tooLateForTextdomain;
+	public $path;
+	public $url;
+	public $basename;
 
 	/**
 	 * @throws ReflectionException
@@ -33,8 +29,8 @@ abstract class Plugin {
 		$this->onCreate();
 		$this->tooLateForTextdomain = true;
 
-		register_activation_hook( $this->ref->getFileName(), array( $this, "onActivation" ) );
-		register_deactivation_hook( $this->ref->getFileName(), array( $this, "onDeactivation" ) );
+		register_activation_hook( $this->ref->getFileName(), [$this, "onActivation"]);
+		register_deactivation_hook( $this->ref->getFileName(), [$this, "onDeactivation"]);
 
 	}
 
@@ -79,7 +75,7 @@ abstract class Plugin {
 			load_plugin_textdomain(
 				$domain,
 				false,
-				dirname( plugin_basename( $this->ref->getFileName() ) ) . "/" . $relativeLanguagesPath
+				dirname(plugin_basename($this->ref->getFileName())) . "Plugin.php/" . $relativeLanguagesPath
 			);
 		} );
 	}
@@ -87,7 +83,7 @@ abstract class Plugin {
 	public function foreachMultisite(callable $onSite){
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 			$network_site = get_network()->site_id;
-			$args         = array( 'fields' => 'ids' );
+			$args         = ['fields' => 'ids'];
 			$site_ids     = get_sites( $args );
 
 			// run the activation function for each blog id
