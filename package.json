@@ -25,13 +25,13 @@
   "author": "Edward Bock",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.7.9",
     "jest": "^29.7.0",
-    "ts-jest": "^29.1.4",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "tsup": "^8.1.0",
-    "typescript": "^5.4.5"
+    "tsup": "^8.3.4",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@palasthotel/wp-rest": "^0.7.4",
