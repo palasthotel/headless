@@ -7,7 +7,7 @@ use Palasthotel\WordPress\Headless\Plugin;
 
 class Menus extends Component {
 
-	private $menu;
+	private array|false $menu;
 
 	public function init(){
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus', array(
