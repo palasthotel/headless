@@ -5,11 +5,9 @@ namespace Palasthotel\WordPress\Headless\Components;
 
 use wpdb;
 
-/**
- * @property wpdb wpdb
- * @version 0.1.1
- */
 abstract class Database {
+
+	protected wpdb $wpdb;
 
 	public function __construct() {
 		global $wpdb;
@@ -20,9 +18,9 @@ abstract class Database {
 	/**
 	 * initialize table names and other properties
 	 */
-	abstract function init();
-	
-	public function createTables(){
+	abstract function init(): void;
+
+	public function createTables(): void {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	}
 }

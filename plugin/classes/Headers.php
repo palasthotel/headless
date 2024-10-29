@@ -3,7 +3,7 @@
 namespace Palasthotel\WordPress\Headless;
 
 class Headers extends Components\Component {
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_filter('rest_post_dispatch', [$this, 'rest_post_dispatch']);
 	}

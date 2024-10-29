@@ -6,13 +6,12 @@ namespace Palasthotel\WordPress\Headless;
 use Palasthotel\WordPress\Headless\Routes\Menus;
 use Palasthotel\WordPress\Headless\Routes\Settings;
 
-/**
- * @property Menus $menus
- * @property Settings $settings
- */
 class Routes extends Components\Component {
 
-	public function onCreate() {
+	public Menus $menus;
+	public Settings $settings;
+
+	public function onCreate(): void {
 		parent::onCreate();
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}

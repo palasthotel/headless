@@ -9,7 +9,7 @@ class Preview extends Component {
 
 	const POST_ID_PLACEHOLDER = "{{post_id}}";
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );

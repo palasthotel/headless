@@ -5,16 +5,15 @@ namespace Palasthotel\WordPress\Headless;
 use Palasthotel\WordPress\Headless\Components\Assets;
 use Palasthotel\WordPress\Headless\Components\Component;
 
-/**
- * @property Assets $assets
- */
 class PluginAssets extends Component {
 
     const HANDLE_ADMIN_SCRIPT = "headless_admin_script";
 	const HANDLE_GUTENBERG_SCRIPT = "headless_gutenberg_script";
 	const HANDLE_GUTENBERG_STYLE = "headless_gutenberg_styles";
 
-	public function onCreate() {
+	public Assets $assets;
+
+	public function onCreate(): void {
 		parent::onCreate();
 
 		$this->assets = new Assets( $this->plugin );

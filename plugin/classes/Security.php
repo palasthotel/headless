@@ -6,7 +6,7 @@ use Palasthotel\WordPress\Headless\Components\Component;
 
 class Security extends Component {
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_filter('wp_is_application_passwords_available', '__return_true');
 	}

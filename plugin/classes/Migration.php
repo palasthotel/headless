@@ -13,13 +13,14 @@ class Migration extends Components\Component {
 		return intval(get_option(Plugin::OPTION_SCHEMA_VERSION, 0));
 	}
 
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 
 		if($this->getSchemaVersion() < 3){
 			// drop every table that was created before version 3
 			$tableName = $this->plugin->dbRevalidation->table;
-			$this->plugin->dbRevalidation->wpdb->query("DROP TABLE IF EXISTS $tableName");
+			global $wpdb;
+			$wpdb->query("DROP TABLE IF EXISTS $tableName");
 			$this->plugin->dbRevalidation->createTables();
 			$this->setSchemaVersion(3);
 		}

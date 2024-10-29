@@ -7,7 +7,7 @@ use Palasthotel\WordPress\Headless\Extensions\FeaturedMedia;
 use WP_Term;
 
 class Post extends Component {
-	public function onCreate() {
+	public function onCreate(): void {
 		parent::onCreate();
 		add_filter( Plugin::FILTER_PREPARE_POST, [ $this, 'prepare_post' ], 10, 2 );
 	}
