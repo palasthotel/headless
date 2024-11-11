@@ -15,17 +15,22 @@ class Revalidate extends Component {
 	}
 
 	public function on_post_change($post_id){
+		if($this->isRevalidationInactive()) return;
 		if(wp_is_post_revision($post_id)) return;
 		$this->plugin->dbRevalidation->addPost($post_id);
 	}
 
 	public function on_comment_change($comment_id){
+		if($this->isRevalidationInactive()) return;
 		$comment = get_comment($comment_id);
 		$this->plugin->dbRevalidation->addPost($comment->comment_post_ID);
 		$this->plugin->dbRevalidation->addComment($comment_id);
 	}
 
 	function revalidateComments($post_id){
+
+		if($this->isRevalidationInactive()) return[];
+
 		$frontends = $this->plugin->headquarter->getFrontends();
 		$results = [];
 		foreach ($frontends as $frontend){
@@ -43,6 +48,9 @@ class Revalidate extends Component {
 	 * @return (\WP_Error|true)[]
 	 */
 	function revalidatePost($post_id) {
+
+		if($this->isRevalidationInactive()) return [];
+
 		$frontends = $this->plugin->headquarter->getFrontends();
 		$results = [];
 		foreach ($frontends as $frontend){
@@ -53,6 +61,9 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByPathByPostId(Frontend $frontend, $post_id) {
+
+		if($this->isRevalidationInactive()) return [];
+
 		$permalink = get_permalink($post_id);
 		$path = parse_url($permalink, PHP_URL_PATH);
 		return $this->revalidateByPath(
@@ -62,6 +73,9 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByPath(Frontend $frontend, $path){
+
+		if($this->isRevalidationInactive()) return [];
+
 		$baseUrl = $frontend->getBaseUrl();
 		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&path=".urlencode($path);
 		return $this->executeRavalidation(
@@ -70,6 +84,9 @@ class Revalidate extends Component {
 	}
 
 	function revalidateByTag(Frontend $frontend, string $tag) {
+
+		if($this->isRevalidationInactive()) return [];
+
 		$baseUrl = $frontend->getBaseUrl();
 		$url = untrailingslashit($baseUrl)."/api/revalidate?secret_token=".HEADLESS_SECRET_TOKEN."&tag=".urlencode($tag);
 		return $this->executeRavalidation(
@@ -78,6 +95,7 @@ class Revalidate extends Component {
 	}
 
 	private function executeRavalidation($finalUrl){
+
 		$url = add_query_arg('invalidate___cache', time(), $finalUrl);
 
 		if(class_exists("\WP_CLI")){
@@ -91,6 +109,13 @@ class Revalidate extends Component {
 		$responseCode = wp_remote_retrieve_response_code($result);
 		$isSuccess = $responseCode == 200;
 		return $isSuccess ? true : new \WP_Error($responseCode, "Error");
+	}
+
+	function isRevalidationInactive() {
+		return !$this->isRevalidationActive();
+	}
+	function isRevalidationActive() {
+		return apply_filters(Plugin::FILTER_REVALIDATE_IS_ACTIVE, true);
 	}
 
 

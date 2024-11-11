@@ -14,6 +14,13 @@ class Schedule extends Component {
 	}
 
 	public function init(){
+		if($this->plugin->revalidate->isRevalidationInactive()){
+			$next = $this->getNextSchedule();
+			if($next){
+				wp_unschedule_event($next, Plugin::SCHEDULE_REVALIDATE);
+			}
+			return;
+		}
 		if(!wp_next_scheduled(Plugin::SCHEDULE_REVALIDATE)){
 			wp_schedule_event(time(), 'hourly', Plugin::SCHEDULE_REVALIDATE);
 		}
@@ -32,6 +39,9 @@ class Schedule extends Component {
 	}
 
 	public function revalidate(){
+
+		if($this->plugin->revalidate->isRevalidationInactive()) return;
+
 		$lastRun = $this->getLastRevalidationRun();
 		$now = time();
 

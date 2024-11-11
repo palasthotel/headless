@@ -58,6 +58,8 @@ class PluginAssets extends Component {
                 self::HANDLE_ADMIN_SCRIPT,
                 "HeadlessAdmin",
                 [
+					"revalidate_is_active" => $this->plugin->revalidate->isRevalidationActive(),
+					"preview_is_active" => $this->plugin->preview->isPreviewActive(),
                     "preview_path" => $this->plugin->preview->getHeadlessPreviewPath(),
                     "frontends" => array_map(function($frontend){
                         return $frontend->getBaseUrl();

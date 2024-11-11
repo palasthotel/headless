@@ -15,7 +15,10 @@ class Preview extends Component {
 		add_filter( 'preview_post_link', [ $this, 'preview_post_link' ], 10, 2 );
 		add_action( 'wp_ajax_headless_preview', [ $this, 'admin_preview' ] );
 		add_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'no_permission' ] );
+		add_action( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 	}
+
+
 
 	public function getRedirectLink( $id ) {
 		if($id == null){
@@ -80,5 +83,17 @@ class Preview extends Component {
 		die('Missing permission to access this area!');
 	}
 
+	public function plugins_loaded() {
+		remove_filter( 'preview_post_link', [ $this, 'preview_post_link' ] );
+		remove_action( 'wp_ajax_headless_preview', [ $this, 'admin_preview' ] );
+		remove_action( 'wp_ajax_nopriv_headless_preview', [ $this, 'no_permission' ] );
+	}
+
+	function isPreviewInactive() {
+		return !$this->isPreviewActive();
+	}
+	function isPreviewActive() {
+		return apply_filters(Plugin::FILTER_PREVIEW_IS_ACTIVE, true);
+	}
 
 }

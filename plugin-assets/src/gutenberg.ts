@@ -1,17 +1,24 @@
 import {registerPlugin} from "@wordpress/plugins";
 import ReloadPanel from "./components/ReloadPanel";
 import {getPreviewUrl} from "./store/window";
-import {select, dispatch, subscribe} from "@wordpress/data";
+import {dispatch, select, subscribe} from "@wordpress/data";
 import {writeInterstitialMessage} from "./preview";
 
 import "./styles.css"
+import {isPreviewActive, isRevalidateActive} from "./store/admin-window";
 
-registerPlugin('headless-plugin', {
-    icon: () => null,
-    render: ReloadPanel,
-});
+if(isRevalidateActive()){
+	registerPlugin('headless-plugin', {
+		icon: () => null,
+		render: ReloadPanel,
+	});
+}
 
 document.addEventListener("DOMContentLoaded", function () {
+
+	if(!isPreviewActive()){
+		return;
+	}
 
     const coreEditorSelect = select("core/editor");
     const getCurrentPostId = coreEditorSelect.getCurrentPostId;

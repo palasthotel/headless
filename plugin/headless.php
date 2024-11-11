@@ -59,8 +59,11 @@ class Plugin extends Components\Plugin {
 	const REST_NAMESPACE = "headless/v1";
 	const FILTER_IS_HEADLESS_POST_TYPE = "headless_is_headless_post_type";
 
+	const FILTER_PREVIEW_IS_ACTIVE = "headless_preview_is_active";
+
 	const FILTER_PREVIEW_REDIRECT_URL = "headless_preview_redirect_url";
 	const FILTER_PREVIEW_URL = "headless_preview_url";
+	const FILTER_REVALIDATE_IS_ACTIVE = "headless_revalidate_is_active";
 
 	const ACTION_REGISTER_BLOCK_PREPARATION_EXTENSIONS = "headless_register_block_preparation_extensions";
 	const ACTION_REGISTER_POST_ROUTE_EXTENSIONS = "headless_register_post_route_extensions";
@@ -102,7 +105,7 @@ class Plugin extends Components\Plugin {
 	public Ajax $ajax;
 	public Log $log;
 
-	function onCreate() {
+	function onCreate(): void {
 
 		$this->dbRevalidation = new RevalidationDatabase();
 		$this->log            = new Log( $this );

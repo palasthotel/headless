@@ -110,7 +110,7 @@ class RevalidationDatabase extends Database {
     		 content_id bigint(20) unsigned NOT NULL,
     		 content_type varchar(40) NOT NULL,
     		 revalidation_state varchar(30),
-    		 revalidated_at TIMESTAMP default null,
+    		 revalidated_at TIMESTAMP NULL default null,
 			 primary key (id),
     		 key (content_id),
 			 key (content_type),
