@@ -11,11 +11,13 @@ class Dashboard extends Components\Component {
 	public function setup(){
         if(!current_user_can('edit_posts')) return;
 
-        wp_add_dashboard_widget(
-            Plugin::DOMAIN,
-            __("Headless", Plugin::DOMAIN),
-            array($this, 'render')
-        );
+		if($this->plugin->revalidate->isRevalidationActive()){
+			wp_add_dashboard_widget(
+				Plugin::DOMAIN,
+				__("Headless", Plugin::DOMAIN),
+				array($this, 'render')
+			);
+		}
 	}
 
 	public function render(){

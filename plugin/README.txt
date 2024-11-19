@@ -3,7 +3,7 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
-Tested up to: 6.5.2
+Tested up to: 6.6.2
 Requires PHP: 8.0
 Stable tag: 2.2.4
 License: GPLv3
@@ -26,6 +26,11 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 2.3.0 =
+* Feature: Revalidate feature can be deactivated via hook
+* Feature: Preview feature can be deactivated via hook
+* Update: NPM Packages
 
 = 2.2.4 =
 * Feature: Add filter "headless_rest_response_data"
