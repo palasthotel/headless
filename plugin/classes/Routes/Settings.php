@@ -21,7 +21,7 @@ class Settings extends Component {
 	public function get_settings(): array {
 		return [
 			"front_page" => get_option( 'show_on_front' ),
-			"page_on_front" => get_option( 'page_on_front' ),
+			"page_on_front" => intval(get_option( 'page_on_front' )),
 			"home_url" => home_url(),
 		];
 	}
