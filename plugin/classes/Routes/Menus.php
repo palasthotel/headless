@@ -7,7 +7,7 @@ use Palasthotel\WordPress\Headless\Plugin;
 
 class Menus extends Component {
 
-	private array|false $menu;
+	private array $menu;
 
 	public function init(){
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus', array(
@@ -25,22 +25,6 @@ class Menus extends Component {
 				return $this->plugin->security->isHeadlessRequest() &&
 				       $this->plugin->security->hasApiKeyAccess();
 			},
-			'args'                => [
-				'menu' => [
-					'validate_callback' => function ( $value, $request, $param ) {
-						$value = sanitize_text_field( $value );
-						$menu  = $this->getMenuResponse($value);
-						if ( ! $menu ) {
-
-							return false;
-						}
-						$this->menu = $menu;
-
-						return true;
-
-					},
-				],
-			]
 		) );
 	}
 
@@ -60,7 +44,7 @@ class Menus extends Component {
 	private function getMenuResponse($menu) {
 		$menu  = wp_get_nav_menu_items( $menu );
 		if ( ! $menu ) {
-			return false;
+			return [];
 		}
 
 		return array_map( function ( $menuItem ) {
