@@ -47,12 +47,14 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         const ref = window.open('about:blank', a.target);
-        writeInterstitialMessage(ref.document);
+		if(ref) {
+			writeInterstitialMessage(ref.document);
 
-        const saveFn = (isDraft()) ? savePost : autosave;
-        saveFn().then(()=>{
-            ref.location = a.href;
-        });
+			const saveFn = (isDraft()) ? savePost : autosave;
+			saveFn().then(() => {
+				ref.location = a.href;
+			});
+		}
 
     });
 
@@ -97,16 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // replace this special preview link
-        const previewGroups = document.querySelectorAll(".components-menu-group");
-        let externalPreviewGroup: null|Element = null
-        previewGroups.forEach((group)=>{
-            if(group.querySelector(".editor-preview-dropdown__button-external")){
-                externalPreviewGroup = group;
-            }
-        })
+		// replace this special preview link
+		const externalPreviewGroup = Array.from(
+			document.querySelectorAll<HTMLElement>(".components-menu-group")
+		).find(group => group.querySelector(".editor-preview-dropdown__button-external"));
 
-        if(!externalPreviewGroup){
+
+		if(!externalPreviewGroup){
             return;
         }
 
@@ -117,14 +116,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // is hidden via styles.css
         const gutenbergLink = externalPreviewGroup.querySelector<HTMLAnchorElement>(".editor-preview-dropdown__button-external");
+		if(!gutenbergLink){return}
+
         const svg = gutenbergLink.querySelector("svg");
-        const target = gutenbergLink.getAttribute("target");
-        a.text = gutenbergLink.textContent;
-        a.append(svg);
+        const target = gutenbergLink.getAttribute("target") ?? "";
+        a.text = gutenbergLink.textContent ?? "";
+		if (svg) a.append(svg);
         a.target = target;
         a.href = previewUrl;
         a.id = id;
         gutenbergLink.style.display = "none";
-        externalPreviewGroup.querySelector('[role="group"]').append(a);
+        externalPreviewGroup.querySelector('[role="group"]')?.append(a);
     }
 });

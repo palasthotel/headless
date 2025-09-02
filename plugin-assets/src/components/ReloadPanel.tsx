@@ -45,10 +45,11 @@ const FrontendItem = (
     const post = usePost();
 
     const url = useMemo(()=>{
-        const link = post.link;
+        const link = post?.link;
+		if(!link) return "#";
         const url = new URL(link);;
         return baseUrl.replace(/^\/|\/$/g, '')+url.pathname;
-    }, [post.link])
+    }, [post?.link])
 
     useEffect(() => {
         controller.add(index, reload);
@@ -82,6 +83,7 @@ export default function ReloadPanel() {
 
     return (
         <PluginDocumentSettingPanel
+			name="palasthotel-headless"
             title="Headless"
         >
             {canRevalidate ?

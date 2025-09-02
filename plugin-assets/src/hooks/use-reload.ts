@@ -1,6 +1,7 @@
 import {getReloadAjaxUrl} from "../store/window";
 import {useSelect} from '@wordpress/data';
 import {useMemo, useState} from "@wordpress/element";
+import {store as editorStore} from '@wordpress/editor';
 
 export type State = "idle" | "loading" | "success" | "error"
 
@@ -12,14 +13,15 @@ type Post = {
 }
 
 export const usePost = (): Post|undefined => {
-    return useSelect<Post>(
-        select => select("core/editor").getCurrentPost(),
+    return useSelect(
+		(select) =>
+			select(editorStore).getCurrentPost() as Post | undefined,
         []
     );
 }
 
 export const useCanRevalidate = ()=> {
-    return usePost().status == "publish";
+    return usePost()?.status == "publish";
 }
 
 
@@ -35,7 +37,7 @@ export const useReload = (frontend:number) => {
         } else {
             return "";
         }
-    }, [post.link]);
+    }, [post?.link]);
 
     return {
         state,
