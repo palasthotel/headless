@@ -1,6 +1,6 @@
 
-export * from './base.ts';
-export * from './text.ts';
-export * from './element.ts';
-export * from './image.ts';
-export * from './list.ts';
+export * from './base';
+export * from './text';
+export * from './element';
+export * from './image';
+export * from './list';

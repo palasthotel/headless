@@ -1,6 +1,6 @@
 import {GetPostByIdRequestArgs, getPostRequest, getPostsRequest} from "@palasthotel/wp-rest";
-import {mapQueryToParam} from "../mapping/compare.ts";
-import {withHeadlessParam} from "./headless.ts";
+import {mapQueryToParam} from "../mapping/compare";
+import {withHeadlessParam} from "./headless";
 import {GetHeadlessPostsRequestArgs, HeadlessParam} from "../@types";
 
 export const getPostsWithBlocksRequest = (args: GetHeadlessPostsRequestArgs, param: HeadlessParam = {}) => {

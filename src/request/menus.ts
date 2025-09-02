@@ -1,5 +1,5 @@
 import {BaseRequestArgs, trimEndSlash} from "@palasthotel/wp-rest";
-import {withHeadlessParam} from "./headless.ts";
+import {withHeadlessParam} from "./headless";
 import {GetMenuRequestArgs, HeadlessParam} from "../@types";
 
 export const getMenusRequest = (args: BaseRequestArgs, param: HeadlessParam = {}) => {

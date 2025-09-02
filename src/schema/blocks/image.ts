@@ -1,6 +1,6 @@
 import {z} from "zod";
-import {blockSchema} from "./base.ts";
-import {imageSizeSchema} from "../parts.ts";
+import {blockSchema} from "./base";
+import {imageSizeSchema} from "../parts";
 
 export const coreImageBlockSchema = blockSchema
     .omit({

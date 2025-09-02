@@ -1,4 +1,4 @@
-import {blockSchema, groupBlockSchema} from "./base.ts";
+import {blockSchema, groupBlockSchema} from "./base";
 
 // TODO: attrs for alignment and so on
 

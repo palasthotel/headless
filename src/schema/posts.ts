@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {postResponseSchema} from "@palasthotel/wp-rest";
-import {imageSizeSchema} from "./parts.ts";
-import {postContentSchema} from "./content.ts";
+import {imageSizeSchema} from "./parts";
+import {postContentSchema} from "./content";
 
 export const postWithBlocksResponseSchema = postResponseSchema
     .extend({

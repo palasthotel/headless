@@ -1,2 +1,2 @@
-export * from './hierarchy.ts';
-export * from './sustaining-parse.ts'
+export * from './hierarchy';
+export * from './sustaining-parse'

@@ -1,5 +1,5 @@
 export * from './comment';
-export * from './menus.ts';
-export * from './post.ts';
+export * from './menus';
+export * from './post';
 export * from './revision';
 export * from './settings';

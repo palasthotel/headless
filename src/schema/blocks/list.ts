@@ -1,4 +1,4 @@
-import {blockSchema, groupBlockSchema} from "./base.ts";
+import {blockSchema, groupBlockSchema} from "./base";
 import {z} from "zod";
 
 export const coreListBlockSchema = groupBlockSchema.extend({
