@@ -1,4 +1,4 @@
-import {PluginDocumentSettingPanel} from '@wordpress/edit-post';
+import {PluginDocumentSettingPanel} from '@wordpress/editor';
 import {Button} from "@wordpress/components";
 import {useReload, State, useCanRevalidate, usePost} from "../hooks/use-reload";
 import {getFrontends} from "../store/window";

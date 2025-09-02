@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@palasthotel/wp-rest": "^0.8.1",
+    "@wordpress/editor": "^14.29.0",
     "zod": "^3.23.8"
   },
   "engines": {
