@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsup ./src",
+    "build": "tsdown",
     "prepublishOnly": "npm run build",
     "pack": "./bin/pack.sh",
     "wp-env": "wp-env"
@@ -33,7 +33,7 @@
     "jest": "^30.1.2",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.14.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
     target: 'es2020',
@@ -6,5 +6,5 @@ export default defineConfig({
     splitting: false,
     sourcemap: true,
     clean: true,
-    dts: true
+    dts: true,
 })
