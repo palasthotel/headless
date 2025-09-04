@@ -1,5 +1,14 @@
 # Releases
 
+
+## [3.0.0]
+* BREAKING CHANGE: Migrate form Zod v3 to v4
+* Switch bundler from _tsup_ to _tsdown_ (_tsup_ is officially deprecated)
+* Update dependencies
+* deprecation: switch from @WordPress's 'edit-post' to 'editor'
+
+---
+
 ## [2.1.0]
 * New headless_variant params with teasers value for smaller response sizes
 
