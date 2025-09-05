@@ -1,6 +1,6 @@
 {
   "name": "@palasthotel/headless",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "wp-rest extensions to works with headless plugin.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -37,7 +37,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@palasthotel/wp-rest": "^1.0.0",
+    "@palasthotel/wp-rest": "^1.0.1",
     "@wordpress/editor": "^14.30.0",
     "zod": "4.1.5"
   },

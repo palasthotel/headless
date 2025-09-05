@@ -1,5 +1,7 @@
 # Releases
 
+## [3.0.1]
+* fix missing types by re-enabling unbundling
 
 ## [3.0.0]
 * BREAKING CHANGE: Migrate form Zod v3 to v4
