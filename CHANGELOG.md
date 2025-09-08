@@ -1,5 +1,8 @@
 # Releases
 
+## [3.0.2]
+* Bug: fix wrong signature for z.record()
+
 ## [3.0.1]
 * fix missing types by re-enabling unbundling
 

@@ -42,4 +42,4 @@ export const menuItemResponseSchema = z.object({
 
 export const menuResponseSchema = z.array(menuItemResponseSchema)
 
-export const menusResponseSchema = z.record(menuResponseSchema)
+export const menusResponseSchema = z.record(z.string(), menuResponseSchema)
