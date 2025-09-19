@@ -1,5 +1,8 @@
 # Releases
 
+## [3.0.3]
+* update package 'zod' and pin its version
+
 ## [3.0.2]
 * Bug: fix wrong signature for z.record()
 
