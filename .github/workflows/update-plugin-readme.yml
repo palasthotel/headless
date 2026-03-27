@@ -1,0 +1,37 @@
+name: Update plugin README.txt in release PR
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    # Only run for the release-please plugin component PR
+    if: startsWith(github.head_ref, 'release-please--') && contains(github.head_ref, '--plugin')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update Stable tag and changelog in README.txt
+        run: bash bin/update-plugin-readme.sh
+
+      - name: Commit README.txt to release PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plugin/README.txt
+          git diff --cached --quiet && echo "README.txt already up to date" && exit 0
+          git commit -m "chore(plugin): update README.txt"
+          git push
