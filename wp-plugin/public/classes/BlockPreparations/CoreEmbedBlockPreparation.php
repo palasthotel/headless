@@ -9,7 +9,7 @@ use Palasthotel\WordPress\Headless\Model\BlockName;
  * Normalizes the legacy "core-embed/wordpress" block name to "core/embed"
  *
  * Handles blocks saved with the old "core-embed" namespace so they are
- * treated as standard embed blocks by subsequent preparations.
+ * treated as standard embed blocks by subsequent preparations
  */
 class CoreEmbedBlockPreparation implements IBlockPreparation
 {
