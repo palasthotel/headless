@@ -4,8 +4,9 @@
  * Plugin Name: Headless
  * Plugin URI: https://github.com/palasthotel/headless
  * Description: Adds features to use WordPress as headless CMS
- * x-release-please-version
+ * x-release-please-start-version
  * Version: 3.0.0
+ * x-release-please-end-version
  * Author: Palasthotel (Edward Bock) <edward.bock@palasthotel.de>
  * Author URI: http://www.palasthotel.de
  * Requires at least: 5.0
@@ -22,39 +23,39 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Store\RevalidationDatabase;
 
-if ( ! defined( 'HEADLESS_HEAD_BASE_URL' ) ) {
-	define( 'HEADLESS_HEAD_BASE_URL', '' );
+if (!defined("HEADLESS_HEAD_BASE_URL")) {
+	define("HEADLESS_HEAD_BASE_URL", "");
 }
 
-if ( ! defined( 'HEADLESS_SECRET_TOKEN' ) ) {
-	define( 'HEADLESS_SECRET_TOKEN', "" );
+if (!defined("HEADLESS_SECRET_TOKEN")) {
+	define("HEADLESS_SECRET_TOKEN", "");
 }
 
-if ( ! defined( 'HEADLESS_REST_PARAM' ) ) {
-	define( 'HEADLESS_REST_PARAM', "headless" );
+if (!defined("HEADLESS_REST_PARAM")) {
+	define("HEADLESS_REST_PARAM", "headless");
 }
-if ( ! defined( 'HEADLESS_REST_VALUE' ) ) {
-	define( 'HEADLESS_REST_VALUE', 'true' );
-}
-
-if ( ! defined( 'HEADLESS_REST_VARIANT_PARAM' ) ) {
-	define( 'HEADLESS_REST_VARIANT_PARAM', "headless_variant" );
-}
-if ( ! defined( 'HEADLESS_REST_VARIANT_TEASERS_VALUE' ) ) {
-	define( 'HEADLESS_REST_VARIANT_TEASERS_VALUE', 'teaser' );
+if (!defined("HEADLESS_REST_VALUE")) {
+	define("HEADLESS_REST_VALUE", "true");
 }
 
-if ( ! defined( 'HEADLESS_API_KEY_HEADER_KEY' ) ) {
-	define( 'HEADLESS_API_KEY_HEADER_KEY', "" );
+if (!defined("HEADLESS_REST_VARIANT_PARAM")) {
+	define("HEADLESS_REST_VARIANT_PARAM", "headless_variant");
 }
-if ( ! defined( 'HEADLESS_API_KEY_HEADER_VALUE' ) ) {
-	define( 'HEADLESS_API_KEY_HEADER_VALUE', "" );
+if (!defined("HEADLESS_REST_VARIANT_TEASERS_VALUE")) {
+	define("HEADLESS_REST_VARIANT_TEASERS_VALUE", "teaser");
+}
+
+if (!defined("HEADLESS_API_KEY_HEADER_KEY")) {
+	define("HEADLESS_API_KEY_HEADER_KEY", "");
+}
+if (!defined("HEADLESS_API_KEY_HEADER_VALUE")) {
+	define("HEADLESS_API_KEY_HEADER_VALUE", "");
 }
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-class Plugin extends Components\Plugin {
-
+class Plugin extends Components\Plugin
+{
 	const DOMAIN = "headless";
 
 	const REST_NAMESPACE = "headless/v1";
@@ -77,9 +78,9 @@ class Plugin extends Components\Plugin {
 	const FILTER_PREPARE_POST = "headless_rest_api_prepare_post";
 
 	const FILTER_REST_RESPONSE_HEADERS = "headless_rest_response_headers";
-    const FILTER_REST_RESPONSE_DATA = "headless_rest_response_data";
+	const FILTER_REST_RESPONSE_DATA = "headless_rest_response_data";
 
-    const FILTER_FRONTENDS = "headless_frontends";
+	const FILTER_FRONTENDS = "headless_frontends";
 	const FILTER_REVALIDATE_BY_PATH_URL = "headless_revalidate_by_path_url";
 	const FILTER_REVALIDATE_BY_TAG_URL = "headless_revalidate_by_tag_url";
 	const FILTER_REVALIDATE_COMMENTS_BY_TAG = "headless_revalidate_comments_by_tag";
@@ -106,33 +107,32 @@ class Plugin extends Components\Plugin {
 	public Ajax $ajax;
 	public Log $log;
 
-	function onCreate(): void {
-
+	function onCreate(): void
+	{
 		$this->dbRevalidation = new RevalidationDatabase();
-		$this->log            = new Log( $this );
+		$this->log = new Log($this);
 
-		$this->security    = new Security( $this );
-		$this->headers     = new Headers( $this );
-		$this->routes      = new Routes( $this );
-		$this->extensions  = new Extensions( $this );
-		$this->query       = new Query( $this );
-		$this->preview     = new Preview( $this );
-		$this->headquarter = new Headquarter( $this );
-		$this->revalidate  = new Revalidate( $this );
-		$this->gutenberg   = new PluginAssets( $this );
-		$this->post        = new Post( $this );
-		$this->dashboard   = new Dashboard( $this );
-		$this->ajax        = new Ajax( $this );
-		$this->schedule    = new Schedule( $this );
+		$this->security = new Security($this);
+		$this->headers = new Headers($this);
+		$this->routes = new Routes($this);
+		$this->extensions = new Extensions($this);
+		$this->query = new Query($this);
+		$this->preview = new Preview($this);
+		$this->headquarter = new Headquarter($this);
+		$this->revalidate = new Revalidate($this);
+		$this->gutenberg = new PluginAssets($this);
+		$this->post = new Post($this);
+		$this->dashboard = new Dashboard($this);
+		$this->ajax = new Ajax($this);
+		$this->schedule = new Schedule($this);
 
-		new Migration( $this );
-
+		new Migration($this);
 	}
 
-	public function onSiteActivation() {
+	public function onSiteActivation()
+	{
 		parent::onSiteActivation();
 		$this->dbRevalidation->createTables();
-
 	}
 }
 

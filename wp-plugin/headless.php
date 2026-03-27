@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * Plugin Name:       Headless - DEV
  * Description:       Dev inc file
@@ -14,12 +12,12 @@
 
 use Palasthotel\WordPress\Headless\Plugin;
 
-include dirname( __FILE__ ) . "/plugin/headless.php";
+include dirname(__FILE__) . "/plugin/headless.php";
 
-register_activation_hook(__FILE__, function($multisite){
+register_activation_hook(__FILE__, function ($multisite) {
 	Plugin::instance()->onActivation($multisite);
 });
 
-register_deactivation_hook(__FILE__, function($multisite){
+register_deactivation_hook(__FILE__, function ($multisite) {
 	Plugin::instance()->onDeactivation($multisite);
 });
