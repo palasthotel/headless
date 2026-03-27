@@ -24,6 +24,10 @@
     "pack": "./bin/pack.sh",
     "wp-env": "wp-env"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/palasthotel/headless"
+  },
   "author": "Edward Bock",
   "license": "MIT",
   "devDependencies": {
