@@ -43,7 +43,7 @@ while IFS= read -r line; do
   # Skip category headings
   [[ "$line" =~ ^###  ]] && continue
   # Strip inline Markdown links: [text](url) → text
-  line=$(echo "$line" | sed 's/\[([^]]*)\]([^)]*)/\1/g; s/\[\([^]]*\)\]([^)]*)/\1/g')
+  line=$(echo "$line" | sed 's/\[\([^]]*\)\]([^)]*)/\1/g')
   WP_LINES+="$line"$'\n'
 done <<< "$SECTION"
 
