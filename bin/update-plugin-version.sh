@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 PACKAGE_JSON="$ROOT_DIR/wp-plugin/package.json"
-CHANGELOG="$ROOT_DIR/wp-plugin/plugin/CHANGELOG.md"
+CHANGELOG="$ROOT_DIR/wp-plugin/CHANGELOG.md"
 README="$ROOT_DIR/wp-plugin/plugin/README.txt"
 HEADLESS_PHP="$ROOT_DIR/wp-plugin/plugin/headless.php"
 
