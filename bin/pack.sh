@@ -16,10 +16,6 @@ rsync -rL "$PROJECT_PATH/plugin/" "$DEST_PATH/"
 echo "Cleanup files..."
 cd "$DEST_PATH"
 composer install --no-cache
-composer update --no-cache
-composer dump-autoload
-rm "composer.json"
-rm "composer.lock"
 cd "$PROJECT_PATH"
 
 
