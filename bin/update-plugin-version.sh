@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Updates plugin/README.txt after a plugin release:
+# Updates plugin/README.txt after a plugin release pr is created or updated:
 # - Bumps "Stable tag:" to the current version from plugin-assets/package.json
 # - Prepends the new version's changelog section (converted from plugin/CHANGELOG.md) to == Changelog ==
 set -euo pipefail
@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 PACKAGE_JSON="$ROOT_DIR/wp-plugin/package.json"
-CHANGELOG="$ROOT_DIR/wp-plugin/plugin/CHANGELOG.md"
+CHANGELOG="$ROOT_DIR/wp-plugin/CHANGELOG.md"
 README="$ROOT_DIR/wp-plugin/plugin/README.txt"
 HEADLESS_PHP="$ROOT_DIR/wp-plugin/plugin/headless.php"
 
