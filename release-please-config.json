@@ -1,0 +1,43 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "@palasthotel/headless",
+      "component": "npm",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": true,
+      "tag-separator": "-",
+      "include-v-in-tag": true,
+      "paths": [
+        "src",
+        "package.json",
+        "tsconfig.json",
+        "tsdown.config.ts",
+        "jest.config.ts",
+        "__tests__",
+        "__test_data__"
+      ]
+    },
+    "plugin-assets": {
+      "release-type": "node",
+      "package-name": "@palasthotel/wp-headless",
+      "component": "plugin",
+      "changelog-path": "plugin/CHANGELOG.md",
+      "include-component-in-tag": true,
+      "tag-separator": "-",
+      "include-v-in-tag": true,
+      "paths": [
+        "plugin",
+        "plugin-assets"
+      ],
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "plugin/headless.php"
+        }
+      ]
+    }
+  }
+}
