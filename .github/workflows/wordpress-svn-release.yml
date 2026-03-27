@@ -22,10 +22,10 @@ jobs:
         shell: bash
         run: |
           VERSION=${RELEASE_TAG#plugin-v}
-          echo "🤖 VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Show release version
-        run: echo "🤖 VERSION=${VERSION}"
+        run: echo "VERSION=${VERSION}"
 
       - name: Checkout code
         uses: actions/checkout@v6
