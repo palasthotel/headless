@@ -1,7 +1,8 @@
 #!/bin/sh
 
-PLUGIN_SLUG="headless"
-PROJECT_PATH=$(pwd)
+PLUGIN_SLUG="plugin"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_PATH=$(cd "$SCRIPT_DIR/.." && pwd)
 BUILD_PATH="${PROJECT_PATH}/build"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
 
