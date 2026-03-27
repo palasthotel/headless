@@ -44,17 +44,17 @@
       "extra-files": [
         {
           "type": "generic",
-          "path": "wp-plugin/plugin/readme.txt",
+          "path": "plugin/readme.txt",
           "glob": false
         },
         {
           "type": "generic",
-          "path": "wp-plugin/plugin/headless.php",
+          "path": "plugin/headless.php",
           "glob": false
         },
         {
           "type": "json",
-          "path": "wp-plugin/package.json",
+          "path": "package.json",
           "jsonpath": "$.version"
         }
       ]

@@ -16,10 +16,10 @@ VERSION=$(node -e "process.stdout.write(require('$PACKAGE_JSON').version)")
 echo "🤖 Updating plugin files for version $VERSION …"
 
 # ── 1. Update headless.php Version header ───────────────────────────────────
-sed -i '' "s/^\( \* Version:\) .*/\1 $VERSION/" "$HEADLESS_PHP"
+sed -i "s/^\( \* Version:\) .*/\1 $VERSION/" "$HEADLESS_PHP"
 
 # ── 2. Update Stable tag ────────────────────────────────────────────────────
-sed -i '' "s/^Stable tag: .*/Stable tag: $VERSION/" "$README"
+sed -i "s/^Stable tag: .*/Stable tag: $VERSION/" "$README"
 
 # ── 2. Extract and convert the changelog section for this version ────────────
 # CHANGELOG.md section starts with "## [X.Y.Z]" and ends before the next "## ["

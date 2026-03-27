@@ -6,10 +6,10 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * Contract for extensions that modify the REST API response for taxonomy terms.
+ * Contract for extensions that modify the REST API response for taxonomy terms
  */
-interface ITermRouteExtension {
-
+interface ITermRouteExtension
+{
 	/**
 	 * @return string[]
 	 */
@@ -23,5 +23,9 @@ interface ITermRouteExtension {
 	 * @param WP_REST_Request  $request  The current REST request.
 	 * @return WP_REST_Response The modified response.
 	 */
-	function response( WP_REST_Response $response, \WP_Term $comment, WP_REST_Request $request): WP_REST_Response;
+	function response(
+		WP_REST_Response $response,
+		\WP_Term $comment,
+		WP_REST_Request $request,
+	): WP_REST_Response;
 }
