@@ -31,7 +31,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add wp-plugin/plugin/README.txt wp-plugin/plugin/headless.php
+          git add wp-plugin/public/README.txt wp-plugin/public/headless.php
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "chore(plugin): update README.txt and headless.php"
           git push

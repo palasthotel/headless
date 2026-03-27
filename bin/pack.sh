@@ -11,7 +11,7 @@ rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"
 
 echo "Syncing files..."
-rsync -rL "$PROJECT_PATH/wp-plugin/plugin/" "$DEST_PATH/"
+rsync -rL "$PROJECT_PATH/wp-plugin/public/" "$DEST_PATH/"
 
 echo "Cleanup files..."
 cd "$DEST_PATH"

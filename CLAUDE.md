@@ -23,7 +23,7 @@ npm run test        # run Jest tests
 ```bash
 cd wp-plugin
 npm run watch           # wp-scripts start (dev mode)
-npm run build           # wp-scripts build → outputs to wp-plugin/plugin/dist/
+npm run build           # wp-scripts build → outputs to wp-plugin/public/dist/
 npm run wp-env:start    # build + start local WP environment
 npm run wp-env:stop
 npm run pack            # package plugin as plugin.zip (runs bin/pack.sh)
@@ -54,15 +54,15 @@ cd npm-package && npx jest __tests__/schema.blocks.test.ts
 
 | Path | Purpose |
 |---|---|
-| `wp-plugin/plugin/classes/Plugin.php` | Singleton entry point, bootstraps all subsystems |
-| `wp-plugin/plugin/classes/Extensions/` | REST API field extensions (add fields to existing WP endpoints) |
-| `wp-plugin/plugin/classes/BlockPreparations/` | Transform raw block data before REST response (Image, Gallery, Paragraph, Reference, Embed) |
-| `wp-plugin/plugin/classes/Routes.php` | Registers custom REST routes under `headless/v1` namespace |
-| `wp-plugin/plugin/classes/Preview.php` | Preview link generation for headless frontends |
-| `wp-plugin/plugin/classes/Revalidate.php` | ISR/on-demand revalidation support |
-| `wp-plugin/plugin/classes/Security.php` | API key header validation, headless request detection |
-| `wp-plugin/plugin/public-functions.php` | Public PHP API for other plugins to integrate |
-| `wp-plugin/src/` | Gutenberg editor assets (React/TS), built with `@wordpress/scripts` → `wp-plugin/plugin/dist/` |
+| `wp-plugin/public/classes/Plugin.php` | Singleton entry point, bootstraps all subsystems |
+| `wp-plugin/public/classes/Extensions/` | REST API field extensions (add fields to existing WP endpoints) |
+| `wp-plugin/public/classes/BlockPreparations/` | Transform raw block data before REST response (Image, Gallery, Paragraph, Reference, Embed) |
+| `wp-plugin/public/classes/Routes.php` | Registers custom REST routes under `headless/v1` namespace |
+| `wp-plugin/public/classes/Preview.php` | Preview link generation for headless frontends |
+| `wp-plugin/public/classes/Revalidate.php` | ISR/on-demand revalidation support |
+| `wp-plugin/public/classes/Security.php` | API key header validation, headless request detection |
+| `wp-plugin/public/public-functions.php` | Public PHP API for other plugins to integrate |
+| `wp-plugin/src/` | Gutenberg editor assets (React/TS), built with `@wordpress/scripts` → `wp-plugin/public/dist/` |
 
 Custom REST routes are under `headless/v1`:
 - `GET /menus` — all registered menus
@@ -82,8 +82,8 @@ This repo uses **release-please** for automated semver versioning with two indep
 ### What gets updated automatically
 
 - **npm release PR**: bumps `npm-package/package.json`, prepends to `npm-package/CHANGELOG.md`
-- **plugin release PR**: bumps `wp-plugin/package.json`, `wp-plugin/plugin/headless.php` (`Version:` header), prepends to `wp-plugin/plugin/CHANGELOG.md`
-- **After plugin tag is pushed**: `update-plugin-readme.yml` runs `bin/update-plugin-readme.sh` to convert the new CHANGELOG.md section to WordPress format and prepend it to `== Changelog ==` in `wp-plugin/plugin/README.txt`, then commits to main
+- **plugin release PR**: bumps `wp-plugin/package.json`, `wp-plugin/public/headless.php` (`Version:` header), prepends to `wp-plugin/public/CHANGELOG.md`
+- **After plugin tag is pushed**: `update-plugin-readme.yml` runs `bin/update-plugin-readme.sh` to convert the new CHANGELOG.md section to WordPress format and prepend it to `== Changelog ==` in `wp-plugin/public/README.txt`, then commits to main
 
 ### What triggers publishing
 
@@ -95,7 +95,7 @@ This repo uses **release-please** for automated semver versioning with two indep
 - `release-please-config.json` — component definitions and path filters
 - `.release-please-manifest.json` — current tracked versions (do not edit manually)
 - `bin/update-plugin-readme.sh` — post-release README.txt updater
-- `bin/pack.sh` — packages `wp-plugin/plugin/` as `plugin.zip`
+- `bin/pack.sh` — packages `wp-plugin/public/` as `plugin.zip`
 
 ## Key Technical Notes
 
