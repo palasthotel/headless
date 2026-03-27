@@ -6,6 +6,7 @@ use Palasthotel\WordPress\Headless\Extensions\FeaturedMedia;
 use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparation;
 use Palasthotel\WordPress\Headless\Model\BlockName;
 use Palasthotel\WordPress\Headless\Model\PostContentAttachmentCollector;
+use WP_HTML_Tag_Processor;
 
 class ImageBlockPreparation implements IBlockPreparation {
 
@@ -29,11 +30,18 @@ class ImageBlockPreparation implements IBlockPreparation {
 	}
 
 	public static function addAttachmentAttributes($id, $attrs, $innerHTML){
+
+		$tags = new WP_HTML_Tag_Processor( $innerHTML );
+		$tags->next_tag(['tag_name' => 'img']);
+		// alt set in the core/image block settings
+		$block_alt = $tags->get_attribute('alt');
+		$alt = empty($block_alt) ? get_post_meta($id, '_wp_attachment_image_alt', true) : $block_alt;
+
 		$attrs["src"] = wp_get_attachment_image_src($id, 'full');
 
 		$attrs["sizes"] = FeaturedMedia::imageSizes($id);
 
-		$attrs["alt"] = get_post_meta($id, '_wp_attachment_image_alt', true);
+		$attrs["alt"] = $alt;
 		$attrs["caption"] = str_replace(
 			["\n","\r"],
 			'',
