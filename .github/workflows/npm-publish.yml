@@ -22,7 +22,9 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
       - run: npm ci
+        working-directory: npm-package
       - run: npm run build --if-present
+        working-directory: npm-package
       - run: npm publish
         working-directory: npm-package
 
