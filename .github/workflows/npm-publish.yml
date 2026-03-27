@@ -3,11 +3,12 @@ name: Publish to npm
 on:
   push:
     tags:
-      - 'npm-v*'
+      - "npm-v*"
 
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   publish:
@@ -24,18 +25,16 @@ jobs:
       - name: Publish to npmjs.org
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm publish --access public
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm publish --access public --provenance
         working-directory: npm-package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Publish to GitHub Packages
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
       - run: npm publish --access public
         working-directory: npm-package
         env:
