@@ -1,52 +1,49 @@
 {
-  "name": "@palasthotel/headless",
-  "version": "3.0.3",
-  "description": "wp-rest extensions to works with headless plugin.",
-  "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
-    }
-  },
-  "files": [
-    "dist",
-    "package.json"
-  ],
-  "scripts": {
-    "test": "jest",
-    "build": "tsdown",
-    "prepublishOnly": "npm run build",
-    "pack": "./bin/pack.sh",
-    "wp-env": "wp-env"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/palasthotel/headless"
-  },
-  "author": "Edward Bock",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.3.1",
-    "@wordpress/env": "^10.30.0",
-    "jest": "^30.1.3",
-    "ts-jest": "^29.4.1",
-    "ts-node": "^10.9.2",
-    "tsdown": "^0.14.2",
-    "typescript": "^5.9.2"
-  },
-  "dependencies": {
-    "@palasthotel/wp-rest": "^1.0.1",
-    "@wordpress/editor": "^14.30.0",
-    "zod": "4.1.9"
-  },
-  "engines": {
-    "node": ">=20",
-    "pnpm": ">=9"
-  }
+	"name": "@palasthotel/headless",
+	"version": "3.0.3",
+	"description": "wp-rest extensions to works with headless plugin.",
+	"type": "module",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"scripts": {
+		"test": "jest",
+		"build": "tsdown",
+		"prepublishOnly": "npm run build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/palasthotel/headless"
+	},
+	"author": "Edward Bock",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/jest": "^30.0.0",
+		"@types/node": "^24.3.1",
+		"jest": "^30.1.3",
+		"ts-jest": "^29.4.1",
+		"ts-node": "^10.9.2",
+		"tsdown": "^0.14.2",
+		"typescript": "^5.9.2"
+	},
+	"dependencies": {
+		"@palasthotel/wp-rest": "^1.0.1",
+		"@wordpress/editor": "^14.30.0",
+		"zod": "4.1.9"
+	},
+	"engines": {
+		"node": ">=20",
+		"pnpm": ">=9"
+	}
 }

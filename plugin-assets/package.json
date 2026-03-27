@@ -5,12 +5,16 @@
   "private": true,
   "scripts": {
     "watch": "wp-scripts start",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "pack": "../bin/pack.sh",
+    "wp-env:start": "npm run build && wp-env start",
+    "wp-env:stop": "wp-env stop"
   },
   "author": "Edward Bock <edward.bock@palasthotel.de> (https://www.edwardbock.de/)",
   "license": "ISC",
   "devDependencies": {
-    "@wordpress/scripts": "^30.5.1"
+    "@wordpress/scripts": "^30.5.1",
+    "@wordpress/env": "^10.30.0"
   },
   "dependencies": {
     "@wordpress/components": "^28.12.0",
