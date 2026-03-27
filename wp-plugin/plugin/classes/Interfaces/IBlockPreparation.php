@@ -7,11 +7,11 @@ use Palasthotel\WordPress\Headless\Model\BlockName;
 /**
  * Contract for block preparation handlers.
  *
- * Implementations transform a parsed Gutenberg block array before it is
+ * Implementations transform a parsed Gutenberg block array before it’s
  * included in the headless REST API response.
  */
-interface IBlockPreparation {
-
+interface IBlockPreparation
+{
 	/**
 	 * Returns the block name this preparation applies to, or null to apply to all blocks.
 	 *
@@ -25,5 +25,5 @@ interface IBlockPreparation {
 	 * @param array $block The parsed block data.
 	 * @return array The modified block data.
 	 */
-	function prepare( array $block ): array;
+	function prepare(array $block): array;
 }
