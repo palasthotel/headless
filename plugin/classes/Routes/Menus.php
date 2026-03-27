@@ -5,10 +5,25 @@ namespace Palasthotel\WordPress\Headless\Routes;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Plugin;
 
+/**
+ * Registers REST API endpoints for retrieving WordPress navigation menus.
+ *
+ * Exposes GET /headless/v1/menus for all menus and
+ * GET /headless/v1/menus/{slug} for a specific menu.
+ * Requires both a headless request and valid API key access.
+ */
 class Menus extends Component {
 
+	/**
+	 * @var array Cached menu items for the current request.
+	 */
 	private array $menu;
 
+	/**
+	 * Registers the menus REST routes.
+	 *
+	 * @return void
+	 */
 	public function init(){
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus', array(
 			'methods'             => 'GET',
@@ -28,6 +43,11 @@ class Menus extends Component {
 		) );
 	}
 
+	/**
+	 * Returns all registered navigation menus keyed by slug.
+	 *
+	 * @return array<string, array> Map of menu slug to menu items array.
+	 */
 	public function get_all_menus() {
 		$menus = wp_get_nav_menus();
 		$menusResponse = [];
@@ -37,10 +57,21 @@ class Menus extends Component {
 		return $menusResponse;
 	}
 
+	/**
+	 * Returns the cached menu items for the current menu request.
+	 *
+	 * @return array The menu items array.
+	 */
 	public function get_menu() {
 		return $this->menu;
 	}
 
+	/**
+	 * Retrieves and prepares menu items for a given menu, decoding HTML entities in titles.
+	 *
+	 * @param \WP_Term|object $menu The menu object or term to fetch items for.
+	 * @return array The array of prepared menu item objects, or empty array if not found.
+	 */
 	private function getMenuResponse($menu) {
 		$menu  = wp_get_nav_menu_items( $menu );
 		if ( ! $menu ) {

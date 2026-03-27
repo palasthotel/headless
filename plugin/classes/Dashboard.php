@@ -2,12 +2,23 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+/**
+ * Registers and renders the Headless dashboard widget in the WordPress admin.
+ *
+ * Displays revalidation schedule status, pending item counts, and provides
+ * buttons for manual and automatic cache revalidation.
+ */
 class Dashboard extends Components\Component {
 	public function onCreate(): void {
 		parent::onCreate();
 		add_action('wp_dashboard_setup', [$this, 'setup']);
 	}
 
+	/**
+	 * Registers the dashboard widget if revalidation is active and the user can edit posts.
+	 *
+	 * @return void
+	 */
 	public function setup(){
         if(!current_user_can('edit_posts')) return;
 
@@ -20,6 +31,11 @@ class Dashboard extends Components\Component {
 		}
 	}
 
+	/**
+	 * Renders the dashboard widget HTML including revalidation status and controls.
+	 *
+	 * @return void
+	 */
 	public function render(){
         $timeFormat = get_option('time_format');
         $dateFormat = get_option('date_format');

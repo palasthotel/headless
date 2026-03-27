@@ -6,12 +6,30 @@ use Palasthotel\WordPress\Headless\Interfaces\IBlockPreparation;
 use Palasthotel\WordPress\Headless\Model\BlockName;
 use Palasthotel\WordPress\Headless\Model\PostContentAttachmentCollector;
 
+/**
+ * Prepares core/gallery blocks by extracting image IDs and attachment attributes.
+ *
+ * Handles both modern gallery blocks (innerBlocks) and legacy gallery markup (innerHTML).
+ * Registers attachment IDs with the PostContentAttachmentCollector and removes
+ * raw HTML from the block data.
+ */
 class GalleryBlockPreparation implements IBlockPreparation {
 
+	/**
+	 * Returns the block name this preparation targets.
+	 *
+	 * @return BlockName The "core/gallery" block name.
+	 */
 	function blockName(): BlockName {
 		return new BlockName("core", "gallery");
 	}
 
+	/**
+	 * Extracts image IDs, builds inner image blocks for legacy markup, and cleans up raw HTML.
+	 *
+	 * @param array $block The parsed block data.
+	 * @return array The prepared block with ids attribute and innerBlocks populated.
+	 */
 	function prepare( array $block ): array {
 
 		$ids = [];

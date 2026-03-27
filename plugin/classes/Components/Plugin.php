@@ -5,15 +5,38 @@ namespace Palasthotel\WordPress\Headless\Components;
 use ReflectionClass;
 use ReflectionException;
 
+/**
+ * Abstract base class for WordPress plugins using a singleton pattern.
+ *
+ * Resolves the plugin's file path, URL, and basename via reflection, registers
+ * activation and deactivation hooks, and provides multisite support.
+ * Subclasses must implement onCreate() for component initialization.
+ */
 abstract class Plugin {
 
 	/**
-	 * @var ReflectionClass
+	 * @var ReflectionClass Reflection of the concrete plugin class, used to resolve paths.
 	 */
 	private $ref;
+
+	/**
+	 * @var bool Whether the textdomain registration window has passed.
+	 */
 	private $tooLateForTextdomain;
+
+	/**
+	 * @var string Absolute path to the plugin directory, with trailing slash.
+	 */
 	public $path;
+
+	/**
+	 * @var string URL to the plugin directory, with trailing slash.
+	 */
 	public $url;
+
+	/**
+	 * @var string Plugin basename (e.g. plugin-folder/plugin-file.php).
+	 */
 	public $basename;
 
 	/**
@@ -37,8 +60,19 @@ abstract class Plugin {
 	// -----------------------------------------------------------------------------
 	// lifecycle methods
 	// -----------------------------------------------------------------------------
+	/**
+	 * Called during construction. Implement to initialize plugin components and hooks.
+	 *
+	 * @return void
+	 */
 	abstract function onCreate();
 
+	/**
+	 * Handles plugin activation, dispatching to each site on multisite networks.
+	 *
+	 * @param bool $networkWide Whether the plugin is being activated network-wide.
+	 * @return void
+	 */
 	public function onActivation( $networkWide ) {
 		if ( $networkWide ) {
 			$this->foreachMultisite( [ $this, 'onSiteActivation' ] );
@@ -47,10 +81,21 @@ abstract class Plugin {
 		}
 	}
 
+	/**
+	 * Called during activation for the current site. Override to run site-specific setup.
+	 *
+	 * @return void
+	 */
 	public function onSiteActivation() {
 
 	}
 
+	/**
+	 * Handles plugin deactivation, dispatching to each site on multisite networks.
+	 *
+	 * @param bool $networkWide Whether the plugin is being deactivated network-wide.
+	 * @return void
+	 */
 	public function onDeactivation( $networkWide ) {
 		if ( $networkWide ) {
 			$this->foreachMultisite( [ $this, 'onSiteDeactivation' ] );
@@ -59,6 +104,11 @@ abstract class Plugin {
 		}
 	}
 
+	/**
+	 * Called during deactivation for the current site. Override to run site-specific teardown.
+	 *
+	 * @return void
+	 */
 	public function onSiteDeactivation() {
 
 	}
@@ -66,6 +116,16 @@ abstract class Plugin {
 	// -----------------------------------------------------------------------------
 	// utility methods
 	// -----------------------------------------------------------------------------
+
+	/**
+	 * Registers the plugin textdomain for translations.
+	 *
+	 * Must be called within onCreate(). Calling it after construction will log an error.
+	 *
+	 * @param string $domain                 The textdomain identifier.
+	 * @param string $relativeLanguagesPath  Path to the languages directory relative to the plugin file.
+	 * @return void
+	 */
 	public function loadTextdomain( string $domain, string $relativeLanguagesPath ) {
 		if ( $this->tooLateForTextdomain ) {
 			error_log( "Too late: You need to setTextdomain in onCreate Method of the Plugin class." );
@@ -80,6 +140,14 @@ abstract class Plugin {
 		} );
 	}
 
+	/**
+	 * Iterates over all sites in a multisite network and calls the given callback for each.
+	 *
+	 * Does nothing if not running on a multisite installation.
+	 *
+	 * @param callable $onSite Callback to invoke for each site (called after switch_to_blog).
+	 * @return void
+	 */
 	public function foreachMultisite(callable $onSite){
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 			$network_site = get_network()->site_id;
@@ -100,8 +168,16 @@ abstract class Plugin {
 	// -----------------------------------------------------------------------------
 	// singleton pattern
 	// -----------------------------------------------------------------------------
+	/**
+	 * @var static[] Map of class name to singleton instance.
+	 */
 	private static $instances = [];
 
+	/**
+	 * Returns the singleton instance for the called class.
+	 *
+	 * @return static The plugin instance.
+	 */
 	public static function instance() {
 		$class = get_called_class();
 		if ( ! isset( self::$instances[ $class ] ) ) {

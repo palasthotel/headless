@@ -24,12 +24,38 @@ use Palasthotel\WordPress\Headless\Model\PostRouteExtensions;
 use Palasthotel\WordPress\Headless\Model\TermRouteExtensions;
 use Palasthotel\WordPress\Headless\Model\UserRouteExtensions;
 
+/**
+ * Registers all built-in block preparations and REST API route extensions.
+ *
+ * Hooks into the plugin's registration actions during REST API init to add
+ * default extensions for posts, comments, blocks, users, and terms.
+ * Only active on headless requests with valid API key access.
+ */
 class Extensions extends Component {
 
+	/**
+	 * @var BlockPreparations
+	 */
 	private BlockPreparations $blockPreparations;
+
+	/**
+	 * @var PostRouteExtensions
+	 */
 	private PostRouteExtensions $postRouteExtensions;
+
+	/**
+	 * @var CommentRouteExtensions
+	 */
 	private CommentRouteExtensions $commentRouteExtensions;
+
+	/**
+	 * @var UserRouteExtensions
+	 */
 	private UserRouteExtensions $userRouteExtensions;
+
+	/**
+	 * @var TermRouteExtensions
+	 */
 	private TermRouteExtensions $termRouteExtensions;
 
 	public function onCreate(): void {
@@ -58,11 +84,23 @@ class Extensions extends Component {
 		add_action( 'rest_api_init', [ $this, 'rest_api_init' ] );
 	}
 
+	/**
+	 * Registers block preparations that must run before all others.
+	 *
+	 * @param BlockPreparations $extensions The block preparations collection.
+	 * @return void
+	 */
 	public function block_preparation_extensions_with_prio( BlockPreparations $extensions ) {
 		// needs to be the very first preparation step so others can apply to the result
 		$extensions->add( new ReferenceBlockPreparation() );
 	}
 
+	/**
+	 * Registers the default set of block preparations.
+	 *
+	 * @param BlockPreparations $extensions The block preparations collection.
+	 * @return void
+	 */
 	public function block_preparation_extensions( BlockPreparations $extensions ) {
 		$extensions->add( new ParagraphBlockPreparation() );
 		$extensions->add( new MoreBlockPreparation() );
@@ -76,6 +114,12 @@ class Extensions extends Component {
 		// <--- order is important
 	}
 
+	/**
+	 * Registers the default post route extensions.
+	 *
+	 * @param PostRouteExtensions $extensions The post route extensions collection.
+	 * @return void
+	 */
 	public function post_route_extensions( PostRouteExtensions $extensions ) {
 		$extensions->add( new Title() );
 		$extensions->add( new FeaturedMedia() );
@@ -84,10 +128,23 @@ class Extensions extends Component {
 		$extensions->add( new Taxonomies() );
 	}
 
+	/**
+	 * Registers the default comment route extensions.
+	 *
+	 * @param CommentRouteExtensions $extensions The comment route extensions collection.
+	 * @return void
+	 */
 	public function comment_route_extensions( CommentRouteExtensions $extensions ) {
 		$extensions->add( new CommentAuthorUser() );
 	}
 
+	/**
+	 * Fires all extension registration actions and attaches REST response filters.
+	 *
+	 * Called on rest_api_init. Only proceeds if the request has valid API key access.
+	 *
+	 * @return void
+	 */
 	public function rest_api_init() {
 
 		if ( ! $this->plugin->security->hasApiKeyAccess() ) {

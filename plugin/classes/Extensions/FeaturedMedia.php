@@ -7,8 +7,22 @@ use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Extends the post REST response with detailed featured media information.
+ *
+ * Adds featured_media_url, featured_media_src, featured_media_sizes,
+ * featured_media_caption, featured_media_description, and featured_media_alt fields.
+ */
 class FeaturedMedia extends AbsPostExtensionPost {
 
+	/**
+	 * Appends featured media data to the post REST response.
+	 *
+	 * @param WP_REST_Response $response The current REST response.
+	 * @param WP_Post          $post     The post object.
+	 * @param WP_REST_Request  $request  The current REST request.
+	 * @return WP_REST_Response The modified response with featured media fields added.
+	 */
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
 		$data = $response->get_data();
 
@@ -35,6 +49,12 @@ class FeaturedMedia extends AbsPostExtensionPost {
 		return $response;
 	}
 
+	/**
+	 * Returns all available intermediate image size sources for the given attachment.
+	 *
+	 * @param int $imageId The attachment ID.
+	 * @return array[] Array of wp_get_attachment_image_src result arrays for each size.
+	 */
 	static function imageSizes( $imageId ) {
 		return array_values(
 			array_filter(

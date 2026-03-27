@@ -5,6 +5,13 @@ namespace Palasthotel\WordPress\Headless;
 use Palasthotel\WordPress\Headless\Components\Component;
 use Palasthotel\WordPress\Headless\Model\Frontend;
 
+/**
+ * Triggers cache revalidation on headless frontends for posts and comments.
+ *
+ * Listens for post saves and comment changes to queue revalidation requests.
+ * Supports revalidation by path, tag, or post ID across all configured frontends.
+ * Revalidation can be toggled via the Plugin::FILTER_REVALIDATE_IS_ACTIVE filter.
+ */
 class Revalidate extends Component {
 
 	public function onCreate(): void {
@@ -14,12 +21,24 @@ class Revalidate extends Component {
 		add_action('wp_insert_comment', [$this, 'on_comment_change']);
 	}
 
+	/**
+	 * Queues a post for revalidation when it is saved.
+	 *
+	 * @param int $post_id The ID of the saved post.
+	 * @return void
+	 */
 	public function on_post_change($post_id){
 		if($this->isRevalidationInactive()) return;
 		if(wp_is_post_revision($post_id)) return;
 		$this->plugin->dbRevalidation->addPost($post_id);
 	}
 
+	/**
+	 * Queues the associated post and comment for revalidation when a comment changes.
+	 *
+	 * @param int $comment_id The ID of the inserted or edited comment.
+	 * @return void
+	 */
 	public function on_comment_change($comment_id){
 		if($this->isRevalidationInactive()) return;
 		$comment = get_comment($comment_id);
@@ -27,6 +46,12 @@ class Revalidate extends Component {
 		$this->plugin->dbRevalidation->addComment($comment_id);
 	}
 
+	/**
+	 * Revalidates comments for the given post across all frontends by tag.
+	 *
+	 * @param int $post_id The post ID whose comment cache should be revalidated.
+	 * @return (\WP_Error|true)[] Results from each frontend revalidation attempt.
+	 */
 	function revalidateComments($post_id){
 
 		if($this->isRevalidationInactive()) return[];
@@ -60,6 +85,13 @@ class Revalidate extends Component {
 		return $results;
 	}
 
+	/**
+	 * Revalidates the permalink path of a post on the given frontend.
+	 *
+	 * @param Frontend   $frontend The frontend to revalidate on.
+	 * @param int|string $post_id  The post ID to look up and revalidate.
+	 * @return \WP_Error|true|array The revalidation result, or empty array if inactive.
+	 */
 	function revalidateByPathByPostId(Frontend $frontend, $post_id) {
 
 		if($this->isRevalidationInactive()) return [];
@@ -72,6 +104,13 @@ class Revalidate extends Component {
 		);
 	}
 
+	/**
+	 * Revalidates a specific path on the given frontend.
+	 *
+	 * @param Frontend   $frontend The frontend to revalidate on.
+	 * @param string     $path     The URL path to revalidate.
+	 * @return \WP_Error|true|array The revalidation result, or empty array if inactive.
+	 */
 	function revalidateByPath(Frontend $frontend, $path){
 
 		if($this->isRevalidationInactive()) return [];
@@ -83,6 +122,13 @@ class Revalidate extends Component {
 		);
 	}
 
+	/**
+	 * Revalidates all pages tagged with the given cache tag on the frontend.
+	 *
+	 * @param Frontend $frontend The frontend to revalidate on.
+	 * @param string   $tag      The cache tag to revalidate.
+	 * @return \WP_Error|true|array The revalidation result, or empty array if inactive.
+	 */
 	function revalidateByTag(Frontend $frontend, string $tag) {
 
 		if($this->isRevalidationInactive()) return [];
@@ -94,6 +140,14 @@ class Revalidate extends Component {
 		);
 	}
 
+	/**
+	 * Executes a revalidation HTTP request to the given URL.
+	 *
+	 * Appends a cache-busting query parameter and issues a GET request.
+	 *
+	 * @param string $finalUrl The fully constructed revalidation URL.
+	 * @return \WP_Error|true WP_Error on HTTP error or non-200 response, true on success.
+	 */
 	private function executeRavalidation($finalUrl){
 
 		$url = add_query_arg('invalidate___cache', time(), $finalUrl);
@@ -111,9 +165,19 @@ class Revalidate extends Component {
 		return $isSuccess ? true : new \WP_Error($responseCode, "Error");
 	}
 
+	/**
+	 * Checks whether revalidation is currently inactive.
+	 *
+	 * @return bool True if revalidation is inactive.
+	 */
 	function isRevalidationInactive() {
 		return !$this->isRevalidationActive();
 	}
+	/**
+	 * Checks whether revalidation is currently active.
+	 *
+	 * @return bool True if revalidation is active, filterable via Plugin::FILTER_REVALIDATE_IS_ACTIVE.
+	 */
 	function isRevalidationActive() {
 		return apply_filters(Plugin::FILTER_REVALIDATE_IS_ACTIVE, true);
 	}

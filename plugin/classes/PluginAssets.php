@@ -5,12 +5,21 @@ namespace Palasthotel\WordPress\Headless;
 use Palasthotel\WordPress\Headless\Components\Assets;
 use Palasthotel\WordPress\Headless\Components\Component;
 
+/**
+ * Registers and enqueues plugin scripts and styles for the admin and block editor.
+ *
+ * Handles the Gutenberg editor script/style and the general admin script,
+ * including localized data for frontend URLs, AJAX actions, and preview settings.
+ */
 class PluginAssets extends Component {
 
     const HANDLE_ADMIN_SCRIPT = "headless_admin_script";
 	const HANDLE_GUTENBERG_SCRIPT = "headless_gutenberg_script";
 	const HANDLE_GUTENBERG_STYLE = "headless_gutenberg_styles";
 
+	/**
+	 * @var Assets Asset registration helper.
+	 */
 	public Assets $assets;
 
 	public function onCreate(): void {
@@ -22,6 +31,11 @@ class PluginAssets extends Component {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue' ] );
 	}
 
+	/**
+	 * Registers all plugin scripts and styles and enqueues the admin script for editors.
+	 *
+	 * @return void
+	 */
 	public function admin_init() {
 		$this->assets->registerScript(
 			self::HANDLE_GUTENBERG_SCRIPT,
@@ -70,6 +84,11 @@ class PluginAssets extends Component {
         }
 	}
 
+	/**
+	 * Enqueues the Gutenberg script and style for headless post types in the block editor.
+	 *
+	 * @return void
+	 */
 	public function enqueue() {
 		if ( ! $this->plugin->post->isHeadlessPostType( get_post_type() ) ) {
 			return;

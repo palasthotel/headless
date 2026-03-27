@@ -4,6 +4,13 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
 
+/**
+ * Manages the WordPress cron schedule for periodic cache revalidation.
+ *
+ * Registers an hourly cron event that processes pending post and comment
+ * revalidations from the database queue. Unschedules the event when
+ * revalidation is inactive.
+ */
 class Schedule extends Component {
 
 	public function onCreate(): void {
@@ -13,6 +20,14 @@ class Schedule extends Component {
 		add_action(Plugin::SCHEDULE_REVALIDATE, [$this, 'revalidate']);
 	}
 
+	/**
+	 * Sets up or removes the revalidation cron schedule based on active state.
+	 *
+	 * Schedules an hourly event if revalidation is active and not yet scheduled.
+	 * Removes the event if revalidation is inactive.
+	 *
+	 * @return void
+	 */
 	public function init(){
 		if($this->plugin->revalidate->isRevalidationInactive()){
 			$next = $this->getNextSchedule();
@@ -26,18 +41,42 @@ class Schedule extends Component {
 		}
 	}
 
+	/**
+	 * Returns the timestamp for the next scheduled revalidation run.
+	 *
+	 * @return int|false The Unix timestamp, or false if not scheduled.
+	 */
 	public function getNextSchedule(){
 		return wp_next_scheduled(Plugin::SCHEDULE_REVALIDATE);
 	}
 
+	/**
+	 * Returns the Unix timestamp of the last completed revalidation run.
+	 *
+	 * @return int The timestamp, or 0 if it has never run.
+	 */
 	public function getLastRevalidationRun(): int{
 		return intval(get_option(Plugin::OPTION_LAST_REVALIDATION_RUN, 0));
 	}
 
+	/**
+	 * Persists the timestamp of the last revalidation run.
+	 *
+	 * @param int $time Unix timestamp of the run.
+	 * @return void
+	 */
 	public function setLastRevalidationRun(int $time) {
 		update_option(Plugin::OPTION_LAST_REVALIDATION_RUN, $time);
 	}
 
+	/**
+	 * Processes all pending post and comment revalidations from the database queue.
+	 *
+	 * Called by the cron event. Iterates pending items, triggers revalidation,
+	 * updates each item's state to "revalidated" or "error", then fires a side-effect action.
+	 *
+	 * @return void
+	 */
 	public function revalidate(){
 
 		if($this->plugin->revalidate->isRevalidationInactive()) return;

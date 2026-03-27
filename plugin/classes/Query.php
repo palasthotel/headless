@@ -4,6 +4,13 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
 
+/**
+ * Extends REST API queries with custom meta and post type filtering parameters.
+ *
+ * Adds support for filtering REST posts queries by meta key/value pairs,
+ * meta existence checks, and multiple post types via custom request parameters.
+ * Only active on requests with valid API key access.
+ */
 class Query extends Component {
 
 	const META_KEYS = "hl_meta_keys";
@@ -26,6 +33,12 @@ class Query extends Component {
 		}
 	}
 
+	/**
+	 * Extracts and validates the post types requested via the hl_post_type parameter.
+	 *
+	 * @param \WP_REST_Request $request The current REST request.
+	 * @return string[] An array of validated post type slugs, or ["any"] if requested.
+	 */
 	public static function getRequestPostTypes( \WP_REST_Request $request ) {
 		$post_types = $request->get_param( static::POST_TYPE );
 		if(is_array($post_types) && in_array("any",$post_types)){
@@ -43,6 +56,16 @@ class Query extends Component {
 		} );
 	}
 
+	/**
+	 * Filters the REST query arguments to apply meta and post type parameters.
+	 *
+	 * Processes hl_meta_keys, hl_meta_values, hl_meta_compares, hl_meta_exists,
+	 * hl_meta_not_exists, hl_meta_relation, and hl_post_type request parameters.
+	 *
+	 * @param array             $args    The current WP_Query arguments.
+	 * @param \WP_REST_Request  $request The current REST request.
+	 * @return array The modified query arguments.
+	 */
 	public function rest_query( array $args, \WP_REST_Request $request ) {
 
 		$metas = $request->get_param(static::META_KEYS);

@@ -4,6 +4,12 @@ namespace Palasthotel\WordPress\Headless;
 
 use Palasthotel\WordPress\Headless\Components\Component;
 
+/**
+ * Handles AJAX endpoints for triggering cache revalidation from the WordPress admin.
+ *
+ * Registers two wp_ajax actions: one to revalidate a specific path or post,
+ * and one to process all pending revalidations from the queue.
+ */
 class Ajax extends Component {
 
 	const GET_ACTION = "headless_revalidate";
@@ -18,6 +24,14 @@ class Ajax extends Component {
 		add_action('wp_ajax_'.self::GET_ACTION_PENDING, [$this, 'revalidate_pending']);
 	}
 
+	/**
+	 * Handles the AJAX revalidate action.
+	 *
+	 * Accepts either a path or a post ID via GET parameters and triggers
+	 * revalidation on the specified frontend. Requires edit_posts capability.
+	 *
+	 * @return void
+	 */
 	public function revalidate(){
 
 		if(!current_user_can('edit_posts')){
@@ -72,6 +86,14 @@ class Ajax extends Component {
 	}
 
 
+	/**
+	 * Handles the AJAX revalidate_pending action.
+	 *
+	 * Triggers the scheduled revalidation run to process all pending items.
+	 * Requires edit_posts capability.
+	 *
+	 * @return void
+	 */
 	function revalidate_pending() {
 		if(!current_user_can('edit_posts')){
 			wp_send_json_error();

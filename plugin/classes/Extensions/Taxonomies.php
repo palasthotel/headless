@@ -6,6 +6,12 @@ use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Extends the post REST response with taxonomy term IDs for all REST-visible taxonomies.
+ *
+ * Adds any missing taxonomy fields that may not appear by default, which is
+ * particularly useful for custom post types requested via hl_post_type.
+ */
 class Taxonomies extends AbsPostExtensionPost {
 
 	/**

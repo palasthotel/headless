@@ -8,10 +8,23 @@ use WP_Post;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Extends the post REST response with parsed and prepared Gutenberg block data.
+ *
+ * Adds a "headless_blocks" field to the content object when the post has blocks.
+ * Skips blocks and other heavy fields when the request uses the teasers variant.
+ * Applies all registered block preparations during parsing.
+ */
 class ContentBlocks extends AbsPostExtensionPost {
 
+	/**
+	 * @var BlockPreparations The registered block preparation handlers.
+	 */
 	private BlockPreparations $preparations;
 
+	/**
+	 * @param BlockPreparations $preparations The block preparations collection to use.
+	 */
 	public function __construct(BlockPreparations $preparations) {
 		parent::__construct();
 		$this->preparations = $preparations;
@@ -20,6 +33,14 @@ class ContentBlocks extends AbsPostExtensionPost {
 		}, 10, 2);
 	}
 
+	/**
+	 * Adds parsed block data to the post REST response.
+	 *
+	 * @param WP_REST_Response $response The current REST response.
+	 * @param WP_Post          $post     The post object.
+	 * @param WP_REST_Request  $request  The current REST request.
+	 * @return WP_REST_Response The modified response with "headless_blocks" added to content.
+	 */
 	function response( WP_REST_Response $response, WP_Post $post, WP_REST_Request $request ): WP_REST_Response {
 		$data = $response->get_data();
 
@@ -40,17 +61,39 @@ class ContentBlocks extends AbsPostExtensionPost {
 		return $response;
 	}
 
+	/**
+	 * Filters out blocks that should not be included in the response.
+	 *
+	 * Uses the Plugin::FILTER_BLOCKS_PREPARE_FILTER filter to determine inclusion.
+	 *
+	 * @param array $blocks The raw array of parsed blocks.
+	 * @return array The filtered blocks with sequential keys.
+	 */
 	private function filterBlocks( $blocks ) {
 		return array_values( array_filter( $blocks, function ( $block ) {
 			return apply_filters( Plugin::FILTER_BLOCKS_PREPARE_FILTER, $block["blockName"], $block );
 		} ) );
 	}
 
+	/**
+	 * Parses raw post content into a prepared array of blocks.
+	 *
+	 * @param string $post_content The raw block content string.
+	 * @param int    $level        The current nesting depth (1 for top-level).
+	 * @return array The prepared block array.
+	 */
 	private function parse($post_content, $level = 1): array {
 		$blocks = parse_blocks($post_content);
 		return $this->prepare($blocks, $level);
 	}
 
+	/**
+	 * Filters and prepares a set of blocks by applying registered preparations recursively.
+	 *
+	 * @param array $blocks The blocks to prepare.
+	 * @param int   $level  The current nesting depth.
+	 * @return array The prepared blocks.
+	 */
 	private function prepare( $blocks, $level ) {
 		$blocks = $this->filterBlocks( $blocks );
 
