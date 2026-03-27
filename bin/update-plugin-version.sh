@@ -9,14 +9,14 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 PACKAGE_JSON="$ROOT_DIR/wp-plugin/package.json"
 CHANGELOG="$ROOT_DIR/wp-plugin/CHANGELOG.md"
-README="$ROOT_DIR/wp-plugin/plugin/README.txt"
-HEADLESS_PHP="$ROOT_DIR/wp-plugin/plugin/headless.php"
+README="$ROOT_DIR/wp-plugin/public/README.txt"
+HEADLESS_PHP="$ROOT_DIR/wp-plugin/public/headless.php"
 
 VERSION=$(node -e "process.stdout.write(require('$PACKAGE_JSON').version)")
 echo "🤖 Updating plugin files for version $VERSION …"
 
 # ── 1. Update headless.php Version header ───────────────────────────────────
-sed -i "s/^\( \* Version:\) .*/\1 $VERSION/" "$HEADLESS_PHP"
+sed -i "s/^ \* Version: .*/ * Version: $VERSION/" "$HEADLESS_PHP"
 
 # ── 2. Update Stable tag ────────────────────────────────────────────────────
 sed -i "s/^Stable tag: .*/Stable tag: $VERSION/" "$README"
