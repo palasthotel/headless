@@ -10,14 +10,9 @@
       "include-component-in-tag": true,
       "tag-separator": "-",
       "include-v-in-tag": true,
-      "paths": [
-        "src",
-        "package.json",
-        "tsconfig.json",
-        "tsdown.config.ts",
-        "jest.config.ts",
-        "__tests__",
-        "__test_data__"
+      "exclude-paths": [
+        "plugin",
+        "plugin-assets"
       ]
     },
     "plugin-assets": {
