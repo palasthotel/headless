@@ -6,7 +6,7 @@ updates:
     assignees:
       - "JanaME"
     commit-message:
-      prefix: "deps"
+      prefix: "chore"
       include: "scope"
     directory: "/npm-package/"
     open-pull-requests-limit: 10
@@ -20,7 +20,7 @@ updates:
     assignees:
       - "JanaME"
     commit-message:
-      prefix: "deps"
+      prefix: "chore"
       include: "scope"
     directory: "/wp-plugin/"
     open-pull-requests-limit: 10
