@@ -1,4 +1,4 @@
-name: Update plugin README.txt in release PR
+name: Update plugin version
 
 on:
   pull_request_target:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  update-readme:
+  update-plugin-version:
     # Only run for the release-please plugin component PR
     if: startsWith(github.head_ref, 'release-please--') && contains(github.head_ref, '--plugin')
     runs-on: ubuntu-latest
@@ -22,16 +22,16 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
-      - name: Update Stable tag and changelog in README.txt
-        run: bash bin/update-plugin-readme.sh
+      - name: Update Stable tag and changelog in README.txt and Version in headless.php
+        run: bash bin/update-plugin-version.sh
 
-      - name: Commit README.txt to release PR branch
+      - name: Commit to release PR branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add plugin/README.txt
-          git diff --cached --quiet && echo "README.txt already up to date" && exit 0
-          git commit -m "chore(plugin): update README.txt"
+          git add wp-plugin/plugin/README.txt wp-plugin/plugin/headless.php
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore(plugin): update README.txt and headless.php"
           git push

@@ -13,7 +13,7 @@ README="$ROOT_DIR/wp-plugin/plugin/README.txt"
 HEADLESS_PHP="$ROOT_DIR/wp-plugin/plugin/headless.php"
 
 VERSION=$(node -e "process.stdout.write(require('$PACKAGE_JSON').version)")
-echo "Updating plugin files for version $VERSION"
+echo "🤖 Updating plugin files for version $VERSION …"
 
 # ── 1. Update headless.php Version header ───────────────────────────────────
 sed -i '' "s/^\( \* Version:\) .*/\1 $VERSION/" "$HEADLESS_PHP"
@@ -30,7 +30,7 @@ SECTION=$(awk "
 " "$CHANGELOG")
 
 if [[ -z "$SECTION" ]]; then
-  echo "No CHANGELOG.md entry found for $VERSION — skipping changelog update"
+  echo "🤖 No CHANGELOG.md entry found for $VERSION — skipping changelog update"
   exit 0
 fi
 
@@ -67,4 +67,4 @@ awk -v entry="$WP_ENTRY" '
 ' "$README" > "$TMPFILE"
 mv "$TMPFILE" "$README"
 
-echo "README.txt updated successfully"
+echo "🤖 README.txt updated successfully."
