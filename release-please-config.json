@@ -6,7 +6,7 @@
       "release-type": "node",
       "package-name": "@palasthotel/headless",
       "component": "npm",
-      "changelog-path": "npm-package/CHANGELOG.md",
+      "changelog-path": "CHANGELOG.md",
       "include-component-in-tag": true,
       "tag-separator": "-",
       "include-v-in-tag": true,
@@ -23,10 +23,10 @@
       ]
     },
     "wp-plugin": {
-      "release-type": "simple",
+      "release-type": "node",
       "package-name": "@palasthotel/wp-headless",
       "component": "plugin",
-      "changelog-path": "wp-plugin/CHANGELOG.md",
+      "changelog-path": "CHANGELOG.md",
       "include-component-in-tag": true,
       "tag-separator": "-",
       "include-v-in-tag": true,
@@ -40,23 +40,6 @@
         { "type": "refactor", "section": "Code Refactoring", "hidden": false },
         { "type": "chore", "section": "Miscellaneous", "hidden": false },
         { "type": "deps", "section": "Dependencies", "hidden": true }
-      ],
-      "extra-files": [
-        {
-          "type": "generic",
-          "path": "plugin/readme.txt",
-          "glob": false
-        },
-        {
-          "type": "generic",
-          "path": "plugin/headless.php",
-          "glob": false
-        },
-        {
-          "type": "json",
-          "path": "package.json",
-          "jsonpath": "$.version"
-        }
       ]
     }
   }
