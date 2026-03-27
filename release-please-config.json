@@ -1,38 +1,50 @@
 {
-  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "separate-pull-requests": true,
-  "packages": {
-    ".": {
-      "release-type": "node",
-      "package-name": "@palasthotel/headless",
-      "component": "npm",
-      "changelog-path": "CHANGELOG.md",
-      "include-component-in-tag": true,
-      "tag-separator": "-",
-      "include-v-in-tag": true,
-      "exclude-paths": [
-        "plugin",
-        "plugin-assets"
-      ]
-    },
-    "plugin-assets": {
-      "release-type": "node",
-      "package-name": "@palasthotel/wp-headless",
-      "component": "plugin",
-      "changelog-path": "plugin/CHANGELOG.md",
-      "include-component-in-tag": true,
-      "tag-separator": "-",
-      "include-v-in-tag": true,
-      "paths": [
-        "plugin",
-        "plugin-assets"
-      ],
-      "extra-files": [
-        {
-          "type": "generic",
-          "path": "plugin/headless.php"
-        }
-      ]
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+	"separate-pull-requests": true,
+	"packages": {
+		".": {
+			"release-type": "node",
+			"package-name": "@palasthotel/headless",
+			"component": "npm",
+			"changelog-path": "CHANGELOG.md",
+			"include-component-in-tag": true,
+			"tag-separator": "-",
+			"include-v-in-tag": true,
+			"exclude-paths": ["plugin", "plugin-assets"],
+			"changelog-sections": [
+				{ "type": "feat", "section": "Features" },
+				{ "type": "feature", "section": "Features" },
+				{ "type": "fix", "section": "Bug Fixes" },
+				{ "type": "docs", "section": "Documentation", "hidden": true },
+				{ "type": "refactor", "section": "Code Refactoring", "hidden": false },
+				{ "type": "chore", "section": "Miscellaneous", "hidden": false },
+				{ "type": "deps", "section": "Dependencies", "hidden": true }
+			]
+		},
+		"plugin-assets": {
+			"release-type": "node",
+			"package-name": "@palasthotel/wp-headless",
+			"component": "plugin",
+			"changelog-path": "plugin/CHANGELOG.md",
+			"include-component-in-tag": true,
+			"tag-separator": "-",
+			"include-v-in-tag": true,
+			"paths": ["plugin", "plugin-assets"],
+			"extra-files": [
+				{
+					"type": "generic",
+					"path": "plugin/headless.php"
+				}
+			],
+			"changelog-sections": [
+				{ "type": "feat", "section": "Features" },
+				{ "type": "feature", "section": "Features" },
+				{ "type": "fix", "section": "Bug Fixes" },
+				{ "type": "docs", "section": "Documentation", "hidden": true },
+				{ "type": "refactor", "section": "Code Refactoring", "hidden": false },
+				{ "type": "chore", "section": "Miscellaneous", "hidden": false },
+				{ "type": "deps", "section": "Dependencies", "hidden": true }
+			]
+		}
+	}
 }
