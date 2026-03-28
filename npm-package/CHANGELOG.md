@@ -1,5 +1,14 @@
 # Releases
 
+## [3.0.4](https://github.com/palasthotel/headless/compare/npm-v3.0.3...npm-v3.0.4) (2026-03-28)
+
+
+### 🔧 Dependencies
+
+* **deps-dev:** bump @types/node from 24.3.1 to 25.5.0 in /npm-package ([c4d6c2d](https://github.com/palasthotel/headless/commit/c4d6c2d21b72ce36096192af3ae84232b5a6bd8c))
+* **deps:** bump @palasthotel/wp-rest in /npm-package ([f50f63d](https://github.com/palasthotel/headless/commit/f50f63db71d80b3fe3a5254ccdd4c413e1accff8))
+* **deps:** bump zod from 4.1.9 to 4.3.6 in /npm-package ([1b644b3](https://github.com/palasthotel/headless/commit/1b644b3ac303af679f560133fe6c7b52c55e9cd7))
+
 ## [3.0.3]
 * update package 'zod' and pin its version
 
