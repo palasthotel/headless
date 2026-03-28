@@ -26,5 +26,13 @@
     "@wordpress/plugins": "^7.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=11"
+  },
+  "volta": {
+    "node": "24.14.1",
+    "npm": "11.11.0"
   }
 }
