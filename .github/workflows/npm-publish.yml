@@ -34,6 +34,10 @@ jobs:
         run: npm ci
         working-directory: npm-package
 
+      - name: Audit check
+        run: npm audit --audit-level=critical
+        working-directory: npm-package
+
       - name: Publish to npmjs
         run: npm publish
         working-directory: npm-package
