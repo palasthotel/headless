@@ -40,7 +40,7 @@
   "dependencies": {
     "@palasthotel/wp-rest": "^1.0.2",
     "@wordpress/editor": "^14.30.0",
-    "zod": "4.1.9"
+    "zod": "4.3.6"
   },
   "engines": {
     "node": ">=24",
