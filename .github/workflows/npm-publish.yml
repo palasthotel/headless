@@ -42,8 +42,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-        run: npm config set registry https://npm.pkg.github.com
-        working-directory: npm-package
+          registry-url: "https://npm.pkg.github.com"
       - run: npm publish --access public
         working-directory: npm-package
         env:
