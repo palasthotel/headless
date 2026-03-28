@@ -1,5 +1,22 @@
 # Releases
 
+## [3.0.5](https://github.com/palasthotel/headless/compare/npm-v3.0.4...npm-v3.0.5) (2026-03-28)
+
+
+### Code Refactoring
+
+* completely refactor file structur for easier releasing ([c939618](https://github.com/palasthotel/headless/commit/c9396185c5d436351ae43f51cec5989e87c1a6bd))
+
+
+### Miscellaneous
+
+* **deps:** audit fixes ([08d7aee](https://github.com/palasthotel/headless/commit/08d7aee6c6d9dca372e21ec3f9960c8f0d6030ba))
+* **deps:** updates ([95a8d4b](https://github.com/palasthotel/headless/commit/95a8d4b19f27aa9d8f12e5655a76b73643d395bf))
+* **main:** release npm 3.0.4 ([7ceae41](https://github.com/palasthotel/headless/commit/7ceae41c11c1f93d6549acad420f14d9f4dc6cac))
+* **main:** release npm 3.0.4 ([43722c6](https://github.com/palasthotel/headless/commit/43722c6f8a2a5038a58049a3929594b0f2575b1a))
+* retrigger release-please ([7568145](https://github.com/palasthotel/headless/commit/7568145400557d24bb854d0602ab1dcdcabb9199))
+* update node and npm version ([1c3e9a2](https://github.com/palasthotel/headless/commit/1c3e9a2d86a97b95038d7832e5fd7f85eb2e3f2e))
+
 ## [3.0.4](https://github.com/palasthotel/headless/compare/npm-v3.0.3...npm-v3.0.4) (2026-03-27)
 
 
