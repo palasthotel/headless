@@ -14,11 +14,11 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24.x
 
       - name: Clear auth token for OIDC
         run: echo "NODE_AUTH_TOKEN=" >> $GITHUB_ENV
@@ -39,9 +39,9 @@ jobs:
         working-directory: npm-package
 
       - name: Publish to GitHub Packages
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 24.x
           registry-url: "https://npm.pkg.github.com"
       - run: npm publish --access public
         working-directory: npm-package
