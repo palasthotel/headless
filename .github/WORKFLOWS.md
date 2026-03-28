@@ -1,6 +1,6 @@
 # CI/CD Workflows
 
-This repository uses five GitHub Actions workflows. Two components are versioned independently via [release-please](https://github.com/googleapis/release-please):
+This repository uses six GitHub Actions workflows. Two components are versioned independently via [release-please](https://github.com/googleapis/release-please):
 
 | Component | Path | Tag format |
 |---|---|---|
@@ -33,9 +33,13 @@ Merge release PR  →  release-please pushes tag
     ├── npm-v*  ──▶ [npm-publish.yml]
     │                   Publish to npmjs.org + GitHub Packages
     │
-    └── plugin-v*  ──▶ [wordpress-svn-release.yml]
-                            Build + deploy to WordPress.org SVN
-                            Upload plugin.zip to GitHub Release
+    ├── plugin-v*  ──▶ [wordpress-svn-release.yml]
+    │                       Build + deploy to WordPress.org SVN
+    │                       Upload plugin.zip to GitHub Release
+    │
+    └── npm-v* or plugin-v*  ──▶ [align-major-versions.yml]
+                                      Check if major versions match
+                                      If not → open alignment PR
 ```
 
 ---
@@ -183,3 +187,36 @@ Tag: plugin-v3.x.x
 - `SVN_USERNAME` — WordPress.org username
 - `SVN_PASSWORD` — WordPress.org password
 - `vars.SVN_REPO_URL` — e.g. `https://plugins.svn.wordpress.org/headless`
+
+---
+
+### `align-major-versions.yml` — Major Version Alignment
+
+**Trigger:** Push of any `npm-v*` or `plugin-v*` tag
+**Token:** `RELEASE_PLEASE_TOKEN` (PAT — required for git push + gh pr create)
+
+After every release, checks whether both components share the same major version. If they diverge, automatically opens a PR with a `BREAKING CHANGE:` commit in the lagging component's directory — which causes release-please to open a major release PR for it on merge.
+
+```
+Tag pushed (npm-v* or plugin-v*)
+        │
+        ▼
+  read .release-please-manifest.json
+        │
+        ├── npm major == plugin major?  →  done, nothing to do
+        │
+        └── major mismatch detected
+                │
+                ├── determine which component is lagging
+                ├── create branch: chore/align-{component}-major-v{X}
+                ├── touch {component}/CHANGELOG.md  (attributes commit to component)
+                ├── commit with BREAKING CHANGE footer
+                ├── git push
+                └── gh pr create  (skipped if PR already exists)
+
+  PR merged
+        └──▶ release-please sees BREAKING CHANGE in component path
+                  └──▶ opens major release PR  (v{X}.0.0)
+```
+
+> Duplicate protection: if an alignment PR for that branch already exists, the workflow exits early.
