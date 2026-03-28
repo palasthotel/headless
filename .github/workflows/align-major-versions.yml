@@ -1,0 +1,97 @@
+name: Align major versions
+
+on:
+  push:
+    tags:
+      - "npm-v*"
+      - "plugin-v*"
+
+jobs:
+  align:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+      - name: Read versions from manifest
+        id: versions
+        run: |
+          NPM_VERSION=$(jq -r '."npm-package"' .release-please-manifest.json)
+          PLUGIN_VERSION=$(jq -r '."wp-plugin"' .release-please-manifest.json)
+          NPM_MAJOR=$(echo "$NPM_VERSION" | cut -d. -f1)
+          PLUGIN_MAJOR=$(echo "$PLUGIN_VERSION" | cut -d. -f1)
+          echo "npm_major=$NPM_MAJOR" >> $GITHUB_OUTPUT
+          echo "plugin_major=$PLUGIN_MAJOR" >> $GITHUB_OUTPUT
+          if [ "$NPM_MAJOR" = "$PLUGIN_MAJOR" ]; then
+            echo "aligned=true" >> $GITHUB_OUTPUT
+          else
+            echo "aligned=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create alignment PR
+        if: steps.versions.outputs.aligned == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+        run: |
+          TAG="${{ github.ref_name }}"
+          NPM_MAJOR="${{ steps.versions.outputs.npm_major }}"
+          PLUGIN_MAJOR="${{ steps.versions.outputs.plugin_major }}"
+
+          # Determine which component is lagging behind
+          if [[ "$TAG" == npm-v* ]]; then
+            BUMP_PATH="wp-plugin"
+            COMPONENT="plugin"
+            BEHIND_MAJOR="$PLUGIN_MAJOR"
+            TARGET_MAJOR="$NPM_MAJOR"
+            OTHER="npm package"
+          else
+            BUMP_PATH="npm-package"
+            COMPONENT="npm"
+            BEHIND_MAJOR="$NPM_MAJOR"
+            TARGET_MAJOR="$PLUGIN_MAJOR"
+            OTHER="WordPress plugin"
+          fi
+
+          BRANCH="chore/align-${COMPONENT}-major-v${TARGET_MAJOR}"
+
+          # Check if alignment PR already exists
+          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            echo "Alignment PR #$EXISTING already exists, skipping."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+
+          # Touch CHANGELOG.md so release-please attributes this commit to the right component
+          echo "" >> "$BUMP_PATH/CHANGELOG.md"
+          git add "$BUMP_PATH/CHANGELOG.md"
+
+          # Write commit message to file to avoid YAML parsing issues with colons
+          BREAKING_FOOTER="BREAKING CHANGE: bump major version from v${BEHIND_MAJOR} to v${TARGET_MAJOR} to stay aligned with ${OTHER} v${TARGET_MAJOR}"
+          echo "feat(${COMPONENT})!: align major version to v${TARGET_MAJOR}" > /tmp/commit-msg.txt
+          echo "" >> /tmp/commit-msg.txt
+          echo "$BREAKING_FOOTER" >> /tmp/commit-msg.txt
+          git commit -F /tmp/commit-msg.txt
+
+          git push origin "$BRANCH"
+
+          # Write PR body to file to avoid YAML parsing issues with colons
+          cat > /tmp/pr-body.txt << 'EOF'
+          ## Major Version Alignment
+          EOF
+          echo "" >> /tmp/pr-body.txt
+          echo "The **${OTHER}** was just released at **v${TARGET_MAJOR}**, but the **${COMPONENT}** component is still at **v${BEHIND_MAJOR}**." >> /tmp/pr-body.txt
+          echo "" >> /tmp/pr-body.txt
+          echo "By convention, major versions of both components must stay in sync. Merging this PR will trigger release-please to open a **v${TARGET_MAJOR}.0.0** release PR for the ${COMPONENT}." >> /tmp/pr-body.txt
+          echo "" >> /tmp/pr-body.txt
+          echo "> This PR was created automatically by the \`align-major-versions\` workflow." >> /tmp/pr-body.txt
+
+          gh pr create \
+            --title "chore(${COMPONENT}): align major version to v${TARGET_MAJOR}" \
+            --body-file /tmp/pr-body.txt \
+            --base main \
+            --head "$BRANCH"
