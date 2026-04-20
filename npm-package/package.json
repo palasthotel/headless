@@ -35,7 +35,7 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "tsdown": "^0.21.6",
-    "typescript": "^5.9.2"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "@palasthotel/wp-rest": "^1.0.2",
