@@ -1,5 +1,23 @@
 # Releases
 
+## [3.0.5](https://github.com/palasthotel/headless/compare/npm-v3.0.4...npm-v3.0.5) (2026-04-20)
+
+
+### 🐛 Bug Fixes
+
+* **deps-dev:** bump @types/node from 25.5.0 to 25.5.2 in /npm-package ([306a8d3](https://github.com/palasthotel/headless/commit/306a8d3fae00fc4778b80d2bebe72f8698efa481))
+* **deps-dev:** bump @types/node from 25.5.0 to 25.5.2 in /npm-package ([5c6b43d](https://github.com/palasthotel/headless/commit/5c6b43d4a1454e2a8c0501ac75854be610b11a02))
+* **deps-dev:** bump @types/node from 25.5.2 to 25.6.0 in /npm-package ([224293f](https://github.com/palasthotel/headless/commit/224293f04b6c6d327c516087f8c641f06ad4c636))
+* **deps-dev:** bump @types/node from 25.5.2 to 25.6.0 in /npm-package ([791cc5f](https://github.com/palasthotel/headless/commit/791cc5f1e43935822211a568334b91e591b20b42))
+* **deps-dev:** bump ts-jest from 29.4.6 to 29.4.9 in /npm-package ([1fda219](https://github.com/palasthotel/headless/commit/1fda21920b578ba3838fc01ad276134736664a49))
+* **deps-dev:** bump ts-jest from 29.4.6 to 29.4.9 in /npm-package ([b67170a](https://github.com/palasthotel/headless/commit/b67170a5f69029b16a7faf0a302035ef026d222d))
+* **deps-dev:** bump tsdown from 0.21.7 to 0.21.9 in /npm-package ([48d84f9](https://github.com/palasthotel/headless/commit/48d84f94b404f52bb9f3ec87d794672b53b6ade4))
+* **deps-dev:** bump tsdown from 0.21.7 to 0.21.9 in /npm-package ([52f1375](https://github.com/palasthotel/headless/commit/52f13753db2f4c8ea2127b4a671e1cbe0aa11914))
+* **deps:** bump @wordpress/editor from 14.42.0 to 14.43.0 in /npm-package ([02751ea](https://github.com/palasthotel/headless/commit/02751ea1f850125c70b42dbd4b65414ce067ad82))
+* **deps:** bump @wordpress/editor from 14.43.0 to 14.44.0 in /npm-package ([e5ff35e](https://github.com/palasthotel/headless/commit/e5ff35e9195b4127064c013bc7338d8fdb3db007))
+* **deps:** bump @wordpress/editor in /npm-package ([b18d95c](https://github.com/palasthotel/headless/commit/b18d95cadbaf03cda6e43b93e0315ba708e8e733))
+* **deps:** bump @wordpress/editor in /npm-package ([f61e8cc](https://github.com/palasthotel/headless/commit/f61e8cc34c2c782205b0477d336cf8eeddb821ea))
+
 ## [3.0.4](https://github.com/palasthotel/headless/compare/npm-v3.0.3...npm-v3.0.4) (2026-03-28)
 
 
