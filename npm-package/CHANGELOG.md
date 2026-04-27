@@ -1,5 +1,13 @@
 # Releases
 
+## [3.0.6](https://github.com/palasthotel/headless/compare/npm-v3.0.5...npm-v3.0.6) (2026-04-27)
+
+
+### 🐛 Bug Fixes
+
+* **deps-dev:** bump tsdown from 0.21.9 to 0.21.10 in /npm-package ([b052187](https://github.com/palasthotel/headless/commit/b05218766d5bd9de351836a3f0efc48ea327a4d4))
+* **deps-dev:** bump tsdown from 0.21.9 to 0.21.10 in /npm-package ([bd91541](https://github.com/palasthotel/headless/commit/bd915413049097c590a7e4643ab6220f22b04a53))
+
 ## [3.0.5](https://github.com/palasthotel/headless/compare/npm-v3.0.4...npm-v3.0.5) (2026-04-20)
 
 
