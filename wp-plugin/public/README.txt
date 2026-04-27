@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 6.7.2
 Requires PHP: 8.0
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -26,6 +26,35 @@ Adds features to use WordPress as headless CMS
 == Screenshots ==
 
 == Changelog ==
+
+= 3.0.3 =
+* **deps-dev:** bump @wordpress/env from 11.2.0 to 11.3.0 in /wp-plugin (243def9)
+* **deps-dev:** bump @wordpress/env from 11.2.0 to 11.3.0 in /wp-plugin (de337f6)
+* **deps-dev:** bump @wordpress/env from 11.3.0 to 11.4.0 in /wp-plugin (63aa847)
+* **deps-dev:** bump @wordpress/env from 11.3.0 to 11.4.0 in /wp-plugin (f01c5f8)
+* **deps-dev:** bump @wordpress/scripts from 31.7.0 to 31.8.0 in /wp-plugin (ac25403)
+* **deps-dev:** bump @wordpress/scripts from 31.8.0 to 32.0.0 in /wp-plugin (8d02de2)
+* **deps-dev:** bump @wordpress/scripts in /wp-plugin (0034b96)
+* **deps-dev:** bump @wordpress/scripts in /wp-plugin (85a8ec4)
+* **deps:** bump @wordpress/components from 32.4.0 to 32.5.0 in /wp-plugin (03806b2)
+* **deps:** bump @wordpress/components in /wp-plugin (4c753f2)
+* **deps:** bump @wordpress/data from 10.42.0 to 10.43.0 in /wp-plugin (d5cbd41)
+* **deps:** bump @wordpress/data from 10.42.0 to 10.43.0 in /wp-plugin (f46823e)
+* **deps:** bump @wordpress/data from 10.43.0 to 10.44.0 in /wp-plugin (445c834)
+* **deps:** bump @wordpress/data from 10.43.0 to 10.44.0 in /wp-plugin (afb7433)
+* **deps:** bump @wordpress/edit-post from 8.42.0 to 8.44.0 in /wp-plugin (10a3aff)
+* **deps:** bump @wordpress/edit-post from 8.42.0 to 8.44.0 in /wp-plugin (f122b06)
+* **deps:** bump @wordpress/element from 6.42.0 to 6.43.0 in /wp-plugin (1c1015d)
+* **deps:** bump @wordpress/element from 6.42.0 to 6.43.0 in /wp-plugin (7a65e87)
+* **deps:** bump @wordpress/icons from 10.32.0 to 12.0.0 in /wp-plugin (5b3c813)
+* **deps:** bump @wordpress/icons from 10.32.0 to 12.0.0 in /wp-plugin (35efa8c)
+* **deps:** bump @wordpress/icons from 12.0.0 to 12.1.0 in /wp-plugin (802cb80)
+* **deps:** bump @wordpress/icons from 12.0.0 to 12.1.0 in /wp-plugin (8590637)
+* **deps:** bump @wordpress/plugins from 7.42.0 to 7.43.0 in /wp-plugin (4799e3f)
+* **deps:** bump @wordpress/plugins from 7.42.0 to 7.43.0 in /wp-plugin (f02b5b7)
+* **deps:** bump @wordpress/plugins from 7.43.0 to 7.44.0 in /wp-plugin (1629fa2)
+* **deps:** bump @wordpress/plugins from 7.43.0 to 7.44.0 in /wp-plugin (d66dca1)
+
 
 = 3.0.2 =
 * **core-image:** use alt text from block if set (b799413)
