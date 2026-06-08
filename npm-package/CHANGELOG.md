@@ -1,5 +1,27 @@
 # Releases
 
+## [3.0.6](https://github.com/palasthotel/headless/compare/npm-v3.0.5...npm-v3.0.6) (2026-06-08)
+
+
+### 🐛 Bug Fixes
+
+* **deps-dev:** bump @types/node from 25.6.0 to 25.6.2 in /npm-package ([05090ec](https://github.com/palasthotel/headless/commit/05090ec5f6ef96a1ac776e02815f3aad8c0f87f9))
+* **deps-dev:** bump @types/node from 25.6.0 to 25.6.2 in /npm-package ([233628e](https://github.com/palasthotel/headless/commit/233628eccaab8e842599fa9422922a4f692c7352))
+* **deps-dev:** bump @types/node from 25.6.2 to 25.9.1 in /npm-package ([fb451b4](https://github.com/palasthotel/headless/commit/fb451b49d1f620e5f222026a35a3fa26adb9c6fd))
+* **deps-dev:** bump @types/node from 25.6.2 to 25.9.1 in /npm-package ([895a16a](https://github.com/palasthotel/headless/commit/895a16abae92f896a43981199da6f8dbec5f9ced))
+* **deps-dev:** bump @types/node from 25.9.1 to 25.9.2 in /npm-package ([b170bb6](https://github.com/palasthotel/headless/commit/b170bb6e79b195f030d89913a96900bde4e003db))
+* **deps-dev:** bump @types/node from 25.9.1 to 25.9.2 in /npm-package ([51c4460](https://github.com/palasthotel/headless/commit/51c44604b76aa0cace3cf96844b28ab062213ad8))
+* **deps-dev:** bump jest from 30.3.0 to 30.4.2 in /npm-package ([6907c7b](https://github.com/palasthotel/headless/commit/6907c7b3c1f65d5a789fd06cad7168a2346eb960))
+* **deps-dev:** bump jest from 30.3.0 to 30.4.2 in /npm-package ([f341ac1](https://github.com/palasthotel/headless/commit/f341ac1a072889da0820231a69cb61231523bd6e))
+* **deps-dev:** bump ts-jest from 29.4.9 to 29.4.11 in /npm-package ([28186c1](https://github.com/palasthotel/headless/commit/28186c1b8482e7eb25dc91d841fb8d3d50c170e3))
+* **deps-dev:** bump ts-jest from 29.4.9 to 29.4.11 in /npm-package ([076005f](https://github.com/palasthotel/headless/commit/076005f9475225640c51d42988862f446c0258af))
+* **deps-dev:** bump tsdown from 0.21.9 to 0.21.10 in /npm-package ([b052187](https://github.com/palasthotel/headless/commit/b05218766d5bd9de351836a3f0efc48ea327a4d4))
+* **deps-dev:** bump tsdown from 0.21.9 to 0.21.10 in /npm-package ([bd91541](https://github.com/palasthotel/headless/commit/bd915413049097c590a7e4643ab6220f22b04a53))
+* **deps:** bump zod from 4.3.6 to 4.4.2 in /npm-package ([268ef6c](https://github.com/palasthotel/headless/commit/268ef6c3ce71de6fbde7c91f3b763e3e81fd7d12))
+* **deps:** bump zod from 4.3.6 to 4.4.2 in /npm-package ([3822959](https://github.com/palasthotel/headless/commit/38229596bf4977d045629b84bb904024b3d40971))
+* **deps:** bump zod from 4.4.2 to 4.4.3 in /npm-package ([70354b3](https://github.com/palasthotel/headless/commit/70354b3beb3992b39d0d44c36de5caa4abb40147))
+* **deps:** bump zod from 4.4.2 to 4.4.3 in /npm-package ([2a8b1de](https://github.com/palasthotel/headless/commit/2a8b1def9ed38d668ca3fec08a31e77adbbcb139))
+
 ## [3.0.5](https://github.com/palasthotel/headless/compare/npm-v3.0.4...npm-v3.0.5) (2026-04-20)
 
 
