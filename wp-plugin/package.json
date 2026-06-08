@@ -17,7 +17,7 @@
     "@wordpress/env": "^11.8.0"
   },
   "dependencies": {
-    "@wordpress/components": "^32.5.0",
+    "@wordpress/components": "^35.0.0",
     "@wordpress/data": "^10.44.0",
     "@wordpress/edit-post": "^8.44.0",
     "@wordpress/element": "^7.0.0",
