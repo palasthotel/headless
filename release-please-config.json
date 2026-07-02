@@ -39,7 +39,8 @@
         { "type": "docs", "section": "Documentation", "hidden": true },
         { "type": "refactor", "section": "Code Refactoring", "hidden": true },
         { "type": "chore", "section": "Miscellaneous", "hidden": true },
-        { "type": "deps", "section": "Dependencies", "hidden": true }
+        { "type": "deps", "section": "Dependencies", "hidden": true },
+        { "type": "deps-dev", "section": "Dependencies", "hidden": true }
       ]
     }
   }
