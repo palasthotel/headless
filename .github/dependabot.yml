@@ -20,7 +20,7 @@ updates:
     assignees:
       - "JanaME"
     commit-message:
-      prefix: "fix"
+      prefix: "deps"
       include: "scope"
     directory: "/wp-plugin/"
     open-pull-requests-limit: 10
