@@ -15,17 +15,16 @@
 	"devDependencies": {
 		"@wordpress/scripts": "^32.0.0",
 		"@wordpress/env": "^11.9.0",
-		"@wordpress/components": "^35.0.1",
+		"@wordpress/components": "^36.1.0",
 		"@wordpress/data": "^10.48.1",
 		"@wordpress/edit-post": "^8.44.0",
-		"@wordpress/element": "^7.0.0",
+		"@wordpress/element": "^8.2.0",
 		"@wordpress/i18n": "^6.18.0",
-		"@wordpress/icons": "^14.0.1",
+		"@wordpress/icons": "^15.1.0",
 		"@wordpress/plugins": "^7.46.0"
 	},
 	"engines": {
-		"node": ">=24",
-		"npm": ">=11"
+		"node": ">=22"
 	},
 	"volta": {
 		"node": "24.14.1",
