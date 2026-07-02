@@ -1,5 +1,12 @@
 # Releases
 
+## [3.0.7](https://github.com/palasthotel/headless/compare/npm-v3.0.6...npm-v3.0.7) (2026-07-02)
+
+
+### 🐛 Bug Fixes
+
+* **package:** loosen node engine requirement to avoid false npm warnings in consumers ([cc4ef47](https://github.com/palasthotel/headless/commit/cc4ef47cb0cd8830deecd3a4edf1c39d9a66f833))
+
 ## [3.0.6](https://github.com/palasthotel/headless/compare/npm-v3.0.5...npm-v3.0.6) (2026-06-17)
 
 
