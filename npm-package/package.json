@@ -30,7 +30,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.1.0",
     "jest": "^30.4.2",
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
@@ -43,7 +43,7 @@
     "zod": "4.4.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "volta": {
     "node": "24.14.1",
