@@ -21,7 +21,7 @@
 		"@wordpress/element": "^8.2.0",
 		"@wordpress/i18n": "^6.18.0",
 		"@wordpress/icons": "^15.1.0",
-		"@wordpress/plugins": "^7.46.0"
+		"@wordpress/plugins": "^7.51.0"
 	},
 	"engines": {
 		"node": ">=22"
