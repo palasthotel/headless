@@ -1,7 +1,7 @@
 name: Update plugin version
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
     branches:
       - main
@@ -11,8 +11,14 @@ permissions:
 
 jobs:
   update-plugin-version:
-    # Only run for the release-please plugin component PR
-    if: startsWith(github.head_ref, 'release-please--') && contains(github.head_ref, '--plugin')
+    # Only run for the release-please plugin component PR. The head-repo check is
+    # what keeps this safe: the job checks out the PR head and runs a script from
+    # it, so it must never do that for a fork. `github.head_ref` alone is not a
+    # guard - a fork can name its branch anything, including `release-please--*`.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'release-please--') &&
+      contains(github.head_ref, '--plugin')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
