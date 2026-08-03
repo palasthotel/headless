@@ -31,6 +31,23 @@ fix(npm): correct block schema for core/image
 
 > release-please attributes a commit to a component based on which files were changed, not the scope in the message.
 
+### Which changes get `fix:` or `feat:`
+
+Only changes that matter to someone consuming the released artefact — a site
+running the plugin, or a project depending on the npm package. `fix:` and `feat:`
+decide the version *and* write the line that ends up in the changelog users read,
+so the question to ask before committing is whether a consumer would care about
+that line.
+
+Everything else takes a type that releases nothing — workflows and CI, release
+tooling, repository documentation, internal refactoring, and anything touching
+files that are not shipped. As a rule of thumb, a change confined to files
+outside `wp-plugin/public/` and `npm-package/src/` is almost never a `fix:`.
+
+That includes hardening. Blocking direct access to a file that is not part of the
+download is `chore:`, not `fix:` — nothing changes for anyone who installed the
+plugin.
+
 ## Versioning & Major Version Alignment
 
 The two components are versioned **independently** — a breaking change in the plugin does not automatically bump the npm package, and vice versa.
