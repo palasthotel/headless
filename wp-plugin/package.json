@@ -16,7 +16,7 @@
 		"@wordpress/scripts": "^32.0.0",
 		"@wordpress/env": "^11.11.0",
 		"@wordpress/components": "^37.0.0",
-		"@wordpress/data": "^10.48.1",
+		"@wordpress/data": "^10.52.0",
 		"@wordpress/edit-post": "^8.51.0",
 		"@wordpress/element": "^8.2.0",
 		"@wordpress/i18n": "^6.24.0",
