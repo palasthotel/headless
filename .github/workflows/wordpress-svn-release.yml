@@ -6,6 +6,9 @@ on:
     tags:
       - "plugin-v*"
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     name: Build and deploy to WordPress.org
