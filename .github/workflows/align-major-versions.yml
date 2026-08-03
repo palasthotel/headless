@@ -6,6 +6,9 @@ on:
       - "npm-v*"
       - "plugin-v*"
 
+permissions:
+  contents: read
+
 jobs:
   align:
     runs-on: ubuntu-latest
