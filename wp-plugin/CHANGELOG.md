@@ -5,6 +5,17 @@ History prior to this file is in the `== Changelog ==` section of [README.txt](R
 
 <!-- next release will be prepended here by release-please -->
 
+## [3.0.4](https://github.com/palasthotel/headless/compare/plugin-v3.0.3...plugin-v3.0.4) (2026-08-04)
+
+
+### Bug Fixes
+
+* leave the application password SSL check to WordPress ([8f5701b](https://github.com/palasthotel/headless/commit/8f5701be4aa9131fb1ce2a5116918d0e39e359ef))
+* repair the single menu route ([b735870](https://github.com/palasthotel/headless/commit/b735870a6f61c4886c9b2a182247c04774c63b08))
+* require a nonce for the revalidation endpoints ([4e6bd21](https://github.com/palasthotel/headless/commit/4e6bd2177e90446f5645860674f51f9460178091))
+* stop protected post meta from being queried anonymously ([5f9f8ee](https://github.com/palasthotel/headless/commit/5f9f8eebfe78347e631a7d049961b35c9411ce44))
+* stop publishing comment authors' login names ([1c73947](https://github.com/palasthotel/headless/commit/1c7394716090ce217c1c98eeecf11c37e468f364))
+
 ## [3.0.3](https://github.com/palasthotel/headless/compare/plugin-v3.0.2...plugin-v3.0.3) (2026-07-02)
 
 
