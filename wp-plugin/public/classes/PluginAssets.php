@@ -46,6 +46,7 @@ class PluginAssets extends Component {
 			"Headless",
 			[
 				"ajax"                => admin_url( 'admin-ajax.php' ),
+				"nonce"               => wp_create_nonce( Ajax::NONCE_ACTION ),
 				"frontends"           => array_map(
 					function ( $frontend ) {
 						return $frontend->getBaseUrl();
