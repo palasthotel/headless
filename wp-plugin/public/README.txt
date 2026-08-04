@@ -920,6 +920,14 @@ longer passed into the query.
 * stop publishing comment authors' login names (1c73947)
 
 
+= 3.0.4 =
+* leave the application password SSL check to WordPress (8f5701b)
+* repair the single menu route (b735870)
+* require a nonce for the revalidation endpoints (4e6bd21)
+* stop protected post meta from being queried anonymously (5f9f8ee)
+* stop publishing comment authors' login names (1c73947)
+
+
 = 3.0.3 =
 * **deps-dev:** updates
 
