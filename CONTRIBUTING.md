@@ -116,8 +116,14 @@ npm run pack    # stages build/headless/ and produces headless.zip at repo root
 
 | Secret / Variable | Used by | Purpose |
 |---|---|---|
-| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot |
+| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot. A **variable**, not a secret — the workflows also accept it from Secrets, because that is an easy place to put it by mistake |
 | `secrets.RELEASE_BOT_PRIVATE_KEY` | the same three | its private key — an installation token is minted per run, which is what makes the pushed tag trigger the deploy workflows |
+
+Two things have to be true beyond the two values existing: the app must be
+**installed on this repository**, and if the private key is an organisation secret,
+this repository must be in its selected-repositories list. Otherwise
+`create-github-app-token` receives an empty input and the release job fails before
+release-please runs.
 | `SVN_USERNAME` | `wordpress-svn-release.yml` | WordPress.org username |
 | `SVN_PASSWORD` | `wordpress-svn-release.yml` | WordPress.org password |
 | `vars.SVN_REPO_URL` | `wordpress-svn-release.yml` | e.g. `https://plugins.svn.wordpress.org/headless` |
