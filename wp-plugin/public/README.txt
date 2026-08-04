@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 7.0.2
 Requires PHP: 8.0
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,14 @@ longer passed into the query.
 == Screenshots ==
 
 == Changelog ==
+
+= 3.0.4 =
+* leave the application password SSL check to WordPress (8f5701b)
+* repair the single menu route (b735870)
+* require a nonce for the revalidation endpoints (4e6bd21)
+* stop protected post meta from being queried anonymously (5f9f8ee)
+* stop publishing comment authors' login names (1c73947)
+
 
 = 3.0.3 =
 * **deps-dev:** updates
