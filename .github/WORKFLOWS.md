@@ -35,7 +35,7 @@ Merge release PR  →  release-please pushes tag
     │
     ├── plugin-v*  ──▶ [wordpress-svn-release.yml]
     │                       Build + deploy to WordPress.org SVN
-    │                       Upload plugin.zip to GitHub Release
+    │                       Upload headless.zip to GitHub Release
     │
     └── npm-v* or plugin-v*  ──▶ [align-major-versions.yml]
                                       Check if major versions match
@@ -166,22 +166,34 @@ Tag: plugin-v3.x.x
       │       compiles Gutenberg assets → wp-plugin/public/dist/
       │
       ├── npm run pack
-      │       rsync wp-plugin/public/ → build/plugin/
-      │       composer install --no-dev
-      │       zip → plugin.zip
+      │       rsync -rL wp-plugin/public/ → build/headless/
+      │       composer install --no-dev + dump-autoload --optimize
+      │       drop composer.json/composer.lock from the payload
+      │       zip → headless.zip   (build/headless/ is left in place)
       │
-      ├──▶ Upload plugin.zip to GitHub Release
+      ├──▶ Upload headless.zip to GitHub Release
       │       (softprops/action-gh-release, continue-on-error)
       │
       ├── svn checkout  $SVN_REPO_URL  →  ./svn/
       │
       └── SVN commit
               rm trunk/*  +  rm tags/$VERSION
-              cp wp-plugin/public/* → trunk/  +  tags/$VERSION/
+              rsync -rL build/headless/ → trunk/  →  tags/$VERSION/
               svn add --force .
               svn rm deleted files
               svn commit "Release version $VERSION"
 ```
+
+The SVN payload comes from `build/headless/`, the same directory that was zipped, so
+the download on wordpress.org and the GitHub release asset are identical. `rsync -rL`
+resolves symlinks, because wordpress.org drops them when it builds the download.
+`assets/` is not touched — the plugin-page media lives only in SVN, not in this
+repository.
+
+**Retry:** the workflow also accepts `workflow_dispatch` with a version input (e.g.
+`3.0.4`), for when a tag-triggered run failed. A tag push reads the workflow file as
+it was at the tagged commit, so re-running the tag event replays the old file;
+dispatch from a branch runs the current one.
 
 **Required secrets / vars:**
 - `SVN_USERNAME` — WordPress.org username
