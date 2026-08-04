@@ -1,13 +1,13 @@
 === Headless ===
-Contributors: palasthotel, edwardbock
+Contributors: palasthotel, edwardbock, janaeggebrecht
 Donate link: http://palasthotel.de/
 Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 7.0.2
 Requires PHP: 8.0
 Stable tag: 3.0.3
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Adds features to use WordPress as headless CMS
 

@@ -104,7 +104,7 @@ npm run wp-env:stop
 
 ```bash
 cd wp-plugin
-npm run pack    # produces plugin.zip at repo root
+npm run pack    # stages build/headless/ and produces headless.zip at repo root
 ```
 
 ## Required Secrets (for maintainers)

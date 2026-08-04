@@ -11,7 +11,8 @@
  * Tested up to: 7.0.2
  * Requires PHP: 8.0
  * Text Domain: headless
- * License: http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * License: GPL-3.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * @copyright Copyright by Palasthotel
  * @package Palasthotel\WordPress\Headless
  *

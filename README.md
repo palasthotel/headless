@@ -145,3 +145,50 @@ import type {
   Block,
 } from '@palasthotel/headless';
 ```
+
+---
+
+## Repository layout
+
+`wp-plugin/public/` is exactly what ships to WordPress.org. Everything outside it is
+repository-only.
+
+| Path | Description |
+|---|---|
+| `wp-plugin/public/` | the released plugin — plugin header, `classes/`, built `dist/`, `vendor/` autoloader, `README.txt` |
+| `wp-plugin/src/` | editor assets, built into `public/dist/` by `wp-scripts` |
+| `wp-plugin/headless.php` | DEV wrapper, loads `public/headless.php` when the repository is checked out into `wp-content/plugins/` |
+| `npm-package/` | the published `@palasthotel/headless` package |
+| `bin/` | release helper scripts |
+| `.github/workflows/` | CI/CD — see [.github/WORKFLOWS.md](.github/WORKFLOWS.md) |
+
+## Development
+
+```sh
+cd wp-plugin  && npm ci && npm run build   # editor assets → public/dist/
+cd npm-package && npm ci && npm run build  # tsdown → dist/
+npm test                                   # jest (npm-package)
+npm run lint                               # tsc --noEmit (npm-package)
+```
+
+`bash bin/pack.sh` stages the payload in `build/headless/` and zips it to
+`headless.zip` — the same payload the release deploys. It needs `composer`, because
+the packed copy gets a freshly generated `--no-dev` autoloader and the composer files
+are dropped from it.
+
+## Releasing
+
+Both components are released by [release-please](https://github.com/googleapis/release-please)
+with separate pull requests and version lines: `npm-v*` publishes the npm package,
+`plugin-v*` deploys to WordPress.org. There is nothing to bump by hand — commit with
+[conventional commits](https://www.conventionalcommits.org/) and merge the release
+PR. Details in [.github/WORKFLOWS.md](.github/WORKFLOWS.md), commit conventions in
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+GNU General Public License v3.0 or later — see [LICENSE](LICENSE).
+
+Versions of `@palasthotel/headless` up to and including 3.0.7 were published under
+the MIT license; those releases remain MIT. Everything from the next release on is
+GPL-3.0-or-later.

@@ -79,13 +79,13 @@ jobs:
           # Explicit, because on a dispatch run github.ref is a branch and the
           # action would otherwise not find the release.
           tag_name: ${{ env.RELEASE_TAG }}
-          files: ./plugin.zip
+          files: ./headless.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup packaged artifact
         if: always()
-        run: rm -f ./plugin.zip
+        run: rm -f ./headless.zip
 
       - name: Checkout WordPress SVN repository
         env:
@@ -98,10 +98,7 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
-          ls -la
           cd svn
-          ls -la
-          VERSION=${VERSION}
           rm -rf trunk/* tags/$VERSION || true
           mkdir -p trunk tags/$VERSION
           # -L resolves symlinks. cp is platform-dependent here - GNU cp keeps
