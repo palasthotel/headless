@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   npm-package:
-    name: NPM package (build + test)
+    name: NPM package (lint + build + test)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -20,6 +20,9 @@ jobs:
           node-version: 24.x
 
       - run: npm ci
+        working-directory: npm-package
+
+      - run: npm run lint
         working-directory: npm-package
 
       - run: npm run build
@@ -29,7 +32,7 @@ jobs:
         working-directory: npm-package
 
   wp-plugin:
-    name: Plugin assets (build)
+    name: Plugin assets (build + pack)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -38,8 +41,23 @@ jobs:
         with:
           node-version: 24.x
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer
+
       - run: npm ci
         working-directory: wp-plugin
 
       - run: npm run build
         working-directory: wp-plugin
+
+      # Packs the payload, so a broken bin/pack.sh surfaces here and not in a release.
+      - run: npm run pack
+        working-directory: wp-plugin
+
+      - name: Assert the payload carries no composer manifest
+        run: |
+          test -f build/headless/vendor/autoload.php
+          test ! -e build/headless/composer.json
+          test ! -e build/headless/composer.lock

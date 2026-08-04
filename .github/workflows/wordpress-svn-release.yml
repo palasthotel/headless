@@ -5,6 +5,12 @@ on:
   push:
     tags:
       - "plugin-v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to deploy, without the plugin-v prefix (e.g. 3.0.4)"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -14,7 +20,7 @@ jobs:
     name: Build and deploy to WordPress.org
     runs-on: ubuntu-latest
     env:
-      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && format('plugin-v{0}', github.event.inputs.version) || github.ref_name }}
     steps:
       - name: Notify on start
         run: |
@@ -66,13 +72,14 @@ jobs:
         uses: softprops/action-gh-release@v2
         continue-on-error: true
         with:
-          files: ./plugin.zip
+          tag_name: ${{ env.RELEASE_TAG }}
+          files: ./headless.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cleanup packaged artifact
         if: always()
-        run: rm -f ./plugin.zip
+        run: rm -f ./headless.zip
 
       - name: Checkout WordPress SVN repository
         env:
@@ -85,14 +92,14 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         run: |
-          ls -la
           cd svn
-          ls -la
-          VERSION=${VERSION}
           rm -rf trunk/* tags/$VERSION || true
           mkdir -p trunk tags/$VERSION
-          cp -r ../wp-plugin/public/* trunk/
-          cp -r trunk/* tags/$VERSION/
+          # -L resolves symlinks: wordpress.org drops them when it builds the
+          # download zip. build/headless/ is what bin/pack.sh staged, so the zip
+          # attached to the GitHub release and the SVN trunk are identical.
+          rsync -rL ../build/headless/ trunk/
+          rsync -rL trunk/ tags/$VERSION/
           svn add --force . || true
           svn status | awk '/^!/{print $2}' | while IFS= read -r file; do
             [ -n "$file" ] || continue
