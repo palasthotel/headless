@@ -164,6 +164,7 @@ Tag: plugin-v3.x.x
       │
       ├── npm ci + npm run build  (wp-plugin/)
       │       compiles Gutenberg assets → wp-plugin/public/dist/
+      │       (generated, not in the repository)
       │
       ├── npm run pack
       │       rsync -rL wp-plugin/public/ → build/headless/

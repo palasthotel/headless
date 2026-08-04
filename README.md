@@ -182,8 +182,8 @@ repository-only.
 
 | Path | Description |
 |---|---|
-| `wp-plugin/public/` | the released plugin — plugin header, `classes/`, built `dist/`, `vendor/` autoloader, `README.txt` |
-| `wp-plugin/src/` | editor assets, built into `public/dist/` by `wp-scripts` |
+| `wp-plugin/public/` | the released plugin — plugin header, `classes/`, `vendor/` autoloader, `README.txt`, plus the generated `dist/` |
+| `wp-plugin/src/` | editor assets, built into `public/dist/` by `wp-scripts` — `dist/` itself is generated and gitignored |
 | `wp-plugin/headless.php` | DEV wrapper, loads `public/headless.php` when the repository is checked out into `wp-content/plugins/` |
 | `npm-package/` | the published `@palasthotel/headless` package |
 | `bin/` | release helper scripts |

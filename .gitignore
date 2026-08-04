@@ -1,8 +1,7 @@
 /.idea
 /*.DS_Store
 node_modules
+# compiled output - built by the pipeline, never committed
 dist
-# ...but the plugin ships its built assets, and they are tracked.
-!wp-plugin/public/dist
 *.zip
 /build

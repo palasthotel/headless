@@ -92,6 +92,11 @@ npm run watch       # dev mode with file watching
 npm run build       # production build → wp-plugin/public/dist/
 ```
 
+`wp-plugin/public/dist/` is generated and gitignored — the release pipeline builds it,
+so there is nothing to commit and no stale asset to review. Run `npm run build` before
+`bin/pack.sh`; the script refuses to pack an unbuilt payload. (`npm run wp-env:start`
+builds first, so that path is covered.)
+
 ### Local WordPress Environment
 
 ```bash
