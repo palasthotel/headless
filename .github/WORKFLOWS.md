@@ -67,7 +67,7 @@ PR opened / updated
 ### `release-please.yml` — Release PR Management
 
 **Trigger:** Push to `main`
-**Token:** `RELEASE_PLEASE_TOKEN` (PAT — required so downstream workflows trigger on the resulting push)
+**Token:** an installation token of the Palasthotel Release Bot app, minted per run from `vars.RELEASE_BOT_APP_ID` + `secrets.RELEASE_BOT_PRIVATE_KEY` — required so downstream workflows trigger on the resulting push, which they would not with `GITHUB_TOKEN`
 
 Reads conventional commits since the last tag and maintains two separate release PRs. On merge, creates the tag and a GitHub Release.
 
@@ -98,8 +98,14 @@ Push to main
 
 ### `update-plugin-version.yml` — Plugin Version Files
 
-**Trigger:** `pull_request_target` on `main` — types: `opened`, `synchronize`
-**Condition:** Only runs for release-please plugin PRs (`release-please--*--plugin`)
+**Trigger:** `pull_request` on `main` — types: `opened`, `synchronize`
+**Condition:** Only for release-please plugin PRs (`release-please--*--plugin`) whose
+head branch lives in this repository. The head-repo check is the guard that matters:
+the job checks out the PR head and runs a script from it, so it must never do that for
+a fork. `github.head_ref` alone is not a guard — a fork can name its branch anything.
+**Token:** the Release Bot installation token, so the commit it pushes re-triggers the
+PR checks; a push made with `GITHUB_TOKEN` triggers nothing, which would leave the
+release PR without check results for the commit that actually gets released.
 
 Keeps `headless.php` and `README.txt` in sync with the version in `wp-plugin/package.json` before the PR is merged and the tag is created.
 
@@ -206,7 +212,7 @@ dispatch from a branch runs the current one.
 ### `align-major-versions.yml` — Major Version Alignment
 
 **Trigger:** Push of any `npm-v*` or `plugin-v*` tag
-**Token:** `RELEASE_PLEASE_TOKEN` (PAT — required for git push + gh pr create)
+**Token:** the same Release Bot installation token — required for `git push` + `gh pr create`, and so the PR checks run on the branch it pushes
 
 After every release, checks whether both components share the same major version. If they diverge, automatically opens a PR with a `BREAKING CHANGE:` commit in the lagging component's directory — which causes release-please to open a major release PR for it on merge.
 

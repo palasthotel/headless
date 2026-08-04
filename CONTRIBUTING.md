@@ -116,7 +116,8 @@ npm run pack    # stages build/headless/ and produces headless.zip at repo root
 
 | Secret / Variable | Used by | Purpose |
 |---|---|---|
-| `RELEASE_PLEASE_TOKEN` | `release-please.yml` | PAT with `contents` + `pull-requests` write — required so release-please's pushes trigger downstream workflows |
+| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot |
+| `secrets.RELEASE_BOT_PRIVATE_KEY` | the same three | its private key — an installation token is minted per run, which is what makes the pushed tag trigger the deploy workflows |
 | `SVN_USERNAME` | `wordpress-svn-release.yml` | WordPress.org username |
 | `SVN_PASSWORD` | `wordpress-svn-release.yml` | WordPress.org password |
 | `vars.SVN_REPO_URL` | `wordpress-svn-release.yml` | e.g. `https://plugins.svn.wordpress.org/headless` |

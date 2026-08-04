@@ -13,9 +13,19 @@ jobs:
   align:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Same app token as release-please.yml: this job pushes a branch and opens a
+      # PR, and the PR checks have to run on it.
+      - uses: actions/create-github-app-token@v2
+        id: app-token
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Read versions from manifest
         id: versions
@@ -35,7 +45,8 @@ jobs:
       - name: Create alignment PR
         if: steps.versions.outputs.aligned == 'false'
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
         run: |
           TAG="${{ github.ref_name }}"
           NPM_MAJOR="${{ steps.versions.outputs.npm_major }}"
@@ -65,8 +76,10 @@ jobs:
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # The bot's numeric user id - required for verified commit attribution
+          BOT_ID=$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id)
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
 
           # Touch CHANGELOG.md so release-please attributes this commit to the right component
