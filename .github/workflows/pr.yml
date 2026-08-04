@@ -55,6 +55,15 @@ jobs:
       - run: npm run build
         working-directory: wp-plugin
 
+      # public/dist is not in the repository - the release builds it. Assert the
+      # build produced the files the plugin enqueues, so a renamed or dropped entry
+      # point surfaces here instead of as a 404 in wp-admin.
+      - name: Assert the build produced the enqueued assets
+        run: |
+          for f in gutenberg.js gutenberg.css gutenberg.asset.php admin.js admin.asset.php; do
+            test -f "wp-plugin/public/dist/$f" || { echo "::error::wp-plugin/public/dist/$f was not built"; exit 1; }
+          done
+
       # Packs the payload, so a broken bin/pack.sh surfaces here and not in a release.
       - run: npm run pack
         working-directory: wp-plugin
