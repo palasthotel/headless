@@ -9,6 +9,7 @@ is the client side of that contract: it builds the request URLs and validates th
 responses, so a change in the CMS shows up as a parse error instead of as `undefined`
 somewhere in your components.
 
+
 ```bash
 npm install @palasthotel/headless
 ```
