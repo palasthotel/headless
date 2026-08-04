@@ -69,8 +69,10 @@ jobs:
 
           BRANCH="chore/align-${COMPONENT}-major-v${TARGET_MAJOR}"
 
-          # Check if alignment PR already exists
-          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number')
+          # Check if alignment PR already exists. "// empty" matters: without it jq
+          # prints the string "null" for an empty result, [ -n "null" ] is true, and
+          # this step always reported an existing PR and skipped.
+          EXISTING=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
           if [ -n "$EXISTING" ]; then
             echo "Alignment PR #$EXISTING already exists, skipping."
             exit 0
