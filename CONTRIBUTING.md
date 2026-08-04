@@ -123,3 +123,9 @@ npm run pack    # stages build/headless/ and produces headless.zip at repo root
 | `vars.SVN_REPO_URL` | `wordpress-svn-release.yml` | e.g. `https://plugins.svn.wordpress.org/headless` |
 
 `GITHUB_TOKEN` and OIDC for npmjs.org are handled automatically (no stored npm token needed — configure a Trusted Publisher on npmjs.org for this repo + `npm-publish.yml`).
+
+`npm-publish.yml` deliberately clears `NODE_AUTH_TOKEN` before publishing so npm
+falls back to the OIDC exchange. **Do not add an npm token secret**: it would not be
+read, and an unused publish credential is worth exactly its blast radius. That the
+exchange works is visible on the registry — published versions carry a SLSA
+provenance attestation, which a token publish does not produce.
