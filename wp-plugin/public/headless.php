@@ -20,6 +20,10 @@
 
 namespace Palasthotel\WordPress\Headless;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Palasthotel\WordPress\Headless\Store\RevalidationDatabase;
 
 if (!defined("HEADLESS_HEAD_BASE_URL")) {
@@ -59,6 +63,9 @@ class Plugin extends Components\Plugin
 
 	const REST_NAMESPACE = "headless/v1";
 	const FILTER_IS_HEADLESS_POST_TYPE = "headless_is_headless_post_type";
+
+	const FILTER_APPLICATION_PASSWORDS_AVAILABLE = "headless_application_passwords_available";
+	const FILTER_META_KEY_IS_QUERYABLE = "headless_meta_key_is_queryable";
 
 	const FILTER_PREVIEW_IS_ACTIVE = "headless_preview_is_active";
 

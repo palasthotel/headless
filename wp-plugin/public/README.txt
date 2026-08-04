@@ -13,7 +13,33 @@ Adds features to use WordPress as headless CMS
 
 == Description ==
 
-Adds features to use WordPress as headless CMS
+Adds features to use WordPress as a headless CMS: extra fields and prepared block
+content on the REST API, custom routes for menus and site settings, a preview that
+points at your frontend instead of the WordPress theme, and cache revalidation for
+frontends that support it.
+
+= Configuration =
+
+The plugin is configured with constants in `wp-config.php`:
+
+* `HEADLESS_HEAD_BASE_URL` — base URL of your frontend. Preview and revalidation requests go here.
+* `HEADLESS_SECRET_TOKEN` — shared token sent to the frontend's `/api/preview` and `/api/revalidate` endpoints.
+* `HEADLESS_API_KEY_HEADER_KEY` and `HEADLESS_API_KEY_HEADER_VALUE` — require this HTTP header on requests that use the plugin's REST additions.
+
+= Who can read the responses =
+
+The plugin's REST additions activate on requests carrying `?headless=true`. **That
+query parameter is a routing flag, not authentication** — anyone can set it. Unless
+you configure `HEADLESS_API_KEY_HEADER_KEY` and `HEADLESS_API_KEY_HEADER_VALUE`, the
+`/headless/v1/menus` and `/headless/v1/settings` routes and the added post fields are
+readable by anyone who can reach your REST API. Configure the API key if that is not
+what you want.
+
+`HEADLESS_SECRET_TOKEN` is a single shared secret, and the admin pages hand it to the
+browser so the editor can open a preview. Every user who can edit posts — Contributor
+upwards — can therefore read it and use it against your frontend's preview and
+revalidation endpoints directly. Treat it as a secret shared with your whole editorial
+team, and give the frontend its own rate limiting.
 
 == Installation ==
 
@@ -22,6 +48,41 @@ Adds features to use WordPress as headless CMS
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
+
+= Application passwords stopped being available after updating =
+
+Earlier versions forced application passwords on unconditionally. WordPress itself
+only offers them over HTTPS or in a local environment, because the password travels in
+an `Authorization` header on every request. The plugin no longer overrides that. If you
+knowingly want them on a plain-HTTP site, opt back in:
+
+`add_filter( 'headless_application_passwords_available', '__return_true' );`
+
+The better fix is a TLS certificate.
+
+= Comment responses no longer contain author_user.nickname =
+
+`nickname` defaults to the account's login name, and the comments endpoint is public,
+so the field was handing out usernames. It is now only included for requests by a user
+who may list users. `display_name` is unchanged and is what you want for rendering.
+
+= Queries on meta keys starting with an underscore return everything =
+
+WordPress treats a leading underscore as protected meta. `hl_meta_keys`,
+`hl_meta_exists` and `hl_meta_not_exists` now ignore protected keys for requests
+that may not edit posts — otherwise a `like` comparison lets anyone read a protected
+value one character at a time by watching which posts come back. Authenticated
+requests that may edit posts are unaffected. To decide per key yourself:
+
+`add_filter( 'headless_meta_key_is_queryable', function( $queryable, $key ) {
+	return $key === '_my_public_key' ? true : $queryable;
+}, 10, 2 );`
+
+= hl_post_type no longer accepts every post type =
+
+Only post types that are public and exposed in the REST API are accepted, and `any`
+resolves to that same set. Post types WordPress would not show in the REST API are no
+longer passed into the query.
 
 == Screenshots ==
 

@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use Palasthotel\WordPress\Headless\Plugin;
 
 function headless_plugin() {

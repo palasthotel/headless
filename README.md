@@ -13,7 +13,9 @@ Install the plugin from [WordPress.org](https://wordpress.org/plugins/headless/)
 
 ### Authentication
 
-All headless REST endpoints require the `?headless=true` query parameter. Optionally, you can restrict access to a specific API key header:
+All headless REST endpoints require the `?headless=true` query parameter. **That is a
+routing flag, not authentication** — anyone can set it. To actually restrict access,
+require an API key header:
 
 ```php
 // wp-config.php
@@ -21,7 +23,19 @@ define('HEADLESS_API_KEY_HEADER_KEY', 'X-Headless-Token');
 define('HEADLESS_API_KEY_HEADER_VALUE', 'your-secret');
 ```
 
-If both constants are left empty (default), no header restriction is applied.
+If both constants are left empty (default), no header restriction is applied and the
+plugin's routes and added fields are readable by anyone who can reach the REST API.
+The comparison is done with `hash_equals()`.
+
+`HEADLESS_SECRET_TOKEN` is a different thing: one shared secret, sent to the
+frontend's `/api/preview` and `/api/revalidate`. The admin pages put it into the page
+so the editor can open a preview, so **every user with `edit_posts` can read it** —
+Contributor upwards. Rate-limit those endpoints on the frontend and do not treat the
+token as a per-user credential.
+
+The plugin no longer forces WordPress application passwords to be available. Core
+offers them over HTTPS or in a local environment; to override that, use the
+`headless_application_passwords_available` filter.
 
 ### REST API Extensions
 
@@ -36,7 +50,7 @@ The plugin adds fields to existing WP REST responses (posts, revisions, comments
 | `featured_media_sizes` | All registered image sizes |
 | `featured_media_caption/description/alt` | Featured image meta |
 | `[taxonomy]` | Term IDs for all REST-visible taxonomies |
-| `author_user` | Comment author's `display_name` and `nickname` (if WP user) |
+| `author_user` | Comment author's `display_name` (if WP user). `nickname` only for requests that may `list_users`, since it defaults to the login name |
 
 Add `?headless_variant=teaser` to strip heavy fields (block content, rendered HTML) for list views.
 
@@ -85,6 +99,19 @@ Register custom block preparations or extend route responses via WordPress actio
 add_action('headless_register_block_preparation_extensions', function($preparations) { ... });
 add_action('headless_register_post_route_extensions', function($extensions) { ... });
 add_action('headless_register_comment_route_extensions', function($extensions) { ... });
+```
+
+Two filters control what the query parameters are allowed to reach:
+
+```php
+// Allow application passwords where core would not (e.g. plain HTTP). Off by default.
+add_filter('headless_application_passwords_available', '__return_true');
+
+// Decide per key whether hl_meta_* may query it. Protected keys (leading underscore)
+// are queryable only for requests that may edit posts.
+add_filter('headless_meta_key_is_queryable', function($queryable, $key) {
+    return $key === '_my_public_key' ? true : $queryable;
+}, 10, 2);
 ```
 
 ---

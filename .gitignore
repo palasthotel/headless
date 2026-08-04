@@ -2,5 +2,7 @@
 /*.DS_Store
 node_modules
 dist
+# ...but the plugin ships its built assets, and they are tracked.
+!wp-plugin/public/dist
 *.zip
 /build

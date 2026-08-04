@@ -41,19 +41,43 @@ class Query extends Component {
 	 */
 	public static function getRequestPostTypes( \WP_REST_Request $request ) {
 		$post_types = $request->get_param( static::POST_TYPE );
-		if(is_array($post_types) && in_array("any",$post_types)){
-			return ["any"];
-		}
+
 		if ( empty( $post_types ) ) {
 			return [];
 		}
-		if ( is_string( $post_types ) ) {
-			return [ $post_types ];
+
+		// "any" used to be passed straight through to WP_Query, which resolves it to
+		// every post type that is not excluded from search - including ones that are
+		// not viewable and not exposed in the REST API.
+		if ( is_array( $post_types ) && in_array( "any", $post_types, true ) ) {
+			return array_values( get_post_types( [ "public" => true, "show_in_rest" => true ] ) );
 		}
 
-		return array_filter( $post_types, function ( $type ) {
-			return post_type_exists( $type ) && is_post_type_viewable( $type );
-		} );
+		if ( is_string( $post_types ) ) {
+			$post_types = [ $post_types ];
+		}
+
+		return array_values( array_filter( $post_types, function ( $type ) {
+			return is_string( $type ) && post_type_exists( $type ) && is_post_type_viewable( $type );
+		} ) );
+	}
+
+	/**
+	 * Checks whether a meta key may be used in a query for the current request.
+	 *
+	 * Protected keys (WordPress treats a leading underscore as protected) are only
+	 * queryable for users who may edit posts. Without that, an anonymous request
+	 * could use the public posts endpoint as an oracle: a LIKE comparison on a
+	 * protected key reveals its value one character at a time, from which posts come
+	 * back and which do not.
+	 *
+	 * @param string $key The meta key requested.
+	 * @return bool True if the key may be queried.
+	 */
+	public static function isMetaKeyQueryable( string $key ): bool {
+		$queryable = ! is_protected_meta( $key, 'post' ) || current_user_can( 'edit_posts' );
+
+		return (bool) apply_filters( Plugin::FILTER_META_KEY_IS_QUERYABLE, $queryable, $key );
 	}
 
 	/**
@@ -80,13 +104,15 @@ class Query extends Component {
 		$meta_query = [];
 		if(!empty($metas) && is_array($metas)){
 			foreach ($metas as $index =>  $metaKey) {
+				$metaKey = sanitize_text_field($metaKey);
+				if(!static::isMetaKeyQueryable($metaKey)) continue;
 				$compare = "=";
 				if(is_array($compares) && !empty($compares[$index]) && in_array($compares[$index], $validCompares)){
 					$compare = $comparesMap[$compares[$index]];
 				}
 				if(is_array($values) && isset($values[$index])){
 					$meta_query[] = [
-						"key" => sanitize_text_field($metaKey),
+						"key" => $metaKey,
 						"value" => sanitize_text_field($values[$index]),
 						"compare" => $compare,
 					];
@@ -96,20 +122,22 @@ class Query extends Component {
 		}
 
 		$metaExists = $request->get_param( static::META_EXISTS );
-		if ( ! empty( $metaExists ) ) {
+		$metaExists = is_string( $metaExists ) ? sanitize_text_field( $metaExists ) : "";
+		if ( ! empty( $metaExists ) && static::isMetaKeyQueryable( $metaExists ) ) {
 			$meta_query[] = array(
 				array(
-					'key'     => sanitize_text_field( $metaExists ),
+					'key'     => $metaExists,
 					'compare' => 'EXISTS',
 				),
 			);
 		}
 
 		$metaNotExists = $request->get_param( static::META_NOT_EXISTS );
-		if ( ! empty( $metaNotExists ) ) {
+		$metaNotExists = is_string( $metaNotExists ) ? sanitize_text_field( $metaNotExists ) : "";
+		if ( ! empty( $metaNotExists ) && static::isMetaKeyQueryable( $metaNotExists ) ) {
 			$meta_query[] = array(
 				array(
-					'key'     => sanitize_text_field( $metaNotExists ),
+					'key'     => $metaNotExists,
 					'compare' => 'NOT EXISTS',
 				),
 			);

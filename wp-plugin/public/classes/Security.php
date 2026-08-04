@@ -15,7 +15,23 @@ class Security extends Component {
 
 	public function onCreate(): void {
 		parent::onCreate();
-		add_filter('wp_is_application_passwords_available', '__return_true');
+		add_filter('wp_is_application_passwords_available', [$this, 'applicationPasswordsAvailable']);
+	}
+
+	/**
+	 * Keeps application passwords available for headless authentication.
+	 *
+	 * Core allows them on SSL sites and in local environments. This used to force
+	 * them on unconditionally, which meant a plain-HTTP site could hand out
+	 * credentials that then travel in an Authorization header on every request.
+	 * Sites that accept that risk can opt back in via the
+	 * Plugin::FILTER_APPLICATION_PASSWORDS_AVAILABLE filter.
+	 *
+	 * @param bool $available Whether core considers application passwords available.
+	 * @return bool True if application passwords may be used.
+	 */
+	public function applicationPasswordsAvailable( $available ): bool {
+		return (bool) apply_filters( Plugin::FILTER_APPLICATION_PASSWORDS_AVAILABLE, $available );
 	}
 
 	/**
@@ -57,7 +73,9 @@ class Security extends Component {
 			// on missing header in request deny access
 			return false;
 		}
-		return $_SERVER[$header] === HEADLESS_API_KEY_HEADER_VALUE;
+		// hash_equals compares in constant time, so the number of matching leading
+		// characters cannot be read off the response time.
+		return hash_equals( (string) HEADLESS_API_KEY_HEADER_VALUE, (string) $_SERVER[ $header ] );
 	}
 
 }

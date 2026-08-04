@@ -14,6 +14,7 @@ class Ajax extends Component {
 
 	const GET_ACTION = "headless_revalidate";
 	const GET_ACTION_PENDING = "headless_revalidate_pending";
+	const NONCE_ACTION = "headless_revalidate_nonce";
 	const GET_FRONTEND_INDEX = "frontend";
 	const GET_PATH = "path";
 	const GET_POST_ID = "post_id";
@@ -28,16 +29,19 @@ class Ajax extends Component {
 	 * Handles the AJAX revalidate action.
 	 *
 	 * Accepts either a path or a post ID via GET parameters and triggers
-	 * revalidation on the specified frontend. Requires edit_posts capability.
+	 * revalidation on the specified frontend. Requires edit_posts capability
+	 * and a valid self::NONCE_ACTION nonce.
 	 *
 	 * @return void
 	 */
 	public function revalidate(){
 
 		if(!current_user_can('edit_posts')){
-			wp_send_json_error();
-			exit;
+			wp_send_json_error(null, 403);
 		}
+		// Without this, any page could make a logged-in editor's browser trigger
+		// revalidation of arbitrary paths on every configured frontend.
+		check_ajax_referer(self::NONCE_ACTION);
 
 		if(!isset($_GET[self::GET_FRONTEND_INDEX])){
 			wp_send_json_error([
@@ -90,15 +94,15 @@ class Ajax extends Component {
 	 * Handles the AJAX revalidate_pending action.
 	 *
 	 * Triggers the scheduled revalidation run to process all pending items.
-	 * Requires edit_posts capability.
+	 * Requires edit_posts capability and a valid self::NONCE_ACTION nonce.
 	 *
 	 * @return void
 	 */
 	function revalidate_pending() {
 		if(!current_user_can('edit_posts')){
-			wp_send_json_error();
-			exit;
+			wp_send_json_error(null, 403);
 		}
+		check_ajax_referer(self::NONCE_ACTION);
 		$this->plugin->schedule->revalidate();
 		wp_send_json_success([
 			"success" => true,

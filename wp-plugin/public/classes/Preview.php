@@ -95,7 +95,7 @@ class Preview extends Component {
 	 * @return void
 	 */
 	public function admin_preview() {
-		$postId = intval( $_GET["post"] );
+		$postId = isset( $_GET["post"] ) ? intval( $_GET["post"] ) : 0;
 		$post   = get_post( $postId );
 		if ( ! ( $post instanceof WP_Post ) ) {
 			echo "Post not found";

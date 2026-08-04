@@ -15,11 +15,6 @@ use Palasthotel\WordPress\Headless\Plugin;
 class Menus extends Component {
 
 	/**
-	 * @var array Cached menu items for the current request.
-	 */
-	private array $menu;
-
-	/**
 	 * Registers the menus REST routes.
 	 *
 	 * @return void
@@ -36,6 +31,14 @@ class Menus extends Component {
 		register_rest_route( Plugin::REST_NAMESPACE, '/menus/(?P<menu>[\S]+)', array(
 			'methods'             => 'GET',
 			'callback'            => [ $this, 'get_menu' ],
+			'args'                => array(
+				'menu' => array(
+					'required'          => true,
+					'type'              => 'string',
+					'description'       => 'Menu id, slug or name.',
+					'sanitize_callback' => 'sanitize_text_field',
+				),
+			),
 			'permission_callback' => function(){
 				return $this->plugin->security->isHeadlessRequest() &&
 				       $this->plugin->security->hasApiKeyAccess();
@@ -58,12 +61,22 @@ class Menus extends Component {
 	}
 
 	/**
-	 * Returns the cached menu items for the current menu request.
+	 * Returns the items of the menu named in the route.
 	 *
-	 * @return array The menu items array.
+	 * @param \WP_REST_Request $request The current REST request.
+	 * @return array|\WP_Error The menu items array, or a 404 error if the menu does not exist.
 	 */
-	public function get_menu() {
-		return $this->menu;
+	public function get_menu( \WP_REST_Request $request ) {
+		$menu = wp_get_nav_menu_object( $request->get_param( 'menu' ) );
+		if ( ! $menu ) {
+			return new \WP_Error(
+				'headless_menu_not_found',
+				'No menu found for the given id, slug or name.',
+				array( 'status' => 404 )
+			);
+		}
+
+		return $this->getMenuResponse( $menu );
 	}
 
 	/**
