@@ -32,7 +32,7 @@ jobs:
         working-directory: npm-package
 
   wp-plugin:
-    name: Plugin assets (build + pack)
+    name: Plugin assets (lint + build + pack)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -47,6 +47,9 @@ jobs:
           tools: composer
 
       - run: npm ci
+        working-directory: wp-plugin
+
+      - run: npm run lint
         working-directory: wp-plugin
 
       - run: npm run build
