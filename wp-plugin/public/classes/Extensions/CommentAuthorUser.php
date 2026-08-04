@@ -9,8 +9,9 @@ use WP_REST_Response;
 /**
  * Extends the comment REST response with the author's user data.
  *
- * Adds an "author_user" field containing display_name and nickname
- * if the comment has an associated WordPress user account.
+ * Adds an "author_user" field containing the display_name if the comment has an
+ * associated WordPress user account. The nickname is only included for users who
+ * may list users, because it defaults to the account's login name.
  */
 class CommentAuthorUser implements ICommentRouteExtension {
 
@@ -29,8 +30,13 @@ class CommentAuthorUser implements ICommentRouteExtension {
 		if($user instanceof \WP_User){
 			$data["author_user"]= [
 				"display_name" => $user->display_name,
-				"nickname" => $user->nickname,
 			];
+			// wp_insert_user() defaults the nickname to user_login, so on most sites
+			// this field is the login name. Core only ever exposes that in the "edit"
+			// context, and the comments endpoint is public.
+			if ( current_user_can( 'list_users' ) ) {
+				$data["author_user"]["nickname"] = $user->nickname;
+			}
 		}  else {
 			$data["author_user"] = null;
 		}
