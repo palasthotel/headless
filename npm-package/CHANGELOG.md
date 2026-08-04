@@ -1,5 +1,13 @@
 # Releases
 
+## [3.0.9](https://github.com/palasthotel/headless/compare/npm-v3.0.8...npm-v3.0.9) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* add readme to npm package ([9efaccc](https://github.com/palasthotel/headless/commit/9efaccc59a6eaba36405547c3bcc0a1e10b1eb0e))
+* add readme to npm package ([da6a04e](https://github.com/palasthotel/headless/commit/da6a04ef033270dca63e0f773db388b225715e1a))
+
 ## [3.0.8](https://github.com/palasthotel/headless/compare/npm-v3.0.7...npm-v3.0.8) (2026-08-04)
 
 
