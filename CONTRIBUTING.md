@@ -116,9 +116,16 @@ npm run pack    # stages build/headless/ and produces headless.zip at repo root
 
 | Secret / Variable | Used by | Purpose |
 |---|---|---|
-| `RELEASE_PLEASE_TOKEN` | `release-please.yml` | PAT with `contents` + `pull-requests` write — required so release-please's pushes trigger downstream workflows |
+| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot |
+| `secrets.RELEASE_BOT_PRIVATE_KEY` | the same three | its private key — an installation token is minted per run, which is what makes the pushed tag trigger the deploy workflows |
 | `SVN_USERNAME` | `wordpress-svn-release.yml` | WordPress.org username |
 | `SVN_PASSWORD` | `wordpress-svn-release.yml` | WordPress.org password |
 | `vars.SVN_REPO_URL` | `wordpress-svn-release.yml` | e.g. `https://plugins.svn.wordpress.org/headless` |
 
 `GITHUB_TOKEN` and OIDC for npmjs.org are handled automatically (no stored npm token needed — configure a Trusted Publisher on npmjs.org for this repo + `npm-publish.yml`).
+
+`npm-publish.yml` deliberately clears `NODE_AUTH_TOKEN` before publishing so npm
+falls back to the OIDC exchange. **Do not add an npm token secret**: it would not be
+read, and an unused publish credential is worth exactly its blast radius. That the
+exchange works is visible on the registry — published versions carry a SLSA
+provenance attestation, which a token publish does not produce.

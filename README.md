@@ -135,11 +135,14 @@ import {
   getSettingsRequest,
 } from '@palasthotel/headless';
 
-const url = getPostsWithBlocksRequest({ baseUrl: 'https://cms.example.com' });
-const url = getMenuRequest({ baseUrl: 'https://cms.example.com' }, 'main-menu');
+const baseUrl = 'https://cms.example.com';
+
+const posts = getPostsWithBlocksRequest({ baseUrl });
+const menu = getMenuRequest({ baseUrl, slug: 'main-menu' });
 ```
 
-All builders append `?headless=true` automatically.
+All builders return a `URL` and append `?headless=true` automatically. An optional
+second argument renames that parameter: `getMenusRequest({ baseUrl }, { name: 'api', value: 'yes' })`.
 
 ### Schemas
 
