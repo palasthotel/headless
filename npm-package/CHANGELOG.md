@@ -1,5 +1,21 @@
 # Releases
 
+## [3.0.8](https://github.com/palasthotel/headless/compare/npm-v3.0.7...npm-v3.0.8) (2026-08-04)
+
+
+### 🐛 Bug Fixes
+
+* **deps-dev:** bump @types/node from 26.1.0 to 26.1.1 in /npm-package ([#153](https://github.com/palasthotel/headless/issues/153)) ([a6b2afe](https://github.com/palasthotel/headless/commit/a6b2afef5f94b8e6bd541c6bf2b18b880ef8c3aa))
+* **deps-dev:** bump tsdown from 0.22.3 to 0.22.7 in /npm-package ([#152](https://github.com/palasthotel/headless/issues/152)) ([68ad685](https://github.com/palasthotel/headless/commit/68ad685ffc37a32b4443971401fedb614f423b9b))
+* **deps-dev:** bump tsdown from 0.22.7 to 0.22.12 in /npm-package ([#155](https://github.com/palasthotel/headless/issues/155)) ([b6bea0b](https://github.com/palasthotel/headless/commit/b6bea0b5cf8c4d305eb34bec76250b9ae24af96b))
+* **deps:** bump @wordpress/editor in /npm-package ([#157](https://github.com/palasthotel/headless/issues/157)) ([53f9336](https://github.com/palasthotel/headless/commit/53f933686e0ebe6b5e2cbe5b404f76e5d08daa50))
+* **deps:** bump postcss ([5289370](https://github.com/palasthotel/headless/commit/52893701dbd5853e847bd5edcea446d358b1b97a))
+* **deps:** bump postcss from 8.5.20 to 8.5.25 in /npm-package in the npm_and_yarn group across 1 directory ([778e911](https://github.com/palasthotel/headless/commit/778e911d52dd7295a7cc52f61f1a35216861b461))
+* **deps:** bump the npm_and_yarn group across 1 directory with 1 update ([89515ec](https://github.com/palasthotel/headless/commit/89515ec4c5bdde4020d14f8c6d73747aad529772))
+* **deps:** bump the npm_and_yarn group across 1 directory with 1 update ([82f6100](https://github.com/palasthotel/headless/commit/82f6100572ba740ea784d7458b2da684ac9587d2))
+* **npm-package:** repair the build and give CJS consumers CJS types ([b7d7610](https://github.com/palasthotel/headless/commit/b7d76108c6457cce5480a9a8a7c69a26ea060283))
+* stop publishing comment authors' login names ([1c73947](https://github.com/palasthotel/headless/commit/1c7394716090ce217c1c98eeecf11c37e468f364))
+
 ## [3.0.7](https://github.com/palasthotel/headless/compare/npm-v3.0.6...npm-v3.0.7) (2026-07-02)
 
 
