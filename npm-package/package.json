@@ -5,20 +5,27 @@
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.cts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "files": [
     "dist",
-    "package.json"
+    "package.json",
+    "LICENSE"
   ],
   "scripts": {
     "test": "jest",
+    "lint": "tsc --noEmit",
     "build": "tsdown",
     "prepublishOnly": "npm run build"
   },
@@ -27,7 +34,7 @@
     "url": "https://github.com/palasthotel/headless"
   },
   "author": "Palasthotel GmbH",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.0",
@@ -35,7 +42,8 @@
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "tsdown": "^0.22.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "unrun": "^0.3.1"
   },
   "dependencies": {
     "@palasthotel/wp-rest": "^1.0.2",
