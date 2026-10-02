@@ -26,7 +26,7 @@ npm run watch           # wp-scripts start (dev mode)
 npm run build           # wp-scripts build → outputs to wp-plugin/public/dist/
 npm run wp-env:start    # build + start local WP environment
 npm run wp-env:stop
-npm run pack            # package plugin as plugin.zip (runs bin/pack.sh)
+npm run pack            # stage wp-plugin/build/headless/ and zip wp-plugin/headless.zip (shared pack.sh, run build first)
 ```
 
 ### Running a single test
@@ -87,20 +87,19 @@ This repo uses **release-please** for automated semver versioning with two indep
 
 ### What triggers publishing
 
-- Push of a `npm-v*` tag → `npm-publish.yml` runs `npm run build && npm publish` (uses `NPM_AUTH_TOKEN` secret)
+- Push of a `npm-v*` tag → `npm-publish.yml` runs `npm ci && npm publish` (OIDC Trusted Publisher, no npm token)
 - Push of a `plugin-v*` tag → `wordpress-svn-release.yml` builds and deploys to WordPress.org SVN
 
 ### Key files
 
 - `release-please-config.json` — component definitions and path filters
 - `.release-please-manifest.json` — current tracked versions (do not edit manually)
-- `bin/update-plugin-readme.sh` — post-release README.txt updater
-- `bin/pack.sh` — packages `wp-plugin/public/` as `plugin.zip`
+- The plugin's release scripts (version sync into `headless.php`/`README.txt`, pack, SVN deploy) are the shared ones of `palasthotel/github-workflows` at `v1`; see `.github/WORKFLOWS.md`
 
 ## Key Technical Notes
 
 - **Zod v4** — upgraded from v3 in 3.0.0; `z.record()` signature changed (now requires explicit key type)
 - **tsdown** — replaced tsup; runs in unbundle mode to preserve separate module files (needed for correct DTS)
 - **`sustainingParse`** — use this instead of `.parse()` for graceful degradation: logs warnings but doesn't throw on schema mismatch
-- **Node >= 20, pnpm >= 9** required
+- **Node >= 22** required (`engines` in both `package.json`), npm, not pnpm
 - PHP namespace: `Palasthotel\WordPress\Headless\` (PSR-4, autoloaded via Composer)

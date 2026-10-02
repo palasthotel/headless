@@ -201,8 +201,8 @@ npm test                                   # jest (npm-package)
 npm run lint                               # tsc --noEmit (npm-package)
 ```
 
-`bash bin/pack.sh` stages the payload in `build/headless/` and zips it to
-`headless.zip` — the same payload the release deploys. It needs `composer`, because
+`npm run pack` in `wp-plugin/` stages the payload in `wp-plugin/build/headless/` and
+zips it to `wp-plugin/headless.zip` — the same payload the release deploys. It needs `composer`, because
 the packed copy gets a freshly generated `--no-dev` autoloader and the composer files
 are dropped from it.
 
