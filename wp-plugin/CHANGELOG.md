@@ -5,6 +5,15 @@ History prior to this file is in the `== Changelog ==` section of [README.txt](R
 
 <!-- next release will be prepended here by release-please -->
 
+## [3.0.5](https://github.com/palasthotel/headless/compare/plugin-v3.0.4...plugin-v3.0.5) (2026-10-02)
+
+
+### Bug Fixes
+
+* keep the blocks of password-protected posts out of the REST response ([c944d50](https://github.com/palasthotel/headless/commit/c944d50a2ec93e61608a45c5e095a8909ed60e41))
+* resolve only published patterns in headless_blocks ([57f4123](https://github.com/palasthotel/headless/commit/57f4123926ff86fa3d5100c591ebe6a42132f315))
+* stop filling the featured media fields from the post itself ([66a9c3f](https://github.com/palasthotel/headless/commit/66a9c3f0ca04a31e7ab9702f57334b31bc8905d6))
+
 ## [3.0.4](https://github.com/palasthotel/headless/compare/plugin-v3.0.3...plugin-v3.0.4) (2026-08-04)
 
 
