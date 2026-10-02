@@ -5,8 +5,12 @@ updates:
   - package-ecosystem: "npm"
     assignees:
       - "JanaME"
+    # Runtime dependencies reach the package's consumers, so they release the npm
+    # package; dev dependencies (jest, tsdown, typescript, ...) never ship and must
+    # not - "fix(deps-dev)" used to cut an npm release for every test-tool bump.
     commit-message:
       prefix: "fix"
+      prefix-development: "chore"
       include: "scope"
     directory: "/npm-package/"
     open-pull-requests-limit: 10
