@@ -37,7 +37,10 @@ class FeaturedMedia extends AbsPostExtensionPost {
 
 		$data["featured_media_sizes"] = self::imageSizes( $id );
 
-		$attachment                         = get_post( $id );
+		// Only with a thumbnail: get_post( 0 ) falls back to the global post, which in
+		// a REST response is this post itself - its raw content and excerpt ended up
+		// in the caption and description fields, password-protected or not.
+		$attachment                         = $id ? get_post( $id ) : null;
 		$data["featured_media_caption"]     = $attachment instanceof WP_Post ? $attachment->post_excerpt : false;
 		$data["featured_media_description"] = $attachment instanceof WP_Post ? $attachment->post_content : false;
 		$alt                                = get_post_meta( $id, '_wp_attachment_image_alt', true );
