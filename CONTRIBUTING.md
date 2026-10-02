@@ -11,6 +11,13 @@ This monorepo contains two independently versioned components:
 
 Changes to `wp-plugin/` only affect the plugin release. Changes to `npm-package/` only affect the npm release. Commits touching both will appear in both changelogs.
 
+`wp-plugin/public/` is exactly what ships to WordPress.org; `wp-plugin/headless.php` is
+a development wrapper that loads it and is never deployed. The main file
+`wp-plugin/public/headless.php` and the readme `wp-plugin/public/README.txt` keep their
+names: WordPress identifies an installed plugin by `<directory>/<main file>` and stores
+that pair in `active_plugins`, so renaming the main file deactivates the plugin on
+every site at the next update.
+
 ## Conventional Commits
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) — commit messages determine the version bump automatically via release-please.
