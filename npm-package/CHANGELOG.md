@@ -1,5 +1,12 @@
 # Releases
 
+## [3.0.10](https://github.com/palasthotel/headless/compare/npm-v3.0.9...npm-v3.0.10) (2026-10-02)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update zod to 4.6.5 and drop the unused @wordpress/editor ([7bcccf4](https://github.com/palasthotel/headless/commit/7bcccf47c988c32cc229f527e9da5501095fb694))
+
 ## [3.0.9](https://github.com/palasthotel/headless/compare/npm-v3.0.8...npm-v3.0.9) (2026-08-04)
 
 
