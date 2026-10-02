@@ -11,7 +11,11 @@
 		"wp-env:start": "npm run build && wp-env start",
 		"wp-env:stop": "wp-env stop"
 	},
-	"author": "Edward Bock <edward.bock@palasthotel.de> (https://www.edwardbock.de/)",
+	"author": {
+		"name": "Palasthotel",
+		"email": "webmaster@palasthotel.de",
+		"url": "https://palasthotel.de"
+	},
 	"license": "GPL-3.0-or-later",
 	"devDependencies": {
 		"@wordpress/components": "^38.0.0",
