@@ -9,26 +9,10 @@ permissions:
   contents: read
 
 jobs:
+  # Two components in release-please-config.json: npm-package (tags npm-v*) and
+  # wp-plugin (tags plugin-v*), each with its own release PR.
   release-please:
-    runs-on: ubuntu-latest
-    steps:
-      # A short-lived installation token of the org-owned "Palasthotel Release
-      # Bot" app. Needed instead of GITHUB_TOKEN because the tag this job pushes
-      # has to trigger wordpress-svn-release.yml and npm-publish.yml - a push made
-      # with GITHUB_TOKEN triggers nothing.
-      - uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          # The app id is not sensitive, so it belongs in Variables - but accept it
-          # from Secrets too, because that is an easy place to put it by mistake and
-          # an empty app-id fails the run with a message that does not say why.
-          app-id: ${{ vars.RELEASE_BOT_APP_ID || secrets.RELEASE_BOT_APP_ID }}
-          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
-          permission-contents: write
-          permission-pull-requests: write
-
-      - uses: googleapis/release-please-action@v4
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-release-please.yml@v1
+    with:
+      app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+    secrets: inherit

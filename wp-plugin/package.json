@@ -7,7 +7,7 @@
 		"watch": "wp-scripts start",
 		"lint": "tsc --noEmit",
 		"build": "wp-scripts build",
-		"pack": "../bin/pack.sh",
+		"pack": "SLUG=headless bash ../../github-workflows/wp-plugin/bin/pack.sh",
 		"wp-env:start": "npm run build && wp-env start",
 		"wp-env:stop": "wp-env stop"
 	},

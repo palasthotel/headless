@@ -7,56 +7,14 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  update-plugin-version:
-    # Only run for the release-please plugin component PR. The head-repo check is
-    # what keeps this safe: the job checks out the PR head and runs a script from
-    # it, so it must never do that for a fork. `github.head_ref` alone is not a
-    # guard - a fork can name its branch anything, including `release-please--*`.
-    if: >-
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      startsWith(github.head_ref, 'release-please--') &&
-      contains(github.head_ref, '--plugin')
-    runs-on: ubuntu-latest
-    steps:
-      # Pushing with the app token (instead of GITHUB_TOKEN) re-triggers the PR
-      # checks on the new head commit - GITHUB_TOKEN pushes trigger nothing, which
-      # would leave the release PR without check results for the commit that is
-      # actually released.
-      - uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          # The app id is not sensitive, so it belongs in Variables - but accept it
-          # from Secrets too, because that is an easy place to put it by mistake and
-          # an empty app-id fails the run with a message that does not say why.
-          app-id: ${{ vars.RELEASE_BOT_APP_ID || secrets.RELEASE_BOT_APP_ID }}
-          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
-          permission-contents: write
-
-      - uses: actions/checkout@v6
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ steps.app-token.outputs.token }}
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - name: Update Stable tag and changelog in README.txt and Version in headless.php
-        run: bash bin/update-plugin-version.sh
-
-      - name: Commit to release PR branch
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-        run: |
-          # The bot's numeric user id - required for verified commit attribution
-          BOT_ID=$(gh api "/users/${APP_SLUG}%5Bbot%5D" --jq .id)
-          git config user.name "${APP_SLUG}[bot]"
-          git config user.email "${BOT_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-          git add wp-plugin/public/README.txt wp-plugin/public/headless.php
-          git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore(plugin): update README.txt and headless.php"
-          git push
+  # Runs on both release PRs. On the npm one the plugin version has not changed and
+  # the readme already has its changelog entry, so there is nothing to commit.
+  sync-version:
+    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-sync-version.yml@v1
+    with:
+      app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+      root: wp-plugin
+    secrets: inherit
