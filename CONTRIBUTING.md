@@ -11,6 +11,13 @@ This monorepo contains two independently versioned components:
 
 Changes to `wp-plugin/` only affect the plugin release. Changes to `npm-package/` only affect the npm release. Commits touching both will appear in both changelogs.
 
+`wp-plugin/public/` is exactly what ships to WordPress.org; `wp-plugin/headless.php` is
+a development wrapper that loads it and is never deployed. The main file
+`wp-plugin/public/headless.php` and the readme `wp-plugin/public/README.txt` keep their
+names: WordPress identifies an installed plugin by `<directory>/<main file>` and stores
+that pair in `active_plugins`, so renaming the main file deactivates the plugin on
+every site at the next update.
+
 ## Conventional Commits
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/) — commit messages determine the version bump automatically via release-please.
@@ -94,8 +101,9 @@ npm run build       # production build → wp-plugin/public/dist/
 
 `wp-plugin/public/dist/` is generated and gitignored — the release pipeline builds it,
 so there is nothing to commit and no stale asset to review. Run `npm run build` before
-`bin/pack.sh`; the script refuses to pack an unbuilt payload. (`npm run wp-env:start`
-builds first, so that path is covered.)
+`npm run pack` - the pack script does not build, and a PR fails when the build did not
+produce what the plugin enqueues. (`npm run wp-env:start` builds first, so that path
+is covered.)
 
 ### Local WordPress Environment
 
@@ -109,24 +117,31 @@ npm run wp-env:stop
 
 ```bash
 cd wp-plugin
-npm run pack    # stages build/headless/ and produces headless.zip at repo root
+npm run build
+npm run pack    # stages wp-plugin/build/headless/ and produces wp-plugin/headless.zip
 ```
+
+`npm run pack` runs the shared `pack.sh` of
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows), which
+has to be checked out next to this repository. It needs `composer`: the payload's
+autoloader is regenerated without dev dependencies, and `composer.json`/`composer.lock`
+are dropped from it.
 
 ## Required Secrets (for maintainers)
 
 | Secret / Variable | Used by | Purpose |
 |---|---|---|
-| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot. A **variable**, not a secret — the workflows also accept it from Secrets, because that is an easy place to put it by mistake |
+| `vars.RELEASE_BOT_APP_ID` | `release-please.yml`, `align-major-versions.yml`, `update-plugin-version.yml` | App id of the org-owned Palasthotel Release Bot. It has to be a **Variable**: the shared workflows take it as an input, and inputs cannot read Secrets |
 | `secrets.RELEASE_BOT_PRIVATE_KEY` | the same three | its private key — an installation token is minted per run, which is what makes the pushed tag trigger the deploy workflows |
+| `SVN_USERNAME` | `wordpress-svn-release.yml` | WordPress.org username with commit rights, usually `palasthotel` |
+| `SVN_PASSWORD` | `wordpress-svn-release.yml` | WordPress.org password |
 
-Two things have to be true beyond the two values existing: the app must be
+Two things have to be true beyond the values existing: the app must be
 **installed on this repository**, and if the private key is an organisation secret,
 this repository must be in its selected-repositories list. Otherwise
 `create-github-app-token` receives an empty input and the release job fails before
-release-please runs.
-| `SVN_USERNAME` | `wordpress-svn-release.yml` | WordPress.org username |
-| `SVN_PASSWORD` | `wordpress-svn-release.yml` | WordPress.org password |
-| `vars.SVN_REPO_URL` | `wordpress-svn-release.yml` | e.g. `https://plugins.svn.wordpress.org/headless` |
+release-please runs. The SVN URL is not configured anywhere any more: it is
+`https://plugins.svn.wordpress.org/headless/`.
 
 `GITHUB_TOKEN` and OIDC for npmjs.org are handled automatically (no stored npm token needed — configure a Trusted Publisher on npmjs.org for this repo + `npm-publish.yml`).
 

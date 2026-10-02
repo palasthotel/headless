@@ -9,6 +9,20 @@ This repository uses six GitHub Actions workflows. Two components are versioned 
 
 Bump type is determined by conventional commits: `fix:` → patch, `feat:` → minor, `feat!:` / `BREAKING CHANGE:` → major.
 
+The plugin side uses the shared WordPress plugin workflows and scripts of
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows) at
+`v1` - every input and the reasons behind the deploy steps are described in its
+[docs/wp-plugin.md](https://github.com/palasthotel/github-workflows/blob/main/docs/wp-plugin.md).
+What is specific to this repository:
+
+| | |
+|---|---|
+| wordpress.org slug | `headless` |
+| plugin project (`root`) | `wp-plugin/` - payload `wp-plugin/public/`, version file `wp-plugin/package.json` |
+| build step | `npm ci && npm run build` in `wp-plugin/` (`public/dist/` is not in the repository) |
+| plugin tags | `plugin-v<version>`, not `v<version>` - which is why the deploy is not the shared reusable workflow (see below) |
+| SVN | the readme is `README.txt`, as it has always been in the SVN trunk |
+
 ---
 
 ## Overview
@@ -19,13 +33,14 @@ Push to main
     ├──▶ [release-please.yml]
     │        Creates / updates release PRs
     │
-    │    On plugin release PR (opened / synchronize)
+    │    On a release PR (opened / synchronize)
     ├──▶ [update-plugin-version.yml]
-    │        Updates headless.php Version + README.txt Stable tag
+    │        Updates headless.php Version + README.txt Stable tag and changelog
     │
     │    On PR to main
     └──▶ [pr.yml]
-             Build + test both components
+             npm package: lint + build + test
+             plugin: php -l, lint + build, pack + payload checks, version carriers
 
 
 Merge release PR  →  release-please pushes tag
@@ -56,18 +71,22 @@ Runs both jobs in parallel on every PR — regardless of which files changed.
 PR opened / updated
         │
         ├──▶ npm-package job
-        │       npm ci → npm run build → npm test
+        │       npm ci → npm run lint → npm run build → npm test
         │
-        └──▶ wp-plugin job
-                npm ci → npm run build
+        └──▶ wp-plugin job  (shared wp-plugin-pr.yml, root: wp-plugin)
+                php -l on PHP 8.0, 8.2, 8.3, 8.4
+                npm ci → npm run lint (tsc) → npm run build → pack
+                payload: the enqueued dist/ files and vendor/autoload.php are there,
+                         no composer.json, package.json, symlinks or "Headless - DEV"
+                version carriers agree (not on release PRs)
 ```
 
 ---
 
 ### `release-please.yml` — Release PR Management
 
-**Trigger:** Push to `main`
-**Token:** an installation token of the Palasthotel Release Bot app, minted per run from `vars.RELEASE_BOT_APP_ID` + `secrets.RELEASE_BOT_PRIVATE_KEY` — required so downstream workflows trigger on the resulting push, which they would not with `GITHUB_TOKEN`
+**Trigger:** Push to `main` — calls the shared `wp-plugin-release-please.yml`
+**Token:** an installation token of the Palasthotel Release Bot app, minted per run from `vars.RELEASE_BOT_APP_ID` + `secrets.RELEASE_BOT_PRIVATE_KEY` — required so downstream workflows trigger on the resulting push, which they would not with `GITHUB_TOKEN`. The app id has to be a **Variable**: a reusable workflow's inputs cannot read Secrets
 
 Reads conventional commits since the last tag and maintains two separate release PRs. On merge, creates the tag and a GitHub Release.
 
@@ -98,11 +117,11 @@ Push to main
 
 ### `update-plugin-version.yml` — Plugin Version Files
 
-**Trigger:** `pull_request` on `main` — types: `opened`, `synchronize`
-**Condition:** Only for release-please plugin PRs (`release-please--*--plugin`) whose
-head branch lives in this repository. The head-repo check is the guard that matters:
-the job checks out the PR head and runs a script from it, so it must never do that for
-a fork. `github.head_ref` alone is not a guard — a fork can name its branch anything.
+**Trigger:** `pull_request` on `main` — types: `opened`, `synchronize` — calls the
+shared `wp-plugin-sync-version.yml` with `root: wp-plugin`
+**Condition:** only release-please PRs whose head branch lives in this repository - the
+shared workflow checks both. On the npm release PR the plugin version is unchanged and
+the readme already has its entry, so it commits nothing.
 **Token:** the Release Bot installation token, so the commit it pushes re-triggers the
 PR checks; a push made with `GITHUB_TOKEN` triggers nothing, which would leave the
 release PR without check results for the commit that actually gets released.
@@ -110,15 +129,15 @@ release PR without check results for the commit that actually gets released.
 Keeps `headless.php` and `README.txt` in sync with the version in `wp-plugin/package.json` before the PR is merged and the tag is created.
 
 ```
-Plugin release PR opened / updated
+Release PR opened / updated
               │
               ▼
-    bash bin/update-plugin-version.sh
+    sync-version.sh  (palasthotel/github-workflows@v1)
               │
               ├── reads version from wp-plugin/package.json
               ├── updates "Version:" header in wp-plugin/public/headless.php
               ├── updates "Stable tag:" in wp-plugin/public/README.txt
-              └── prepends new = x.y.z = section to README.txt changelog
+              └── prepends new = x.y.z = section from wp-plugin/CHANGELOG.md
               │
               ▼
     git commit + push → back onto the release PR branch
@@ -161,39 +180,40 @@ Tag: npm-v3.x.x
 
 **Trigger:** Push of a `plugin-v*` tag
 
+The same steps as the shared `wp-plugin-svn-deploy.yml`, with its scripts checked out
+from `palasthotel/github-workflows@v1`, but kept in this repository: the shared
+workflow expects `v<version>` tags. Given a version instead, it would attach the zip to
+a release `v<version>`, and `softprops/action-gh-release` creates a missing release
+together with its tag. Switch to the shared workflow once it takes a tag prefix.
+
 ```
 Tag: plugin-v3.x.x
       │
       ├── strip prefix → VERSION=3.x.x
-      │
-      ├── checkout + setup PHP 8.2 + Node 24
+      ├── check-version.sh: package.json, headless.php and README.txt say VERSION
       │
       ├── npm ci + npm run build  (wp-plugin/)
       │       compiles Gutenberg assets → wp-plugin/public/dist/
-      │       (generated, not in the repository)
       │
-      ├── npm run pack
-      │       rsync -rL wp-plugin/public/ → build/headless/
+      ├── pack.sh  (SLUG=headless ROOT=wp-plugin)
+      │       rsync -rL wp-plugin/public/ → wp-plugin/build/headless/
       │       composer install --no-dev + dump-autoload --optimize
       │       drop composer.json/composer.lock from the payload
-      │       zip → headless.zip   (build/headless/ is left in place)
+      │       zip → wp-plugin/headless.zip
       │
-      ├──▶ Upload headless.zip to GitHub Release
+      ├──▶ Upload headless.zip to the GitHub Release plugin-v3.x.x
       │       (softprops/action-gh-release, continue-on-error)
       │
-      ├── svn checkout  $SVN_REPO_URL  →  ./svn/
+      ├── svn checkout https://plugins.svn.wordpress.org/headless/ → ./svn/
       │
-      └── SVN commit
-              rm trunk/*  +  rm tags/$VERSION
-              rsync -rL build/headless/ → trunk/  →  tags/$VERSION/
-              svn add --force .
-              svn rm deleted files
+      └── svn-prepare.sh + svn commit
+              trunk/ and tags/$VERSION/ ← wp-plugin/build/headless/ (rsync -rL)
+              svn propdel svn:special, svn add / svn rm
               svn commit "Release version $VERSION"
 ```
 
-The SVN payload comes from `build/headless/`, the same directory that was zipped, so
-the download on wordpress.org and the GitHub release asset are identical. `rsync -rL`
-resolves symlinks, because wordpress.org drops them when it builds the download.
+The SVN payload comes from `wp-plugin/build/headless/`, the same directory that was
+zipped, so the download on wordpress.org and the GitHub release asset are identical.
 `assets/` is not touched — the plugin-page media lives only in SVN, not in this
 repository.
 
@@ -202,10 +222,9 @@ repository.
 it was at the tagged commit, so re-running the tag event replays the old file;
 dispatch from a branch runs the current one.
 
-**Required secrets / vars:**
-- `SVN_USERNAME` — WordPress.org username
+**Required secrets:**
+- `SVN_USERNAME` — WordPress.org username with commit rights, usually `palasthotel`
 - `SVN_PASSWORD` — WordPress.org password
-- `vars.SVN_REPO_URL` — e.g. `https://plugins.svn.wordpress.org/headless`
 
 ---
 
