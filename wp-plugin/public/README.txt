@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 7.1.2
 Requires PHP: 8.0
-Stable tag: 3.0.4
+Stable tag: 3.0.5
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,12 @@ longer passed into the query.
 == Screenshots ==
 
 == Changelog ==
+
+= 3.0.5 =
+**Bug Fixes**
+* keep the blocks of password-protected posts out of the REST response (c944d50)
+* resolve only published patterns in headless_blocks (57f4123)
+* stop filling the featured media fields from the post itself (66a9c3f)
 
 = 3.0.4 =
 * leave the application password SSL check to WordPress (8f5701b)
