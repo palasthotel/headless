@@ -8,8 +8,9 @@ use Palasthotel\WordPress\Headless\Model\BlockName;
 /**
  * Resolves core/block (reusable block) references by inlining the referenced block content.
  *
- * When a block has a "ref" attribute pointing to a wp_block post, this preparation
- * fetches and parses its content and replaces the reference block's innerBlocks.
+ * When a block has a "ref" attribute pointing to a published wp_block post without a
+ * password, this preparation fetches and parses its content and replaces the
+ * reference block's innerBlocks. Any other pattern resolves to no inner blocks.
  * Must run before all other preparations so the inlined blocks can be further processed.
  */
 class ReferenceBlockPreparation implements IBlockPreparation {
@@ -34,7 +35,12 @@ class ReferenceBlockPreparation implements IBlockPreparation {
 		if(!empty($block["attrs"]) && !empty($block["attrs"]["ref"])){
 			$post = get_post($block["attrs"]["ref"]);
 			if($post instanceof \WP_Post && $post->post_type == 'wp_block'){
-				$blocks = parse_blocks($post->post_content);
+				// The same rule as core's render_block_core_block(): only a published
+				// pattern without a password is shown. Otherwise any published post that
+				// references a draft, private or password-protected pattern would hand
+				// its content to everyone who can read the post.
+				$isPublic = 'publish' === $post->post_status && empty( $post->post_password );
+				$blocks = $isPublic ? parse_blocks($post->post_content) : [];
 				unset($block["attrs"]);
 				unset($block["innerHTML"]);
 				unset($block["innerContent"]);
