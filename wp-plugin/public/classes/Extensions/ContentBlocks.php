@@ -49,6 +49,10 @@ class ContentBlocks extends AbsPostExtensionPost {
 			unset($data["content"]["headless_blocks"]);
 			unset($data["yoast_head"]);
 			unset($data["yoast_head_json"]);
+		} else if ( ! static::canReadContent( $post, $request ) ) {
+			// Core answers with an empty content.rendered here; the blocks are the same
+			// content and must not be readable either.
+			$data["content"]["headless_blocks"] = false;
 		} else if ( has_blocks( $post ) ) {
 			$data["content"]["headless_blocks"] = $this->parse( $post->post_content );
 		} else {
@@ -59,6 +63,33 @@ class ContentBlocks extends AbsPostExtensionPost {
         $response->set_data( $data );
 
 		return $response;
+	}
+
+	/**
+	 * Whether the request may read the content of a password-protected post.
+	 *
+	 * Mirrors WP_REST_Posts_Controller::can_access_password_content(), which core
+	 * uses to decide whether content.rendered is filled: in the edit context for
+	 * users who may edit the post, with the right password in the request, or with
+	 * the post password cookie. By the time rest_prepare_* runs, core has removed
+	 * its own post_password_required filter again, so it has to be checked here.
+	 *
+	 * @param WP_Post         $post    The post in the response.
+	 * @param WP_REST_Request $request The current REST request.
+	 * @return bool True if the content may be part of the response.
+	 */
+	public static function canReadContent( WP_Post $post, WP_REST_Request $request ): bool {
+		if ( empty( $post->post_password ) ) {
+			return true;
+		}
+		if ( 'edit' === $request['context'] && current_user_can( 'edit_post', $post->ID ) ) {
+			return true;
+		}
+		if ( ! empty( $request['password'] ) && hash_equals( $post->post_password, (string) $request['password'] ) ) {
+			return true;
+		}
+
+		return ! post_password_required( $post );
 	}
 
 	/**
