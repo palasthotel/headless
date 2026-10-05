@@ -1,5 +1,12 @@
 # Releases
 
+## [3.0.11](https://github.com/palasthotel/headless/compare/npm-v3.0.10...npm-v3.0.11) (2026-10-05)
+
+
+### 🐛 Bug Fixes
+
+* **deps-dev:** bump browserslist from 4.28.4 to 4.28.8 in /npm-package in the npm_and_yarn group across 1 directory ([a33ad8a](https://github.com/palasthotel/headless/commit/a33ad8ab343513235d5c8e31ab02f160dd5330e8))
+
 ## [3.0.10](https://github.com/palasthotel/headless/compare/npm-v3.0.9...npm-v3.0.10) (2026-10-02)
 
 
