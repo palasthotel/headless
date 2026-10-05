@@ -4,7 +4,7 @@
  * Description:       Loads public/headless.php when this repository is checked out into wp-content/plugins/. Not shipped — the released plugin is the content of public/.
  * Version:           X.X.X
  * Requires at least: 5.0
- * Tested up to:      7.1.2
+ * Tested up to:      7.1
  * Requires PHP:      8.0
  * Author:            Palasthotel <webmaster@palasthotel.de>
  * Author URI:        https://palasthotel.de
