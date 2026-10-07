@@ -53,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const saveFn = isDraft() ? savePost : autosave;
       saveFn()
         .then(() => {
+          // savePost() and autosave() resolve after a failed save too; the
+          // editor shows its own error notice then
+          if (coreEditorSelect.didPostSaveRequestFail()) {
+            ref.close();
+            return;
+          }
           ref.location = link.href;
         })
         .catch(() => {
