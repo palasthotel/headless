@@ -33,34 +33,54 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   const autosave = coreEditorDispatch.autosave;
   const savePost = coreEditorDispatch.savePost;
+  const coreNoticesDispatch = dispatch("core/notices") as {
+    createErrorNotice: (content: string) => void;
+  };
 
   // --------------------------------------------------------
   // create replacement for preview link
   // --------------------------------------------------------
-  const a = document.createElement("a");
-  a.className = "components-button";
-
-  a.addEventListener("click", (e) => {
+  const onPreviewClick = (e: MouseEvent) => {
     e.preventDefault();
     if (isSavingPost()) {
       return;
     }
-    const ref = window.open("about:blank", a.target);
+    const link = e.currentTarget as HTMLAnchorElement;
+    const ref = window.open("about:blank", link.target);
     if (ref) {
       writeInterstitialMessage(ref.document);
 
       const saveFn = isDraft() ? savePost : autosave;
-      saveFn().then(() => {
-        ref.location = a.href;
-      });
+      saveFn()
+        .then(() => {
+          // savePost() and autosave() resolve after a failed save too; the
+          // editor shows its own error notice then
+          if (coreEditorSelect.didPostSaveRequestFail()) {
+            ref.close();
+            return;
+          }
+          ref.location = link.href;
+        })
+        .catch(() => {
+          ref.close();
+          coreNoticesDispatch.createErrorNotice(
+            "Preview could not be generated. Please save your changes and try again.",
+          );
+        });
     }
-  });
+  };
 
   subscribe(() => {
+    const headlessPreviewLinks =
+      document.querySelectorAll<HTMLAnchorElement>("#headless-preview-link");
     if (isSavingPost()) {
-      a.classList.add("is-disabled");
+      headlessPreviewLinks.forEach((link) => {
+        link.classList.add("is-disabled");
+      });
     } else {
-      a.classList.remove("is-disabled");
+      headlessPreviewLinks.forEach((link) => {
+        link.classList.remove("is-disabled");
+      });
     }
   });
 
@@ -103,7 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const externalPreviewGroup = Array.from(
       document.querySelectorAll<HTMLElement>(".components-menu-group"),
     ).find((group) =>
-      group.querySelector(".editor-preview-dropdown__button-external"),
+      group.querySelector(
+        ".editor-preview-dropdown__button-external, a[role='menuitem'][target^='wp-preview-']",
+      ),
     );
 
     if (!externalPreviewGroup) {
@@ -111,26 +133,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const id = "headless-preview-link";
-    if (externalPreviewGroup.querySelector("#" + id)) {
+    const existingHeadlessLink =
+      externalPreviewGroup.querySelector<HTMLAnchorElement>("#" + id);
+    if (existingHeadlessLink) {
+      existingHeadlessLink.href = previewUrl;
       return;
     }
 
     // is hidden via styles.css
     const gutenbergLink = externalPreviewGroup.querySelector<HTMLAnchorElement>(
-      ".editor-preview-dropdown__button-external",
+      ".editor-preview-dropdown__button-external, a[role='menuitem'][target^='wp-preview-']",
     );
     if (!gutenbergLink) {
       return;
     }
 
-    const svg = gutenbergLink.querySelector("svg");
-    const target = gutenbergLink.getAttribute("target") ?? "";
-    a.text = gutenbergLink.textContent ?? "";
-    if (svg) a.append(svg);
-    a.target = target;
+    const a = gutenbergLink.cloneNode(true) as HTMLAnchorElement;
     a.href = previewUrl;
     a.id = id;
+    a.addEventListener("click", onPreviewClick);
     gutenbergLink.style.display = "none";
-    externalPreviewGroup.querySelector('[role="group"]')?.append(a);
+    gutenbergLink.parentElement?.append(a);
   }
 });
