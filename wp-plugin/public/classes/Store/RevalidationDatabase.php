@@ -76,11 +76,15 @@ class RevalidationDatabase extends Database {
 	 * @return int[] Array of content IDs.
 	 */
 	private function getPendingContents(string $type): array {
-		$sql = $this->wpdb->prepare(
-			"SELECT content_id FROM $this->table WHERE content_type = '%s' AND revalidation_state = 'pending'",
-			$type
+		$wpdb  = $this->wpdb;
+		$table = $this->table;
+		return $wpdb->get_col(
+			$wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- the plugin's own table, built from $wpdb->prefix; %i needs WordPress 6.2
+				"SELECT content_id FROM {$table} WHERE content_type = %s AND revalidation_state = 'pending'",
+				$type
+			)
 		);
-		return $this->wpdb->get_col($sql);
 	}
 
 	/**
@@ -108,11 +112,18 @@ class RevalidationDatabase extends Database {
 	 * @return int The count of pending entries.
 	 */
 	private function countPendingContents(string $type): int {
-		$sql = $this->wpdb->prepare(
-			"SELECT count(content_id) FROM $this->table WHERE content_type = '%s' AND revalidation_state = 'pending'",
-			$type
+		$wpdb  = $this->wpdb;
+		$table = $this->table;
+		return intval(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- the plugin's own table, built from $wpdb->prefix; %i needs WordPress 6.2
+					"SELECT count(content_id) FROM {$table} WHERE content_type = %s AND revalidation_state = 'pending'",
+					$type
+				)
+			)
 		);
-		return intval($this->wpdb->get_var($sql));
+
 	}
 
 	/**

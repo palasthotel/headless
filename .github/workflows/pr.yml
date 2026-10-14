@@ -36,9 +36,6 @@ jobs:
   wp-plugin:
     uses: palasthotel/github-workflows/.github/workflows/wp-plugin-pr.yml@v1
     with:
-      # Plugin Check reports errors on this plugin - see https://github.com/palasthotel/headless/issues/258.
-      # Remove this line once they are fixed.
-      plugin-check: false
       slug: headless
       root: wp-plugin
       dev-plugin-name: Headless - DEV

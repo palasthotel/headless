@@ -60,7 +60,7 @@ class Ajax extends Component {
 
 		if(isset($_GET[self::GET_PATH]) && !empty($_GET[self::GET_PATH])){
 
-			$path = sanitize_text_field($_GET[self::GET_PATH]);
+			$path = sanitize_text_field(wp_unslash($_GET[self::GET_PATH]));
 
 			$result = $this->plugin->revalidate->revalidateByPath($frontends[$frontendIndex], $path);
 			if($result instanceof \WP_Error){
