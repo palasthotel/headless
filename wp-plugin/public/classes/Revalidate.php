@@ -97,7 +97,7 @@ class Revalidate extends Component {
 		if($this->isRevalidationInactive()) return [];
 
 		$permalink = get_permalink($post_id);
-		$path = parse_url($permalink, PHP_URL_PATH);
+		$path = wp_parse_url($permalink, PHP_URL_PATH);
 		return $this->revalidateByPath(
 			$frontend,
 			apply_filters(Plugin::FILTER_REVALIDATE_PERMALINK_PATH, $path, $post_id,  $path, $frontend)

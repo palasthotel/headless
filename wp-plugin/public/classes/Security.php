@@ -75,7 +75,7 @@ class Security extends Component {
 		}
 		// hash_equals compares in constant time, so the number of matching leading
 		// characters cannot be read off the response time.
-		return hash_equals( (string) HEADLESS_API_KEY_HEADER_VALUE, (string) $_SERVER[ $header ] );
+		return hash_equals( (string) HEADLESS_API_KEY_HEADER_VALUE, (string) wp_unslash( $_SERVER[ $header ] ) );
 	}
 
 }

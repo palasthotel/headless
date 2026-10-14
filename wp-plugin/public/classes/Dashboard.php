@@ -25,7 +25,7 @@ class Dashboard extends Components\Component {
 		if($this->plugin->revalidate->isRevalidationActive()){
 			wp_add_dashboard_widget(
 				Plugin::DOMAIN,
-				__("Headless", Plugin::DOMAIN),
+				__("Headless", "headless"),
 				array($this, 'render')
 			);
 		}
@@ -48,16 +48,16 @@ class Dashboard extends Components\Component {
         $nonce = wp_create_nonce(Ajax::NONCE_ACTION);
 		?>
             <p><strong>Automatic revalidation</strong></p>
-            <p>Last revalidation run: <span data-headless-timestamp="<?= esc_attr($lastRevalidationRun); ?>">
-                    <?= esc_html(date_i18n($dateFormat,$lastRevalidationRun)." ".date_i18n($timeFormat, $lastRevalidationRun)); ?>
+            <p>Last revalidation run: <span data-headless-timestamp="<?php echo esc_attr($lastRevalidationRun); ?>">
+                    <?php echo esc_html(date_i18n($dateFormat,$lastRevalidationRun)." ".date_i18n($timeFormat, $lastRevalidationRun)); ?>
                 </span></p>
 
-            <p>Next revalidation run:  <span data-headless-timestamp="<?= esc_attr($nextRevalidationRun); ?>">
-                <?= esc_html(($nextRevalidationRun === false) ? "🚨 Broken" : date_i18n($dateFormat, $nextRevalidationRun)." ".date_i18n($timeFormat, $nextRevalidationRun)); ?>
+            <p>Next revalidation run:  <span data-headless-timestamp="<?php echo esc_attr($nextRevalidationRun); ?>">
+                <?php echo esc_html(($nextRevalidationRun === false) ? "🚨 Broken" : date_i18n($dateFormat, $nextRevalidationRun)." ".date_i18n($timeFormat, $nextRevalidationRun)); ?>
                 </span></p>
 
-            <p>Pending posts to be revalidated: <?= esc_html($this->plugin->dbRevalidation->countPendingPosts()); ?></p>
-            <p>Pending comments to be revalidated: <?= esc_html($this->plugin->dbRevalidation->countPendingComments()); ?></p>
+            <p>Pending posts to be revalidated: <?php echo esc_html($this->plugin->dbRevalidation->countPendingPosts()); ?></p>
+            <p>Pending comments to be revalidated: <?php echo esc_html($this->plugin->dbRevalidation->countPendingComments()); ?></p>
 
             <button class="button button-secondary" id="headless-revalidate-pending">Revalidate pending</button>
             <span id="headless-revalidate-pending-spinner" class="spinner"></span>
@@ -68,8 +68,8 @@ class Dashboard extends Components\Component {
                     console.debug("headless timestamp", timestamp, el);
                     console.debug(Intl.DateTimeFormat().format(parseInt(timestamp) * 1000));
                 });
-                const headlessPendingAjaxUrl = <?= wp_json_encode($ajaxUrl) ?>;
-                const headlessPendingNonce = <?= wp_json_encode($nonce) ?>;
+                const headlessPendingAjaxUrl = <?php echo wp_json_encode($ajaxUrl); ?>;
+                const headlessPendingNonce = <?php echo wp_json_encode($nonce); ?>;
                 const button = document.getElementById("headless-revalidate-pending");
                 const spinner = document.getElementById("headless-revalidate-pending-spinner");
 
@@ -112,8 +112,8 @@ class Dashboard extends Components\Component {
             <script>
                 (async ()=>{
 
-                    const ajaxUrl = <?= wp_json_encode($ajaxUrl) ?>;
-                    const nonce = <?= wp_json_encode($nonce) ?>;
+                    const ajaxUrl = <?php echo wp_json_encode($ajaxUrl); ?>;
+                    const nonce = <?php echo wp_json_encode($nonce); ?>;
 
                     const revalidateFrontendPath = async (frontend, path) => {
                         const response = await fetch(
