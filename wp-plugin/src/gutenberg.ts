@@ -33,9 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
   };
   const autosave = coreEditorDispatch.autosave;
   const savePost = coreEditorDispatch.savePost;
-  const coreNoticesDispatch = dispatch("core/notices") as {
-    createErrorNotice: (content: string) => void;
-  };
 
   // --------------------------------------------------------
   // create replacement for preview link
@@ -63,9 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(() => {
           ref.close();
-          coreNoticesDispatch.createErrorNotice(
-            "Preview could not be generated. Please save your changes and try again.",
-          );
         });
     }
   };
