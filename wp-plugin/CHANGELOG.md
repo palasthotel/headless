@@ -5,6 +5,14 @@ History prior to this file is in the `== Changelog ==` section of [README.txt](R
 
 <!-- next release will be prepended here by release-please -->
 
+## [3.0.6](https://github.com/palasthotel/headless/compare/plugin-v3.0.5...plugin-v3.0.6) (2026-10-14)
+
+
+### Bug Fixes
+
+* handle Gutenberg headless preview clicks ([6abbe56](https://github.com/palasthotel/headless/commit/6abbe56166159dcdfe7776af11b22939ecd90fc8))
+* keep the preview tab from opening the preview when saving fails ([2f5865e](https://github.com/palasthotel/headless/commit/2f5865e8595509b6e03cf8e9056a21a0836690fc))
+
 ## [3.0.5](https://github.com/palasthotel/headless/compare/plugin-v3.0.4...plugin-v3.0.5) (2026-10-02)
 
 

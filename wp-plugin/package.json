@@ -1,6 +1,6 @@
 {
 	"name": "@palasthotel/wp-headless",
-	"version": "3.0.5",
+	"version": "3.0.6",
 	"description": "Assets for headless plugin",
 	"private": true,
 	"scripts": {
