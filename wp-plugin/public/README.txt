@@ -5,7 +5,7 @@ Tags: gutenberg, block, developer, utils
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -87,6 +87,11 @@ longer passed into the query.
 == Screenshots ==
 
 == Changelog ==
+
+= 3.0.6 =
+**Bug Fixes**
+* handle Gutenberg headless preview clicks (6abbe56)
+* keep the preview tab from opening the preview when saving fails (2f5865e)
 
 = 3.0.5 =
 **Bug Fixes**
