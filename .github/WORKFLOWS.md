@@ -74,7 +74,7 @@ PR opened / updated
         │       npm ci → npm run lint → npm run build → npm test
         │
         └──▶ wp-plugin job  (shared wp-plugin-pr.yml, root: wp-plugin)
-                php -l on PHP 8.0, 8.2, 8.3, 8.4
+                php -l on PHP 8.0 to 8.4
                 npm ci → npm run lint (tsc) → npm run build → pack
                 payload: the enqueued dist/ files and vendor/autoload.php are there,
                          no composer.json, package.json, symlinks or "Headless - DEV"

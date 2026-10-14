@@ -42,7 +42,7 @@ jobs:
       slug: headless
       root: wp-plugin
       dev-plugin-name: Headless - DEV
-      php-versions: '["8.0", "8.2", "8.3", "8.4"]'
+      php-versions: '["8.0", "8.1", "8.2", "8.3", "8.4"]'
       # lint is tsc --noEmit: wp-scripts itself never checks the types
       build-command: npm ci && npm run lint && npm run build
       # public/dist is not in the repository - the build has to produce what the
