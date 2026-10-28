@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   deploy:
-    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-svn-deploy.yml@feat/tag-prefix
+    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-svn-deploy.yml@v1
     with:
       slug: headless
       root: wp-plugin
@@ -31,6 +31,4 @@ jobs:
       version: ${{ github.event.inputs.version }}
       build-command: npm ci && npm run build
       php-version: "8.2"
-      dry-run: true
-      tools-ref: feat/tag-prefix
     secrets: inherit
