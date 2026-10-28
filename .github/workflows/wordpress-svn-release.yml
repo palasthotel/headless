@@ -1,13 +1,8 @@
 ---
 name: Build and release to WordPress.org
 
-# The steps of palasthotel/github-workflows' wp-plugin-svn-deploy.yml, running its
-# scripts at v1 - but not the reusable workflow itself: that one expects v<version>
-# tags, and the plugin's tags here are plugin-v<version>, because npm-package/ is
-# released from the same repository as npm-v<version>. Called with a version, the
-# reusable workflow would attach the zip to a release v<version>, which
-# softprops/action-gh-release creates together with its tag when it does not exist.
-# Switch to the reusable workflow once it takes a tag prefix.
+# The plugin's tags are plugin-v<version>: npm-package/ is released from the same
+# repository as npm-v<version>.
 
 on:
   push:
@@ -28,92 +23,12 @@ permissions:
 
 jobs:
   deploy:
-    name: Build and deploy to WordPress.org
-    runs-on: ubuntu-latest
-    env:
-      # One line on purpose: a folded block scalar would keep line breaks inside ${{ }}
-      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && format('plugin-v{0}', github.event.inputs.version) || github.ref_name }}
-      SLUG: headless
-      ROOT: wp-plugin
-      PLUGIN_DIR: public
-      TOOLS: ${{ github.workspace }}/.github-workflows/wp-plugin/bin
-    steps:
-      - name: Version from the tag
-        run: |
-          VERSION="${RELEASE_TAG#plugin-v}"
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "🤖 Deploying $SLUG $VERSION"
-
-      - uses: actions/checkout@v6
-
-      - name: Check out the release scripts
-        uses: actions/checkout@v6
-        with:
-          repository: palasthotel/github-workflows
-          ref: v1
-          path: .github-workflows
-
-      # Before anything is built or published: the tag has to match every carrier
-      - name: Check version numbers
-        run: bash "$TOOLS/check-version.sh"
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
-      - name: Build
-        working-directory: wp-plugin
-        run: npm ci && npm run build
-
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          tools: composer
-
-      - name: Pack
-        run: bash "$TOOLS/pack.sh"
-
-      - name: Attach the zip to the release
-        uses: softprops/action-gh-release@v2
-        continue-on-error: true
-        with:
-          # Explicit, because on a dispatch run github.ref is a branch
-          tag_name: ${{ env.RELEASE_TAG }}
-          files: wp-plugin/headless.zip
-
-      - name: Install SVN
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y subversion
-
-      - name: Check out the WordPress.org SVN repository
-        env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        run: >-
-          svn checkout "https://plugins.svn.wordpress.org/$SLUG/" svn
-          --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
-          --no-auth-cache --non-interactive
-
-      # Syncs from wp-plugin/build/headless/, so the release zip and the SVN trunk are
-      # identical. wp-plugin/assets/ does not exist, so the plugin page's media in
-      # the SVN assets/ stay as they are.
-      - name: Prepare trunk and tags/${{ env.VERSION }}
-        run: SVN_DIR=svn bash "$TOOLS/svn-prepare.sh"
-
-      - name: Commit to SVN
-        env:
-          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        working-directory: svn
-        run: >-
-          svn commit -m "Release version $VERSION"
-          --username "$SVN_USERNAME" --password "$SVN_PASSWORD"
-          --no-auth-cache --non-interactive
-
-      - name: Clean up the SVN checkout
-        if: always()
-        run: rm -rf svn
-
-      - name: Done
-        run: echo "🤖 $SLUG $VERSION deployed to https://wordpress.org/plugins/$SLUG/ 🚀"
+    uses: palasthotel/github-workflows/.github/workflows/wp-plugin-svn-deploy.yml@v1
+    with:
+      slug: headless
+      root: wp-plugin
+      tag-prefix: plugin-v
+      version: ${{ github.event.inputs.version }}
+      build-command: npm ci && npm run build
+      php-version: "8.2"
+    secrets: inherit
