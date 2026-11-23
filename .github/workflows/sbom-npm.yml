@@ -1,0 +1,42 @@
+name: SBOM (npm)
+
+# The CycloneDX SBOM of the npm package @palasthotel/headless - its runtime
+# dependencies from npm-package/package-lock.json - attached to the GitHub release
+# and sent to Dependency-Track as "palasthotel/headless (npm-package)". The plugin
+# has its own SBOM workflow (sbom.yml), which owns "palasthotel/headless (npm)".
+
+on:
+  push:
+    tags:
+      - "npm-v*"
+  # The SBOM of a version released before this workflow existed - see
+  # https://github.com/palasthotel/github-workflows/blob/main/docs/sbom.md
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Released npm package version, without the prefix (e.g. 3.0.11)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  sbom:
+    uses: palasthotel/github-workflows/.github/workflows/npm-package-sbom.yml@v1
+    permissions:
+      contents: write
+    with:
+      root: npm-package
+      tag-prefix: npm-v
+      kind: npm-package
+      version: ${{ github.event.inputs.version }}
+
+  dependency-track:
+    needs: sbom
+    uses: palasthotel/github-workflows/.github/workflows/dependency-track-upload.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      version: ${{ needs.sbom.outputs.version }}
